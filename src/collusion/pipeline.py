@@ -209,9 +209,31 @@ def _family_assortativity(graph: nx.Graph, truth: dict[str, str]) -> float | Non
     return metrics.attribute_assortativity(g, "family")
 
 
+def _check_activity_totals(daily: pd.DataFrame, feat: pd.DataFrame) -> dict[str, Any]:
+    """Every event must survive bucketing.
+
+    An earlier version of `activity_series` returned an all-zero table because
+    the bucket index and the reindex target carried different datetime units.
+    Nothing downstream complained -- the figures were simply blank. This makes
+    that class of failure loud.
+    """
+    events = io.load_events()
+    expected = {
+        "saves": int(len(feat)),
+        "deletes": int((events["event_type"] == "delete").sum()),
+        "probes": int((events["event_type"] == "probe").sum()),
+    }
+    actual = {k: int(daily[k].sum()) for k in expected}
+    mismatched = {k: (expected[k], actual[k]) for k in expected if expected[k] != actual[k]}
+    if mismatched:
+        raise SystemExit(f"activity series lost events during bucketing: {mismatched}")
+    return {"expected": expected, "actual": actual, "ok": True}
+
+
 def stage_temporal(feat: pd.DataFrame) -> dict[str, Any]:
     daily = temporal.activity_series(feat, "1D")
     hourly = temporal.activity_series(feat, "1h")
+    activity_check = _check_activity_totals(daily, feat)
     daily.to_csv(io.derived_dir() / "metrics" / "activity_daily.csv", index=False)
     hourly.to_csv(io.derived_dir() / "metrics" / "activity_hourly.csv", index=False)
 
@@ -222,6 +244,7 @@ def stage_temporal(feat: pd.DataFrame) -> dict[str, Any]:
     evolution.to_csv(io.derived_dir() / "metrics" / "community_evolution.csv", index=False)
 
     payload = {
+        "activity_reconciliation": activity_check,
         "incidents": [{"date": d, "label": t} for d, t in temporal.INCIDENTS],
         "percolation": temporal.percolation_threshold(curve),
         "timing": temporal.timing_profile(feat),

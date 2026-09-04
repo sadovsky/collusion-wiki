@@ -131,23 +131,30 @@ def exposure_test(
     n_null: int = 200,
     seed: int = SEED,
 ) -> dict[str, Any]:
-    """Were adopters disproportionately neighbours of earlier adopters?
+    """Did a technique spread along network ties, or turn up independently?
 
-    Statistic: the mean number of already-adopted neighbours an agent had at the
-    moment it adopted.
+    Three tests, because they ask different things and only the last two are
+    evidence of transmission.
 
-    Two nulls, because they answer different questions and only the second is
-    real evidence of transmission:
+    `adopter_clustering` counts edges inside the adopter set against a random
+    adopter set of the same size. It shows adopters are network-clustered, which
+    a technique used only by the dense coordination core satisfies whether or
+    not anything spread. Reported, but not evidence.
 
-    `random_adopters` draws an adopter set of the same size at random from the
-    network. Beating it shows adopters are clustered -- but a technique used
-    only by the dense coordination core beats it automatically, whether or not
-    anything spread. This null is reported for completeness, not as evidence.
+    The two order-sensitive tests hold the network, the adopter set and the
+    adoption times all fixed and permute only *which adopter adopted when*:
 
-    `shuffled_order` keeps the actual adopter set and permutes only *which of
-    them adopted when*. It holds the network, the adopter set, and the adoption
-    times all fixed, so it isolates the one thing at issue: whether agents
-    adopted in an order that follows network proximity. This is the test.
+    `exposed_adoptions` -- the share of adopters that already had at least one
+    adopted neighbour when they adopted.
+
+    `distance_order` -- Spearman correlation between adoption rank and hop
+    distance from the first adopter. A technique that propagated outward from a
+    source should reach near agents before far ones.
+
+    A note on why the total prior-exposure count is *not* used: summing
+    already-adopted neighbours over all adopters just counts the adopter set's
+    internal edges, which is identical under every permutation. It cannot detect
+    ordering at all.
     """
     adoptions = adoption_events(features, column)
     adopters = adoptions[adoptions["item"] == item]
@@ -156,46 +163,83 @@ def exposure_test(
     if len(inside) < 10:
         return {"item": item, "status": "insufficient_adopters_in_network", "n": int(len(inside))}
 
-    order = inside.sort_values("first_use")
-    labels = order["label"].tolist()
-
-    def mean_prior_exposure(assignment: Sequence[str]) -> float:
-        adopted: set[str] = set()
-        total = 0
-        for node in assignment:
-            total += sum(1 for nb in undirected.neighbors(node) if nb in adopted)
-            adopted.add(node)
-        return total / len(assignment)
-
-    observed = mean_prior_exposure(labels)
+    labels = inside.sort_values("first_use")["label"].tolist()
+    adjacency = {node: set(undirected.neighbors(node)) for node in labels}
     rng = np.random.default_rng(seed)
 
-    candidates = np.array(list(undirected.nodes))
-    random_set_null = [
-        mean_prior_exposure(rng.choice(candidates, size=len(labels), replace=False))
-        for _ in range(n_null)
-    ]
+    def exposed_fraction(assignment: Sequence[str]) -> float:
+        adopted: set[str] = set()
+        hits = 0
+        for node in assignment:
+            if not adopted.isdisjoint(adjacency[node]):
+                hits += 1
+            adopted.add(node)
+        return hits / len(assignment)
 
-    shuffled_order_null = []
+    # Hop distance from the source, over the whole network. The source is the
+    # earliest adopter that sits in the network's giant component: the very
+    # first adopter is sometimes an isolate, and measuring distance from a node
+    # that reaches almost nothing would leave the test with no data.
+    giant = max(nx.connected_components(undirected), key=len)
+    seed_node = next((n for n in labels if n in giant), labels[0])
+    distances = nx.single_source_shortest_path_length(undirected, seed_node)
+    reachable = [n for n in labels if n in distances and n != seed_node]
+    hops = np.array([distances[n] for n in reachable], dtype=float)
+
+    def distance_rho(assignment: Sequence[str]) -> float:
+        rank = {node: i for i, node in enumerate(assignment)}
+        ranks = np.array([rank[n] for n in reachable], dtype=float)
+        if len(ranks) < 10 or np.all(hops == hops[0]):
+            return float("nan")
+        return float(stats.spearmanr(ranks, hops).statistic)
+
+    observed_exposed = exposed_fraction(labels)
+    observed_rho = distance_rho(labels)
+
+    exposed_null, rho_null = [], []
     for _ in range(n_null):
         permuted = labels[:]
         rng.shuffle(permuted)
-        shuffled_order_null.append(mean_prior_exposure(permuted))
+        exposed_null.append(exposed_fraction(permuted))
+        rho_null.append(distance_rho(permuted))
+    rho_null = [v for v in rho_null if np.isfinite(v)]
 
-    strict = compare_to_null("mean_prior_adopted_neighbours", observed, shuffled_order_null).as_dict()
-    loose = compare_to_null("mean_prior_adopted_neighbours", observed, random_set_null).as_dict()
+    # Clustering control: how many internal edges does this adopter set have,
+    # against a random set of the same size?
+    internal = sum(1 for u, v in undirected.subgraph(labels).edges())
+    candidates = np.array(list(undirected.nodes))
+    cluster_null = [
+        undirected.subgraph(rng.choice(candidates, size=len(labels), replace=False)).number_of_edges()
+        for _ in range(n_null)
+    ]
 
+    exposed = compare_to_null("exposed_adoption_share", observed_exposed, exposed_null).as_dict()
+    distance = (
+        compare_to_null("adoption_rank_vs_hop_distance", observed_rho, rho_null).as_dict()
+        if np.isfinite(observed_rho) and rho_null
+        else None
+    )
+    clustering = compare_to_null("internal_edges", float(internal), cluster_null).as_dict()
+
+    spreads = exposed["z_score"] > 2 and exposed["p_value"] < 0.05
+    ordered = bool(distance and distance["z_score"] > 2 and distance["p_value"] < 0.05)
     return {
         "item": item,
-        "observed": observed,
         "n_adopters_in_network": int(len(inside)),
         "network_nodes": undirected.number_of_nodes(),
-        "shuffled_order": strict,
-        "random_adopters": loose,
+        "distance_source": seed_node,
+        "n_reachable_from_source": int(len(reachable)),
+        "exposed_adoptions": exposed,
+        "distance_order": distance,
+        "adopter_clustering": clustering,
         "verdict": (
-            "adoption order follows network proximity"
-            if strict["z_score"] > 2 and strict["p_value"] < 0.05
-            else "adoption order not distinguishable from chance among these adopters"
+            "spread along network ties"
+            if spreads and ordered
+            else "partial: exposure elevated, ordering not"
+            if spreads
+            else "outward from source, exposure not elevated"
+            if ordered
+            else "no transmission signal"
         ),
     }
 

@@ -8,7 +8,7 @@ import sys
 import time
 from typing import Callable
 
-from . import features, io, pipeline
+from . import features, graphs, io, pipeline
 
 STAGES = ("verify", "extract", "graphs", "metrics", "temporal", "diffusion", "figures", "site", "all")
 
@@ -55,7 +55,11 @@ def main(argv: list[str] | None = None) -> int:
         _run("graphs", lambda: pipeline.stage_graphs(feat))
         return 0
 
-    built = pipeline.build_all_graphs(feat)
+    # Prefer the exports; only rebuild if the graphs stage has not run.
+    built = graphs.load_all_exported()
+    if len(built) < len(graphs.GRAPH_NAMES):
+        print("[graphs] exports incomplete, rebuilding", file=sys.stderr)
+        built = pipeline.build_all_graphs(feat)
 
     if args.stage == "metrics":
         _run("metrics", lambda: pipeline.stage_metrics(feat, built, n_null=args.null_samples))

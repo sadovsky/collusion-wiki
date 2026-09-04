@@ -231,7 +231,7 @@ def figure_community_vs_family(feat: pd.DataFrame, built: dict[str, nx.Graph]) -
     table = table[table.idxmax(axis=0).sort_values().index]
 
     fig, ax = plt.subplots(figsize=(9, 5.5), constrained_layout=True)
-    im = ax.imshow(np.log1p(table.to_numpy()), cmap="rocket_r" if False else "YlOrBr", aspect="auto")
+    im = ax.imshow(np.log1p(table.to_numpy()), cmap="YlOrBr", aspect="auto")
     ax.set_xticks(range(len(table.columns)), [f"c{c}" for c in table.columns], fontsize=7)
     ax.set_yticks(range(len(table.index)), table.index, fontsize=7)
     ax.set_xlabel("detected community (co-edit network, Leiden)")
@@ -291,18 +291,38 @@ def figure_structural_break(feat: pd.DataFrame) -> Path:
     before = [br["before"].get(k, 0) or 0 for k, _ in keys]
     after = [br["after"].get(k, 0) or 0 for k, _ in keys]
 
-    fig, ax = plt.subplots(figsize=(9, 4), constrained_layout=True)
+    # Plotted as relative change, not raw value. Density (~0.002) and modularity
+    # (~0.7) share no scale, and drawing them on one axis makes the small ones
+    # invisible -- which is where the interesting movement is.
+    change = [(a - b) / abs(b) if b else 0.0 for b, a in zip(before, after)]
+
+    fig, ax = plt.subplots(figsize=(9.5, 4.2), constrained_layout=True)
     y = np.arange(len(keys))
-    ax.barh(y - 0.2, before, height=0.38, color=MUTED, label="before 19 June")
-    ax.barh(y + 0.2, after, height=0.38, color=ACCENT, label="19 June onward")
-    ax.set_yticks(y, [lbl for _, lbl in keys], fontsize=8)
+    colors = [ACCENT if c > 0 else COUNTER for c in change]
+    ax.barh(y, change, height=0.6, color=colors)
+    ax.axvline(0, color=INK, lw=1)
+    ax.set_yticks(y, [lbl for _, lbl in keys], fontsize=8.5)
     ax.invert_yaxis()
-    ax.legend(fontsize=8)
     ax.grid(axis="x", lw=0.5)
-    ax.set_title("Handoff-network structure either side of the first mass deletion")
-    for i, (b, a) in enumerate(zip(before, after)):
-        ax.annotate(f"{b:.3f}", (b, i - 0.2), xytext=(4, 0), textcoords="offset points", va="center", fontsize=7, color=MUTED)
-        ax.annotate(f"{a:.3f}", (a, i + 0.2), xytext=(4, 0), textcoords="offset points", va="center", fontsize=7, color=ACCENT)
+    ax.xaxis.set_major_formatter(lambda v, _: f"{v:+.0%}")
+    ax.set_xlabel("change after the first mass deletion")
+    ax.set_title(
+        "The network tightened under deletion pressure\n"
+        "Handoff structure either side of 19 June; raw values shown per bar"
+    )
+    pad = max(abs(min(change)), abs(max(change))) * 0.42
+    ax.set_xlim(min(change) - pad, max(change) + pad)
+    for i, (b, a, c) in enumerate(zip(before, after, change)):
+        ax.annotate(
+            f"{b:.3g} → {a:.3g}",
+            (c, i),
+            xytext=(6 if c >= 0 else -6, 0),
+            textcoords="offset points",
+            va="center",
+            ha="left" if c >= 0 else "right",
+            fontsize=7.5,
+            color=INK,
+        )
     return _save(fig, "06_structural_break.svg")
 
 

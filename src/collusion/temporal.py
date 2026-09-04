@@ -39,32 +39,42 @@ CRACKDOWN = pd.Timestamp("2026-06-19", tz="UTC")
 
 
 def activity_series(features: pd.DataFrame, freq: str = "1D") -> pd.DataFrame:
-    """Saves, deletions, and active-population counts per time bucket."""
-    events = io.load_events()
-    saves = features.set_index("time")
-    deletes = events[events["event_type"] == "delete"].set_index("time")
-    probes = events[events["event_type"] == "probe"].set_index("time")
+    """Saves, deletions, and active-population counts per time bucket.
 
-    out = pd.DataFrame(
-        {
-            "saves": saves.resample(freq).size(),
-            "active_labels": saves["label"].resample(freq).nunique(),
-            "active_pages": saves["page_key"].resample(freq).nunique(),
-            "active_ip16": saves["ip16"].resample(freq).nunique(),
-            "bytes_written": saves["body_len"].resample(freq).sum(),
-        }
-    )
-    out["deletes"] = deletes.resample(freq).size()
-    out["probes"] = probes.resample(freq).size()
-    full = out.reindex(
-        pd.date_range(
-            min(saves.index.min(), deletes.index.min()),
-            max(saves.index.max(), deletes.index.max()),
-            freq=freq,
-            tz="UTC",
-        )
-    )
-    return full.fillna(0).astype(int).rename_axis("time").reset_index()
+    Buckets are assigned with `dt.floor` and counted by groupby rather than by
+    `resample` + `reindex`. The reindex route silently produces an all-zero
+    table here: pandas 3 keeps these timestamps at microsecond resolution, while
+    `date_range` builds a nanosecond index, and the two never align.
+    """
+    events = io.load_events()
+    deletes = events[events["event_type"] == "delete"]
+    probes = events[events["event_type"] == "probe"]
+
+    saves = features.assign(bucket=features["time"].dt.floor(freq))
+    delete_buckets = deletes["time"].dt.floor(freq)
+    probe_buckets = probes["time"].dt.floor(freq)
+
+    # The span must be built before anything is joined onto it. Administrator
+    # deletions continue for twelve days past the last agent write, and joining
+    # them onto the save buckets would silently discard every one of those days.
+    # Probes are included in the bounds too: the earliest are reconnaissance
+    # requests a week before the first stored write, and dropping them would be
+    # the same silent loss in miniature.
+    start = min(saves["bucket"].min(), delete_buckets.min(), probe_buckets.min())
+    end = max(saves["bucket"].max(), delete_buckets.max(), probe_buckets.max())
+    span = pd.date_range(start, end, freq=freq).as_unit(saves["bucket"].dt.unit)
+
+    grouped = saves.groupby("bucket").agg(
+        saves=("rev_id", "size"),
+        active_labels=("label", "nunique"),
+        active_pages=("page_key", "nunique"),
+        active_ip16=("ip16", "nunique"),
+        bytes_written=("body_len", "sum"),
+    ).reindex(span)
+    grouped["deletes"] = delete_buckets.value_counts().reindex(span)
+    grouped["probes"] = probe_buckets.value_counts().reindex(span)
+
+    return grouped.fillna(0).astype("int64").rename_axis("time").reset_index()
 
 
 # --------------------------------------------------------------------------

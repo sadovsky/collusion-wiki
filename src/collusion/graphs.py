@@ -454,6 +454,45 @@ def export_graph(graph: nx.Graph, name: str, out_dir: Path | None = None) -> dic
     return paths
 
 
+GRAPH_NAMES = (
+    "G1_handoff",
+    "G2_coedit_bipartite",
+    "G2p_coedit_projection",
+    "G3_hyperlink",
+    "G4_resource_bipartite",
+    "G4b_label_host",
+    "G5_infrastructure",
+    "G6_provenance",
+)
+
+
+def load_exported(name: str, out_dir: Path | None = None) -> nx.Graph:
+    """Read a graph back from its node-link export."""
+    out_dir = out_dir or (io.derived_dir() / "graphs")
+    payload = json.loads((out_dir / f"{name}.json").read_text())
+    graph = nx.node_link_graph(payload, edges="links", directed=payload.get("directed", False))
+    for _, _, data in graph.edges(data=True):
+        if "weight" in data:
+            data["weight"] = float(data["weight"])
+    return graph
+
+
+def load_all_exported(out_dir: Path | None = None) -> dict[str, nx.Graph]:
+    """Every exported layer, read from disk.
+
+    Stages after `graphs` use this rather than rebuilding. Rebuilding costs a
+    couple of minutes and, more to the point, holds the shingle table and the
+    full revision bodies in memory at the same time as the graphs -- which is
+    what put this pipeline into the OOM killer when several stages ran at once.
+    """
+    out_dir = out_dir or (io.derived_dir() / "graphs")
+    return {
+        name: load_exported(name, out_dir)
+        for name in GRAPH_NAMES
+        if (out_dir / f"{name}.json").exists()
+    }
+
+
 def describe(graph: nx.Graph) -> dict[str, Any]:
     directed = graph.is_directed()
     n, m = graph.number_of_nodes(), graph.number_of_edges()

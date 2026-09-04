@@ -213,11 +213,39 @@ def _safe(fn: Callable[[nx.Graph], float], graph: nx.Graph) -> float:
     return float(value) if np.isfinite(value) else float("nan")
 
 
+# Triangle counting costs O(sum of squared degree). On a dense projection that
+# is minutes per sample, and the answer is not worth it: see `null_budget`.
+DENSE_EDGES = 40_000
+
+
+def null_budget(graph: nx.Graph, requested: int) -> tuple[int, str | None]:
+    """How many null samples this graph is worth, and why.
+
+    Two cases get cut down. Dense graphs make triangle counting quadratic in
+    degree, so a full ensemble costs hours. More importantly, a *projection* of
+    a bipartite graph is mechanically saturated with triangles -- every page's
+    editors form a clique by construction -- so its clustering coefficient
+    measures the projection, not the agents. Spending an hour to put an error
+    bar on an artifact is the wrong trade.
+    """
+    layer = str(graph.graph.get("layer", ""))
+    if "projection" in layer or "bipartite" in layer:
+        return min(requested, 10), (
+            "reduced: clustering in a bipartite graph or its projection is "
+            "structurally determined, so the rewired null is not informative"
+        )
+    if graph.number_of_edges() > DENSE_EDGES:
+        return min(requested, 25), "reduced: dense graph, triangle counting is the bottleneck"
+    return requested, None
+
+
 def cohesion_metrics(graph: nx.Graph, n_null: int = 200) -> dict[str, Any]:
     """Clustering, reciprocity and assortativity, all against one shared null."""
     out: dict[str, Any] = {}
     simple = nx.Graph(graph) if graph.is_directed() else graph
 
+    n_null, budget_note = null_budget(simple, n_null)
+    out["null_budget_note"] = budget_note
     undirected_null = rewired_ensemble(simple, n_null)
     trans_null = [_safe(nx.transitivity, h) for h in undirected_null]
     assort_null = [_safe(nx.degree_assortativity_coefficient, h) for h in undirected_null]
@@ -286,13 +314,22 @@ def centrality_table(graph: nx.Graph, betweenness_k: int | None = 500) -> pd.Dat
     except nx.PowerIterationFailedConvergence:
         pr = nx.pagerank(graph, weight="weight", max_iter=500, tol=1e-4)
 
+    # Eigenvector centrality is only defined within a connected component --
+    # networkx refuses outright on a disconnected graph. These graphs all have a
+    # periphery of isolated pairs, so it is computed on the giant component and
+    # left undefined elsewhere rather than being quietly faked as zero.
     simple = nx.Graph(graph) if graph.is_directed() else graph
-    try:
-        ev = nx.eigenvector_centrality_numpy(simple, weight="weight")
-    except (nx.NetworkXError, ValueError):
-        ev = dict.fromkeys(graph, float("nan"))
+    ev: dict[str, float] = dict.fromkeys(graph, float("nan"))
+    if simple.number_of_nodes():
+        giant = simple.subgraph(max(nx.connected_components(simple), key=len))
+        try:
+            ev.update(nx.eigenvector_centrality_numpy(giant, weight="weight"))
+        except (nx.NetworkXException, ValueError):
+            pass
 
-    core = nx.core_number(nx.Graph(nx.Graph(graph).copy()))
+    simple_for_core = nx.Graph(graph)
+    simple_for_core.remove_edges_from(nx.selfloop_edges(simple_for_core))
+    core = nx.core_number(simple_for_core)
     rows = []
     for node in graph.nodes():
         row = {
@@ -394,10 +431,12 @@ def community_profile(
     # structure from the modularity a random graph of this degree sequence has
     # anyway, so it is not optional here.
     observed_q = next(s["modularity"] for s in sweep if s["resolution"] == 1.0)
+    samples, note = null_budget(simple, n_null)
     return {
         "sweep": sweep,
+        "null_budget_note": note,
         "modularity_vs_rewired": compare_to_null(
-            "modularity", observed_q, [null_q(h) for h in rewired_ensemble(simple, n_null, seed=SEED + 2)]
+            "modularity", observed_q, [null_q(h) for h in rewired_ensemble(simple, samples, seed=SEED + 2)]
         ).as_dict(),
     }
 

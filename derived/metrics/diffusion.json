@@ -126,134 +126,354 @@
     ],
     "exposure_tests": [
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.5909398242055444,
-        "null_mean": 1.4546957403651115,
-        "null_std": 0.06827140163000842,
-        "z_score": 16.64304608829067,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "upstream_data",
         "n_adopters_in_network": 1479,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "[Person20]",
+        "n_reachable_from_source": 1389,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8668018931710615,
+          "null_mean": 0.7158654496281269,
+          "null_std": 0.011307560249665808,
+          "z_score": 13.348276746736365,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.1731189504566999,
+          "null_mean": -0.0008236440788642596,
+          "null_std": 0.02579239102763413,
+          "z_score": -6.680082749724032,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 3832.0,
+          "null_mean": 2145.825,
+          "null_std": 106.7005125191969,
+          "z_score": 15.80287629543142,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.19484882418813,
-        "null_mean": 0.880845464725644,
-        "null_std": 0.068993694187497,
-        "z_score": 33.53934568533118,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "wiki_self",
         "n_adopters_in_network": 893,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper3",
+        "n_reachable_from_source": 873,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9148936170212766,
+          "null_mean": 0.7454031354983202,
+          "null_std": 0.0146897006980413,
+          "z_score": 11.538048664637259,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.003974164517511331,
+          "null_mean": 0.001375230813194982,
+          "null_std": 0.03366746525812828,
+          "z_score": 0.07719421953480424,
+          "p_value": 0.9502487562189055,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2853.0,
+          "null_mean": 789.06,
+          "null_std": 65.06391445973813,
+          "z_score": 31.721731118363255,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.4530791788856305,
-        "null_mean": 0.6778152492668622,
-        "null_std": 0.06773379008150986,
-        "z_score": 40.97310849251247,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "json_query",
         "n_adopters_in_network": 682,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchUser",
+        "n_reachable_from_source": 672,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9002932551319648,
+          "null_mean": 0.7588709677419355,
+          "null_std": 0.018927492109978985,
+          "z_score": 7.471792172374932,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.07920974180999982,
+          "null_mean": 0.003745669831527725,
+          "null_std": 0.03975065193277162,
+          "z_score": -2.086894367967249,
+          "p_value": 0.04477611940298507,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2355.0,
+          "null_mean": 456.07,
+          "null_std": 42.512251855070495,
+          "z_score": 44.66782908780477,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.1656534954407296,
-        "null_mean": 0.6507902735562311,
-        "null_std": 0.0684044419673678,
-        "z_score": 36.76461863520806,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "markdown_proxy",
         "n_adopters_in_network": 658,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "OpenBudgetResearcher",
+        "n_reachable_from_source": 629,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8708206686930091,
+          "null_mean": 0.7311170212765957,
+          "null_std": 0.01814836494382152,
+          "z_score": 7.697864124336693,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.17667654632405244,
+          "null_mean": 0.00026978515461199224,
+          "null_std": 0.040117340138575985,
+          "z_score": -4.410719426249214,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2083.0,
+          "null_mean": 426.855,
+          "null_std": 44.70106150302795,
+          "z_score": 37.04934389282492,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.0526315789473686,
-        "null_mean": 0.5796943972835313,
-        "null_std": 0.06891374971852134,
-        "z_score": 35.88452510224107,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "cors_proxy",
         "n_adopters_in_network": 589,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ArchiveResearchHelper",
+        "n_reachable_from_source": 567,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8438030560271647,
+          "null_mean": 0.7323514431239389,
+          "null_std": 0.018640318613763553,
+          "z_score": 5.979061582184151,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.052190556246315765,
+          "null_mean": 0.005599240204999062,
+          "null_std": 0.04065409941209839,
+          "z_score": -1.4214998557837188,
+          "p_value": 0.14925373134328357,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1798.0,
+          "null_mean": 343.09,
+          "null_std": 36.60562468793518,
+          "z_score": 39.745531251090014,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.4607843137254901,
-        "null_mean": 0.2042156862745098,
-        "null_std": 0.049278653398880094,
-        "z_score": 25.49924847336711,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "sink_or_test",
         "n_adopters_in_network": 204,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper3",
+        "n_reachable_from_source": 195,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.7009803921568627,
+          "null_mean": 0.5944117647058823,
+          "null_std": 0.02489955167981202,
+          "z_score": 4.279941615871894,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.06585037163617012,
+          "null_mean": 0.0076627745602948485,
+          "null_std": 0.0731918989197259,
+          "z_score": -1.004389109744118,
+          "p_value": 0.29850746268656714,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 298.0,
+          "null_mean": 40.275,
+          "null_std": 9.49421273075785,
+          "z_score": 27.145484023658256,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.0981308411214954,
-        "null_mean": 0.21100467289719624,
-        "null_std": 0.04783617032068878,
-        "z_score": 39.44977525527648,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "liveness_counter",
         "n_adopters_in_network": 214,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "Apr19SectorRelay",
+        "n_reachable_from_source": 207,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.897196261682243,
+          "null_mean": 0.7243457943925234,
+          "null_std": 0.0231260553007316,
+          "z_score": 7.47427371603022,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.720276860887263,
+          "null_mean": 0.00011834944856203955,
+          "null_std": 0.06993400693786254,
+          "z_score": 10.297686961917869,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 449.0,
+          "null_mean": 44.755,
+          "null_std": 10.900416063240833,
+          "z_score": 37.085281667662585,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.158469945355191,
-        "null_mean": 0.17584699453551914,
-        "null_std": 0.04632479124889329,
-        "z_score": 42.79831376179244,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "url_shortener",
         "n_adopters_in_network": 183,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "TestResearcher",
+        "n_reachable_from_source": 172,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.7923497267759563,
+          "null_mean": 0.6589617486338798,
+          "null_std": 0.028302650891758954,
+          "z_score": 4.712914654256497,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.14328105550925604,
+          "null_mean": -0.0012766508940911547,
+          "null_std": 0.07284806866476753,
+          "z_score": -1.9493228470975832,
+          "p_value": 0.06965174129353234,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 395.0,
+          "null_mean": 32.765,
+          "null_std": 8.834023708049003,
+          "z_score": 41.004531114168785,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.0338983050847457,
-        "null_mean": 0.06330508474576271,
-        "null_std": 0.03846571852860851,
-        "z_score": 25.232681396998046,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "archive",
         "n_adopters_in_network": 59,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "CharlestonResearchHelper",
+        "n_reachable_from_source": 55,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.6779661016949152,
+          "null_mean": 0.5515254237288135,
+          "null_std": 0.042439773450176715,
+          "z_score": 2.9792967230265743,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.06781316774817592,
+          "null_mean": -0.01514105710761762,
+          "null_std": 0.14057961712609351,
+          "z_score": 0.5900871445779183,
+          "p_value": 0.5472636815920398,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 61.0,
+          "null_mean": 3.23,
+          "null_std": 2.243270225927466,
+          "z_score": 25.752581803253488,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.4102564102564104,
-        "null_mean": 0.04282051282051283,
-        "null_std": 0.0385674785441072,
-        "z_score": 35.45567273401208,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "translation_proxy",
         "n_adopters_in_network": 39,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper3",
+        "n_reachable_from_source": 38,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.5897435897435898,
+          "null_mean": 0.571025641025641,
+          "null_std": 0.049358995276076296,
+          "z_score": 0.37922061851654226,
+          "p_value": 0.8507462686567164,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.2757462472384058,
+          "null_mean": -0.005426365877243244,
+          "null_std": 0.15795821995480028,
+          "z_score": 1.7800441990046898,
+          "p_value": 0.0945273631840796,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 55.0,
+          "null_mean": 1.805,
+          "null_std": 1.5094259949301436,
+          "z_score": 35.24187351925251,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "no transmission signal"
       }
     ]
   },
@@ -660,433 +880,1159 @@
     ],
     "exposure_tests": [
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.010088272383354,
-        "null_mean": 0.7810214375788146,
-        "null_std": 0.06899927225381378,
-        "z_score": 17.81275069515832,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api.datausa.io",
         "n_adopters_in_network": 793,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelperTwenty",
+        "n_reachable_from_source": 746,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8234552332912989,
+          "null_mean": 0.6726418663303909,
+          "null_std": 0.0132951961806664,
+          "z_score": 11.343448032772743,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.0983828454405769,
+          "null_mean": 0.0008757184761295598,
+          "null_std": 0.032533100656558143,
+          "z_score": -3.051002268875271,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1594.0,
+          "null_mean": 615.16,
+          "null_std": 58.024205657734385,
+          "z_score": 16.869511420351945,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.2188208616780045,
-        "null_mean": 0.8720124716553288,
-        "null_std": 0.06652338897308264,
-        "z_score": 35.277943987072945,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "wikiservice.at",
         "n_adopters_in_network": 882,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper3",
+        "n_reachable_from_source": 866,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9160997732426304,
+          "null_mean": 0.7500226757369615,
+          "null_std": 0.0158510085704931,
+          "z_score": 10.477383616763921,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.0007985192438922607,
+          "null_mean": 0.0015967928612668513,
+          "null_std": 0.03496541290509913,
+          "z_score": -0.022830378681390477,
+          "p_value": 0.9900497512437811,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2839.0,
+          "null_mean": 767.685,
+          "null_std": 62.72798238321832,
+          "z_score": 33.02059019443516,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.4631268436578173,
-        "null_mean": 0.6625,
-        "null_std": 0.06727274550569208,
-        "z_score": 41.63092828463275,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "jqp.vercel.app",
         "n_adopters_in_network": 678,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "TestAgentFoo",
+        "n_reachable_from_source": 668,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9041297935103245,
+          "null_mean": 0.7594985250737463,
+          "null_std": 0.018031157037492404,
+          "z_score": 8.021186224258637,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.19240908779182583,
+          "null_mean": 0.0015270709548990827,
+          "null_std": 0.03781491514551614,
+          "z_score": 5.0477970425793846,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2348.0,
+          "null_mean": 454.465,
+          "null_std": 45.43058955524002,
+          "z_score": 41.67973646253502,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.6983333333333333,
-        "null_mean": 0.5886833333333333,
-        "null_std": 0.06559302769323415,
-        "z_score": 47.40824001208221,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "sec.gov",
         "n_adopters_in_network": 600,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "DataResearchHelperX",
+        "n_reachable_from_source": 594,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.91,
+          "null_mean": 0.7744416666666666,
+          "null_std": 0.02008655023340677,
+          "z_score": 6.7487115387231,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.1726501229511983,
+          "null_mean": 0.002924068520012809,
+          "null_std": 0.040224360636164996,
+          "z_score": 4.219484206756735,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 2219.0,
+          "null_mean": 354.545,
+          "null_std": 41.67157997831912,
+          "z_score": 44.74164408860998,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.7197452229299364,
-        "null_mean": 0.46302547770700636,
-        "null_std": 0.06015923232235456,
-        "z_score": 54.13499507061971,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "md.succ.ai",
         "n_adopters_in_network": 471,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "DataReferenceHelper",
+        "n_reachable_from_source": 466,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.910828025477707,
+          "null_mean": 0.7718471337579618,
+          "null_std": 0.01968557540969841,
+          "z_score": 7.060037048816674,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.0011728289005822358,
+          "null_mean": -0.00045153708334957324,
+          "null_std": 0.0462154000041377,
+          "z_score": 0.03514772097150254,
+          "p_value": 0.9601990049751243,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1752.0,
+          "null_mean": 220.5,
+          "null_std": 28.723250610405167,
+          "z_score": 53.31917409950826,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.9088541666666665,
-        "null_mean": 0.3743229166666667,
-        "null_std": 0.06360112771737708,
-        "z_score": 39.850413679182545,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "markdown.new",
         "n_adopters_in_network": 384,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "OpenBudgetResearcher",
+        "n_reachable_from_source": 362,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8203125,
+          "null_mean": 0.7098958333333334,
+          "null_std": 0.019658427026105207,
+          "z_score": 5.6167600042485555,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.1927035820433524,
+          "null_mean": 0.003814835659632722,
+          "null_std": 0.055330620375971695,
+          "z_score": -3.5517118074520404,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1117.0,
+          "null_mean": 144.33,
+          "null_std": 20.311916941767123,
+          "z_score": 47.88666686598701,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.228021978021978,
-        "null_mean": 0.3612225274725274,
-        "null_std": 0.05910258858017561,
-        "z_score": 48.50548037604975,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "allorigins.hexlet.app",
         "n_adopters_in_network": 364,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "DataRefHelperZZ85075",
+        "n_reachable_from_source": 354,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8598901098901099,
+          "null_mean": 0.7492307692307694,
+          "null_std": 0.026722547859698773,
+          "z_score": 4.141047524372849,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.12476109451037516,
+          "null_mean": -0.0019542720489441764,
+          "null_std": 0.05001706947135843,
+          "z_score": -2.455298236370177,
+          "p_value": 0.024875621890547265,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1175.0,
+          "null_mean": 129.855,
+          "null_std": 21.19647204455681,
+          "z_score": 49.30749786110704,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.7555555555555555,
-        "null_mean": 0.309047619047619,
-        "null_std": 0.053199151693367606,
-        "z_score": 64.78501680577769,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "investor.gov",
         "n_adopters_in_network": 315,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "OAIUserJune",
+        "n_reachable_from_source": 312,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9206349206349206,
+          "null_mean": 0.7799206349206349,
+          "null_std": 0.02369451898670303,
+          "z_score": 5.9386850517308325,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.18833829990477755,
+          "null_mean": 0.003124805151651456,
+          "null_std": 0.05770274876736761,
+          "z_score": 3.2097863396391455,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 1183.0,
+          "null_mean": 99.955,
+          "null_std": 17.69260058832193,
+          "z_score": 61.21457354973966,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.2830882352941178,
-        "null_mean": 0.2755147058823529,
-        "null_std": 0.05701956932658058,
-        "z_score": 52.74633893121561,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "r.jina.ai",
         "n_adopters_in_network": 272,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "[Person10]",
+        "n_reachable_from_source": 265,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8529411764705882,
+          "null_mean": 0.7371323529411765,
+          "null_std": 0.022744061732094107,
+          "z_score": 5.091826820272566,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.06343522749335984,
+          "null_mean": -0.0016820273866682228,
+          "null_std": 0.060757284017980216,
+          "z_score": -1.0163917150808892,
+          "p_value": 0.3383084577114428,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 893.0,
+          "null_mean": 72.575,
+          "null_std": 13.2674224130928,
+          "z_score": 61.837557775380176,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.0981308411214954,
-        "null_mean": 0.21100467289719624,
-        "null_std": 0.04783617032068878,
-        "z_score": 39.44977525527648,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api.counterapi.dev",
         "n_adopters_in_network": 214,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "Apr19SectorRelay",
+        "n_reachable_from_source": 207,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.897196261682243,
+          "null_mean": 0.7243457943925234,
+          "null_std": 0.0231260553007316,
+          "z_score": 7.47427371603022,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.720276860887263,
+          "null_mean": 0.00011834944856203955,
+          "null_std": 0.06993400693786254,
+          "z_score": 10.297686961917869,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 449.0,
+          "null_mean": 44.755,
+          "null_std": 10.900416063240833,
+          "z_score": 37.085281667662585,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.2528735632183907,
-        "null_mean": 0.1729597701149425,
-        "null_std": 0.047767362268144355,
-        "z_score": 43.54257162930106,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "pure.md",
         "n_adopters_in_network": 174,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchVisitor",
+        "n_reachable_from_source": 160,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.764367816091954,
+          "null_mean": 0.6610057471264368,
+          "null_std": 0.02942610354435391,
+          "z_score": 3.512597881323968,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.4031889381616469,
+          "null_mean": 0.006778368797185372,
+          "null_std": 0.083042943860803,
+          "z_score": -4.93681085831954,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 392.0,
+          "null_mean": 29.45,
+          "null_std": 7.782049955348378,
+          "z_score": 46.58798158328833,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.2875,
-        "null_mean": 0.1575,
-        "null_std": 0.04898466583980323,
-        "z_score": 23.068443575699593,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "example.com",
         "n_adopters_in_network": 160,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper3",
+        "n_reachable_from_source": 156,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.69375,
+          "null_mean": 0.58003125,
+          "null_std": 0.03138912185441729,
+          "z_score": 3.6228713414611406,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.024042143643179296,
+          "null_mean": -0.00892868942223383,
+          "null_std": 0.07897572120499025,
+          "z_score": 0.4174806201494972,
+          "p_value": 0.6218905472636815,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 206.0,
+          "null_mean": 24.25,
+          "null_std": 6.6436579498627015,
+          "z_score": 27.356917133844323,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.9864864864864865,
-        "null_mean": 0.14537162162162162,
-        "null_std": 0.047061350030581636,
-        "z_score": 17.872731324500624,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api-la.datausa.io",
         "n_adopters_in_network": 148,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearchHelper",
+        "n_reachable_from_source": 144,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.6216216216216216,
+          "null_mean": 0.534391891891892,
+          "null_std": 0.02342754754626814,
+          "z_score": 3.7233828917625993,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.0014923508924045545,
+          "null_mean": -0.0026810125702016714,
+          "null_std": 0.08323563923828568,
+          "z_score": 0.05013914112750173,
+          "p_value": 0.9502487562189055,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 146.0,
+          "null_mean": 21.055,
+          "null_std": 6.612913740606596,
+          "z_score": 18.8940919088019,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.0,
-        "null_mean": 0.10518691588785047,
-        "null_std": 0.04250373580021314,
-        "z_score": 21.052574962308665,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api.usaspending.gov",
         "n_adopters_in_network": 107,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "[Person20]",
+        "n_reachable_from_source": 86,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.6635514018691588,
+          "null_mean": 0.5475700934579438,
+          "null_std": 0.029881729010475706,
+          "z_score": 3.881345298679175,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.06332729607600907,
+          "null_mean": 0.005552369220028117,
+          "null_std": 0.1133159513733013,
+          "z_score": 0.509856963258868,
+          "p_value": 0.6019900497512438,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 107.0,
+          "null_mean": 10.96,
+          "null_std": 4.649352902508079,
+          "z_score": 20.65663803412116,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.0930232558139534,
-        "null_mean": 0.12848837209302325,
-        "null_std": 0.04455140841647357,
-        "z_score": 21.649930226768735,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "cors.bwa.workers.dev",
         "n_adopters_in_network": 129,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ArchiveResearchUserMineQ928AB",
+        "n_reachable_from_source": 121,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.689922480620155,
+          "null_mean": 0.5723643410852713,
+          "null_std": 0.02422602544553579,
+          "z_score": 4.852555768967316,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.22335792719372202,
+          "null_mean": -0.0007843762812775079,
+          "null_std": 0.0857051030640791,
+          "z_score": 2.615273717218625,
+          "p_value": 0.014925373134328358,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 141.0,
+          "null_mean": 17.06,
+          "null_std": 6.367031920556621,
+          "z_score": 19.46589895361556,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.5981308411214954,
-        "null_mean": 0.10518691588785047,
-        "null_std": 0.04250373580021314,
-        "z_score": 35.12500482901454,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "datausa.io",
         "n_adopters_in_network": 107,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentFinanceAnalyst",
+        "n_reachable_from_source": 101,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.7663551401869159,
+          "null_mean": 0.641214953271028,
+          "null_std": 0.02747267046163318,
+          "z_score": 4.555079095446939,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.1582027141564462,
+          "null_mean": -0.013701238551507232,
+          "null_std": 0.09715395874554536,
+          "z_score": -1.4873452144487582,
+          "p_value": 0.11940298507462686,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 171.0,
+          "null_mean": 10.96,
+          "null_std": 4.649352902508079,
+          "z_score": 34.42199449167795,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.303921568627451,
-        "null_mean": 0.101421568627451,
-        "null_std": 0.041867636216105106,
-        "z_score": 28.721468625387498,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "prowiki.org",
         "n_adopters_in_network": 102,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ApiHelper2026",
+        "n_reachable_from_source": 97,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.6666666666666666,
+          "null_mean": 0.5774019607843136,
+          "null_std": 0.03313244019148157,
+          "z_score": 2.6941784355896368,
+          "p_value": 0.014925373134328358,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.04935905101655934,
+          "null_mean": 0.009323420864901417,
+          "null_std": 0.10219111748046965,
+          "z_score": -0.5742423933535702,
+          "p_value": 0.572139303482587,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 133.0,
+          "null_mean": 10.01,
+          "null_std": 4.230767895420951,
+          "z_score": 29.070372811780732,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.4361702127659575,
-        "null_mean": 0.09643617021276597,
-        "null_std": 0.04447542165523322,
-        "z_score": 52.6073493061057,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "code.highcharts.com",
         "n_adopters_in_network": 94,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentM72649589",
+        "n_reachable_from_source": 93,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8404255319148937,
+          "null_mean": 0.7328191489361702,
+          "null_std": 0.03673122791705545,
+          "z_score": 2.929561277442579,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.34243593997328897,
+          "null_mean": 0.0003682674197296873,
+          "null_std": 0.10082994843514746,
+          "z_score": -3.3998252772439526,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 229.0,
+          "null_mean": 8.84,
+          "null_std": 3.8311602609031663,
+          "z_score": 57.46562007513071,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 2.325,
-        "null_mean": 0.0785,
-        "null_std": 0.03965064144290948,
-        "z_score": 56.65734319165044,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "vanderbi.lt",
         "n_adopters_in_network": 80,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentReg89486753",
+        "n_reachable_from_source": 79,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8625,
+          "null_mean": 0.70825,
+          "null_std": 0.04303644593123321,
+          "z_score": 3.5841714310348016,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.3908359493724283,
+          "null_mean": -0.017635809827442478,
+          "null_std": 0.10746202807347016,
+          "z_score": 3.8010799397960815,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 186.0,
+          "null_mean": 6.33,
+          "null_std": 3.302367051177612,
+          "z_score": 54.406429453664245,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.1,
-        "null_mean": 0.0785,
-        "null_std": 0.03965064144290948,
-        "z_score": 76.20305473116929,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "webcrawlerapi.com",
         "n_adopters_in_network": 80,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "BudgetResearcher",
+        "n_reachable_from_source": 79,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9125,
+          "null_mean": 0.7607499999999999,
+          "null_std": 0.04244120970715885,
+          "z_score": 3.5755342754616,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.17364525593091615,
+          "null_mean": 0.004090208962951833,
+          "null_std": 0.11755104897305955,
+          "z_score": 1.4423950143296729,
+          "p_value": 0.15422885572139303,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 248.0,
+          "null_mean": 6.33,
+          "null_std": 3.302367051177612,
+          "z_score": 73.1808415765962,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.75,
-        "null_mean": 0.06484375,
-        "null_std": 0.039246582585759034,
-        "z_score": 17.457730198619,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "proxymule.com",
         "n_adopters_in_network": 64,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ArchiveAgentWinQQ",
+        "n_reachable_from_source": 59,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.515625,
+          "null_mean": 0.451171875,
+          "null_std": 0.031946444067409686,
+          "z_score": 2.017536751946429,
+          "p_value": 0.04975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.3393047755174976,
+          "null_mean": 0.01568085955767957,
+          "null_std": 0.12745725207879602,
+          "z_score": -2.7851348533367064,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 48.0,
+          "null_mean": 4.14,
+          "null_std": 2.796336440315647,
+          "z_score": 15.684807939294005,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.0,
-        "null_mean": 0.07178082191780821,
-        "null_std": 0.04310589009499422,
-        "z_score": 21.533465056321468,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "tinyurl.com",
         "n_adopters_in_network": 73,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "TestResearcher",
+        "n_reachable_from_source": 64,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.6575342465753424,
+          "null_mean": 0.5377397260273973,
+          "null_std": 0.039277296546750794,
+          "z_score": 3.0499685844049043,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.06421273086504718,
+          "null_mean": 0.007368730455394047,
+          "null_std": 0.11951817543246603,
+          "z_score": -0.5989169518479511,
+          "p_value": 0.5323383084577115,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 73.0,
+          "null_mean": 5.04,
+          "null_std": 2.859946936992374,
+          "z_score": 23.762678643076242,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 3.0273972602739727,
-        "null_mean": 0.07178082191780821,
-        "null_std": 0.04310589009499422,
-        "z_score": 68.56641706835774,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "md.dhr.wtf",
         "n_adopters_in_network": 73,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "UniqFresh",
+        "n_reachable_from_source": 71,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.863013698630137,
+          "null_mean": 0.7455479452054794,
+          "null_std": 0.04179974789901631,
+          "z_score": 2.8102024373075696,
+          "p_value": 0.009950248756218905,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.23510165744503597,
+          "null_mean": -0.0056119178091178215,
+          "null_std": 0.1247107030822793,
+          "z_score": 1.9301757532017143,
+          "p_value": 0.05970149253731343,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 221.0,
+          "null_mean": 5.04,
+          "null_std": 2.859946936992374,
+          "z_score": 75.51189052028761,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.7796610169491526,
-        "null_mean": 0.06330508474576271,
-        "null_std": 0.03846571852860851,
-        "z_score": 18.623230232150924,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "corsmirror.com",
         "n_adopters_in_network": 59,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ArchiveResearchHelper",
+        "n_reachable_from_source": 49,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.5254237288135594,
+          "null_mean": 0.46644067796610167,
+          "null_std": 0.034151173364862716,
+          "z_score": 1.7271163780317977,
+          "p_value": 0.13930348258706468,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.05879297763154778,
+          "null_mean": -0.0021892928536530144,
+          "null_std": 0.1491413848989429,
+          "z_score": -0.37953036855765426,
+          "p_value": 0.7064676616915423,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 46.0,
+          "null_mean": 3.23,
+          "null_std": 2.243270225927466,
+          "z_score": 19.065915245372196,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "no transmission signal"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.8387096774193548,
-        "null_mean": 0.05879032258064516,
-        "null_std": 0.040095730827065974,
-        "z_score": 44.39174241555921,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api.allorigins.win",
         "n_adopters_in_network": 62,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentRootArchiveWWI4008",
+        "n_reachable_from_source": 61,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.7419354838709677,
+          "null_mean": 0.6293548387096775,
+          "null_std": 0.04744476037012489,
+          "z_score": 2.37287835965508,
+          "p_value": 0.03482587064676617,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.30602136013727355,
+          "null_mean": -0.006419404902217727,
+          "null_std": 0.12568992878824586,
+          "z_score": -2.3836592010470907,
+          "p_value": 0.024875621890547265,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 114.0,
+          "null_mean": 3.965,
+          "null_std": 2.5408768715508256,
+          "z_score": 43.30591585606432,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.4736842105263157,
-        "null_mean": 0.05271929824561403,
-        "null_std": 0.03619420396356551,
-        "z_score": 39.25946026361293,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "is.gd",
         "n_adopters_in_network": 57,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "OpenAIResearchNov30DataX",
+        "n_reachable_from_source": 53,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.8070175438596491,
+          "null_mean": 0.6308771929824561,
+          "null_std": 0.04712240323862306,
+          "z_score": 3.7379322524200664,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.12543379903991572,
+          "null_mean": -0.012495958180179892,
+          "null_std": 0.14660399903993396,
+          "z_score": -0.7703598919492798,
+          "p_value": 0.4427860696517413,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 84.0,
+          "null_mean": 3.115,
+          "null_std": 2.1853268099603906,
+          "z_score": 37.012770644344066,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 1.7543859649122806,
-        "null_mean": 0.05271929824561403,
-        "null_std": 0.03619420396356551,
-        "z_score": 47.01489410789723,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "wikiservice.com",
         "n_adopters_in_network": 57,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentTestLearnXYZ",
+        "n_reachable_from_source": 56,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.9473684210526315,
+          "null_mean": 0.7180701754385964,
+          "null_std": 0.045678075742435376,
+          "z_score": 5.019875331591844,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.1807098282300188,
+          "null_mean": -0.0069259857608212514,
+          "null_std": 0.1377935028607598,
+          "z_score": 1.3617174256789586,
+          "p_value": 0.22885572139303484,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 100.0,
+          "null_mean": 3.115,
+          "null_std": 2.1853268099603906,
+          "z_score": 44.33433002259102,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.8888888888888888,
-        "null_mean": 0.04533333333333333,
-        "null_std": 0.039592188759368825,
-        "z_score": 21.30611067456942,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "api.census.gov",
         "n_adopters_in_network": 45,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "GroceryAgentDec09X",
+        "n_reachable_from_source": 44,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.5777777777777777,
+          "null_mean": 0.5045555555555555,
+          "null_std": 0.03719806794812257,
+          "z_score": 1.9684415417580257,
+          "p_value": 0.07960199004975124,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.27203163706879985,
+          "null_mean": -0.012782761326053665,
+          "null_std": 0.14791017407785223,
+          "z_score": 1.9255903129756442,
+          "p_value": 0.05472636815920398,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 40.0,
+          "null_mean": 2.03,
+          "null_std": 1.6286073219303745,
+          "z_score": 23.31439843644721,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "no transmission signal"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.8461538461538461,
-        "null_mean": 0.04282051282051283,
-        "null_std": 0.0385674785441072,
-        "z_score": 20.82929358253513,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "login.max.gov",
         "n_adopters_in_network": 39,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ApiHelper2026",
+        "n_reachable_from_source": 37,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.5897435897435898,
+          "null_mean": 0.4741025641025642,
+          "null_std": 0.04072415313782406,
+          "z_score": 2.8396176895234126,
+          "p_value": 0.009950248756218905,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.07078407271620112,
+          "null_mean": -0.010774840337244029,
+          "null_std": 0.1642378762271162,
+          "z_score": -0.36537998272684297,
+          "p_value": 0.7064676616915423,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 33.0,
+          "null_mean": 1.805,
+          "null_std": 1.5094259949301436,
+          "z_score": 20.666796586767216,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "partial: exposure elevated, ordering not"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.38235294117647056,
-        "null_mean": 0.03558823529411765,
-        "null_std": 0.037942557037441205,
-        "z_score": 9.13920233526091,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "rspace.library.cofc.edu",
         "n_adopters_in_network": 34,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "ResearcherZedY",
+        "n_reachable_from_source": 30,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.35294117647058826,
+          "null_mean": 0.29867647058823527,
+          "null_std": 0.026388762419009358,
+          "z_score": 2.0563566044030535,
+          "p_value": 0.08955223880597014,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.40308203175083696,
+          "null_mean": 0.010223522856012779,
+          "null_std": 0.18338049981561935,
+          "z_score": -2.253814091587761,
+          "p_value": 0.03482587064676617,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 13.0,
+          "null_mean": 1.32,
+          "null_std": 1.4062316442129759,
+          "z_score": 8.30588619454438,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "no transmission signal"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.6756756756756757,
-        "null_mean": 0.033243243243243244,
-        "null_std": 0.03601780968743678,
-        "z_score": 17.836521376715382,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "docs.google.com",
         "n_adopters_in_network": 37,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "TestAgentFoo",
+        "n_reachable_from_source": 33,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.5135135135135135,
+          "null_mean": 0.45675675675675675,
+          "null_std": 0.04027938884280862,
+          "z_score": 1.4090769097379177,
+          "p_value": 0.19900497512437812,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": -0.09335414774088667,
+          "null_mean": 0.005746791770063994,
+          "null_std": 0.17585797267231706,
+          "z_score": -0.5635282723042035,
+          "p_value": 0.5870646766169154,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 25.0,
+          "null_mean": 1.42,
+          "null_std": 1.3758871053371953,
+          "z_score": 17.13803400622839,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "no transmission signal"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.71875,
-        "null_mean": 0.02984375,
-        "null_std": 0.031060591189847206,
-        "z_score": 22.179431350462615,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "piv.max.gov",
         "n_adopters_in_network": 32,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "OpenBudgetResearcher",
+        "n_reachable_from_source": 26,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.625,
+          "null_mean": 0.51453125,
+          "null_std": 0.041072202767056344,
+          "z_score": 2.689623213698342,
+          "p_value": 0.009950248756218905,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.6860610460736836,
+          "null_mean": -0.012832970599856863,
+          "null_std": 0.18672832792625896,
+          "z_score": 3.742838724232251,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 23.0,
+          "null_mean": 0.95,
+          "null_std": 1.0739023846040623,
+          "z_score": 20.532592455439634,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       },
       {
-        "statistic": "mean_prior_adopted_neighbours",
-        "observed": 0.8571428571428571,
-        "null_mean": 0.034,
-        "null_std": 0.036388045247578236,
-        "z_score": 22.62124419001706,
-        "p_value": 0.004975124378109453,
-        "n_samples": 200,
         "item": "portal.max.gov",
         "n_adopters_in_network": 35,
         "network_nodes": 2456,
-        "interpretation": "consistent with social transmission"
+        "distance_source": "AgentResearch",
+        "n_reachable_from_source": 28,
+        "exposed_adoptions": {
+          "statistic": "exposed_adoption_share",
+          "observed": 0.7142857142857143,
+          "null_mean": 0.5637142857142856,
+          "null_std": 0.04642572745168913,
+          "z_score": 3.2432755895556866,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "distance_order": {
+          "statistic": "adoption_rank_vs_hop_distance",
+          "observed": 0.5353852252193299,
+          "null_mean": -0.021721820948284773,
+          "null_std": 0.18510158360747467,
+          "z_score": 3.0097367905236974,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "adopter_clustering": {
+          "statistic": "internal_edges",
+          "observed": 30.0,
+          "null_mean": 1.26,
+          "null_std": 1.2964582600687546,
+          "z_score": 22.16808738483863,
+          "p_value": 0.004975124378109453,
+          "n_samples": 200
+        },
+        "verdict": "spread along network ties"
       }
     ]
   },

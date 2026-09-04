@@ -932,20 +932,27 @@ canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
   const curveBy = new Map(curves.map((c) => [c.item, c]));
 
   d3.select("#exposure-table").html(
-    `<thead><tr><th>technique class</th><th>adopters</th><th>doubling (h)</th><th>observed exposure</th><th>shuffled-order null</th><th>z</th><th>p</th><th>verdict</th></tr></thead><tbody>` +
-    exposure.filter((e) => e.shuffled_order).map((e) => {
-      const s = e.shuffled_order;
+    `<thead><tr>
+      <th>technique class</th><th>adopters</th><th>doubling (h)</th>
+      <th>exposed share</th><th>shuffled null</th><th>z</th>
+      <th>rank vs hop distance</th><th>z</th><th>verdict</th>
+    </tr></thead><tbody>` +
+    exposure.filter((e) => e.exposed_adoptions).map((e) => {
+      const x = e.exposed_adoptions;
+      const dorder = e.distance_order;
       const c = curveBy.get(e.item) || {};
-      const good = s.z_score > 2 && s.p_value < 0.05;
+      const strong = e.verdict === "spread along network ties";
+      const partial = e.verdict && e.verdict.startsWith("partial");
       return `<tr>
         <td>${e.item.replace(/_/g, " ")}</td>
         <td>${fmt(e.n_adopters_in_network)}</td>
         <td>${c.doubling_time_hours == null ? "—" : f2(c.doubling_time_hours)}</td>
-        <td>${f2(e.observed)}</td>
-        <td>${f2(s.null_mean)} ± ${f2(s.null_std)}</td>
-        <td>${d3.format(".1f")(s.z_score)}</td>
-        <td>${pText(s.p_value, s.n_samples)}</td>
-        <td><span class="verdict ${good ? "pass" : "fail"}">${good ? "follows network" : "chance"}</span></td>
+        <td>${pct(x.observed)}</td>
+        <td>${pct(x.null_mean)} ± ${f3(x.null_std)}</td>
+        <td>${d3.format(".1f")(x.z_score)}</td>
+        <td>${dorder ? f2(dorder.observed) : "—"}</td>
+        <td>${dorder ? d3.format(".1f")(dorder.z_score) : "—"}</td>
+        <td><span class="verdict ${strong ? "pass" : partial ? "watch" : "fail"}">${e.verdict}</span></td>
       </tr>`;
     }).join("") + "</tbody>"
   );

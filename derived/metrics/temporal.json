@@ -1,4 +1,17 @@
 {
+  "activity_reconciliation": {
+    "expected": {
+      "saves": 14591,
+      "deletes": 5217,
+      "probes": 101
+    },
+    "actual": {
+      "saves": 14591,
+      "deletes": 5217,
+      "probes": 101
+    },
+    "ok": true
+  },
   "incidents": [
     {
       "date": "2026-05-24",
@@ -232,7 +245,7 @@
     "corpus_first_recreation_relations": 67
   },
   "peak_day": {
-    "date": "2026-05-24",
-    "saves": 0
+    "date": "2026-06-18",
+    "saves": 6543
   }
 }
