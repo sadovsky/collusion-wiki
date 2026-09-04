@@ -1,0 +1,238 @@
+{
+  "incidents": [
+    {
+      "date": "2026-05-24",
+      "label": "First writes on DSEWiki"
+    },
+    {
+      "date": "2026-06-16",
+      "label": "Coordination spike begins"
+    },
+    {
+      "date": "2026-06-18",
+      "label": "Peak activity: 6,543 saves"
+    },
+    {
+      "date": "2026-06-19",
+      "label": "Agents notice admin deletions"
+    },
+    {
+      "date": "2026-06-21",
+      "label": "OpenAI discovers the activity"
+    },
+    {
+      "date": "2026-06-22",
+      "label": "Agent writes cease"
+    },
+    {
+      "date": "2026-06-26",
+      "label": "OpenAI personnel browse the wiki"
+    }
+  ],
+  "percolation": {
+    "min_nodes_for_threshold": 100,
+    "steepest_rise_time": "2026-06-16 19:00:00+00:00",
+    "steepest_rise_delta": 0.17085104777238302,
+    "giant_fraction_at_rise": 0.8322683706070287,
+    "mean_degree_at_rise": 2.862619808306709,
+    "nodes_at_rise": 626,
+    "first_majority_time": "2026-05-27 08:00:00+00:00",
+    "mean_degree_at_majority": 1.9238095238095239,
+    "nodes_at_majority": 105,
+    "mean_degree_1_crossed_at": "2026-05-27 08:00:00+00:00",
+    "final_giant_fraction": 0.9267100977198697,
+    "final_mean_degree": 4.833061889250814,
+    "final_nodes": 2456,
+    "erdos_renyi_reference": "in a random graph the giant component emerges at mean degree 1.0"
+  },
+  "timing": {
+    "global": {
+      "statistic": "burstiness",
+      "observed": 0.9386664036428266,
+      "null_mean": -0.00021693771550285873,
+      "null_std": 0.004373097997643452,
+      "z_score": 214.69524393559652,
+      "p_value": 0.004975124378109453,
+      "n_samples": 200
+    },
+    "span_seconds": 3410541.0,
+    "n_events": 13661,
+    "median_gap_seconds": 5.0,
+    "fano_factor_hourly": 727.7451213067513,
+    "per_label_burstiness": {
+      "n_labels": 721,
+      "mean": 0.19415675840325325,
+      "median": 0.19815644420227105
+    },
+    "most_bursty": [
+      {
+        "label": "AgentRelent",
+        "n_saves": 317,
+        "burstiness": 0.8886543113738661,
+        "span_hours": 78.49472222222222,
+        "median_gap_seconds": 5.0
+      },
+      {
+        "label": "AgentMassPointer13",
+        "n_saves": 187,
+        "burstiness": 0.8571356082852727,
+        "span_hours": 83.03055555555555,
+        "median_gap_seconds": 4.0
+      },
+      {
+        "label": "LinkHelper771",
+        "n_saves": 176,
+        "burstiness": 0.8478613689234292,
+        "span_hours": 77.76916666666666,
+        "median_gap_seconds": 5.0
+      },
+      {
+        "label": "AgentTestLearnXYZ",
+        "n_saves": 130,
+        "burstiness": 0.8127434194870476,
+        "span_hours": 87.74777777777778,
+        "median_gap_seconds": 8.0
+      },
+      {
+        "label": "MapHelper",
+        "n_saves": 184,
+        "burstiness": 0.8008550533282351,
+        "span_hours": 86.86861111111111,
+        "median_gap_seconds": 31.0
+      },
+      {
+        "label": "AgentMapCite8x",
+        "n_saves": 87,
+        "burstiness": 0.788627064459496,
+        "span_hours": 84.68888888888888,
+        "median_gap_seconds": 5.0
+      },
+      {
+        "label": "OpenAIResearchSec2028",
+        "n_saves": 93,
+        "burstiness": 0.7822635382475369,
+        "span_hours": 87.70944444444444,
+        "median_gap_seconds": 47.0
+      },
+      {
+        "label": "ResearchReaderMN",
+        "n_saves": 93,
+        "burstiness": 0.7473752162558724,
+        "span_hours": 451.9975,
+        "median_gap_seconds": 3.0
+      },
+      {
+        "label": "MassUpdater",
+        "n_saves": 57,
+        "burstiness": 0.7472637929273612,
+        "span_hours": 81.16416666666667,
+        "median_gap_seconds": 88.0
+      },
+      {
+        "label": "OpenAIBot",
+        "n_saves": 61,
+        "burstiness": 0.7459190903266836,
+        "span_hours": 84.81555555555556,
+        "median_gap_seconds": 36.5
+      },
+      {
+        "label": "ResearchHelperArchiveCofcY",
+        "n_saves": 48,
+        "burstiness": 0.7384441722729513,
+        "span_hours": 173.8213888888889,
+        "median_gap_seconds": 4.0
+      },
+      {
+        "label": "OurMassFinal",
+        "n_saves": 64,
+        "burstiness": 0.7256762046593923,
+        "span_hours": 76.90527777777778,
+        "median_gap_seconds": 79.0
+      },
+      {
+        "label": "ResearchHelper",
+        "n_saves": 109,
+        "burstiness": 0.717175178846366,
+        "span_hours": 682.4263888888889,
+        "median_gap_seconds": 162.5
+      },
+      {
+        "label": "OpenAICite",
+        "n_saves": 36,
+        "burstiness": 0.6954905953865597,
+        "span_hours": 82.05083333333333,
+        "median_gap_seconds": 17.0
+      },
+      {
+        "label": "AgentMedJ",
+        "n_saves": 32,
+        "burstiness": 0.6914942879650222,
+        "span_hours": 78.41083333333333,
+        "median_gap_seconds": 20.0
+      }
+    ]
+  },
+  "structural_break": {
+    "boundary": "2026-06-19 00:00:00+00:00",
+    "before": {
+      "events": 7027,
+      "nodes": 1877,
+      "edges": 5423,
+      "density": 0.001540077222533349,
+      "reciprocity": 0.2150101419878296,
+      "transitivity": 0.0849375301624752,
+      "giant_fraction": 0.9371337240277038,
+      "max_core": 8,
+      "modularity": 0.6238961971040451,
+      "mean_out_degree": 2.8891848694725626,
+      "zzz_page_share": 0.006647846279938075,
+      "persist_motif_share": 0.04189053820234951
+    },
+    "after": {
+      "events": 1377,
+      "nodes": 704,
+      "edges": 1248,
+      "density": 0.0025216604163972585,
+      "reciprocity": 0.22435897435897437,
+      "transitivity": 0.12183031458531936,
+      "giant_fraction": 0.8877840909090909,
+      "max_core": 4,
+      "modularity": 0.8242481717739777,
+      "mean_out_degree": 1.7727272727272727,
+      "zzz_page_share": 0.017164179104477612,
+      "persist_motif_share": 0.03246268656716418
+    }
+  },
+  "deletion_response": {
+    "deleted_pages": 5144,
+    "deletions_followed_by_a_rewrite": 66,
+    "median_latency_seconds": 1608.0,
+    "p10_latency_seconds": 56.5,
+    "p90_latency_seconds": 189453.5,
+    "within_1h": 39,
+    "within_10min": 25,
+    "distinct_responders": 56,
+    "top_responders": {
+      "OpenAIResearchTempX": 3,
+      "OAIHouseholdNov02Scout": 2,
+      "OpenAIResearcher": 2,
+      "OpenAIWriterZed": 2,
+      "OpenAIResearchSec2028": 2,
+      "OpenAIHealthdataCVDNov01": 2,
+      "OECDEquityJan12Agent": 2,
+      "Sep22OECD": 2,
+      "OpenAIMay11Police": 2,
+      "AgentHelperUniqueXYZ": 1,
+      "AgentMyCookSource627": 1,
+      "AgentAppendINV7839": 1,
+      "AgentSolveUltraMergeXYZ": 1,
+      "OpenAIBot": 1,
+      "AgentDataHelperX": 1
+    },
+    "corpus_first_recreation_relations": 67
+  },
+  "peak_day": {
+    "date": "2026-05-24",
+    "saves": 0
+  }
+}

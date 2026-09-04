@@ -1,0 +1,1036 @@
+<title>Thirty-Nine Days on DSEWiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<style>
+:root {
+  /* Plotter-paper neutrals: faintly green so they take neither accent's side. */
+  --paper: #eceee9;
+  --surface: #f6f7f4;
+  --surface-2: #e3e6e0;
+  --ink: #15181a;
+  --ink-2: #565d5f;
+  --ink-3: #7d8486;
+  --rule: #d2d6cf;
+  --rule-strong: #b6bcb4;
+
+  /* The corpus's actual antagonists. */
+  --agent: #bf4218;
+  --agent-soft: #e8b9a6;
+  --admin: #1d5b9e;
+  --admin-soft: #b4c9e0;
+  --support: #2b7563;
+  --violet: #6b4a9c;
+  --amber: #9a6b12;
+
+  --shadow: 0 1px 2px rgba(21, 24, 26, .07), 0 8px 24px -12px rgba(21, 24, 26, .16);
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 68ch;
+  --gutter: clamp(1.1rem, 4vw, 3.25rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101314;
+    --surface: #171b1c;
+    --surface-2: #1f2425;
+    --ink: #e7e9e4;
+    --ink-2: #9aa2a2;
+    --ink-3: #767e7e;
+    --rule: #2a2f30;
+    --rule-strong: #3b4242;
+    --agent: #f4713f;
+    --agent-soft: #5c3221;
+    --admin: #6da5e4;
+    --admin-soft: #23384e;
+    --support: #4bb69a;
+    --violet: #a68ad8;
+    --amber: #d3a03c;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #101314;
+  --surface: #171b1c;
+  --surface-2: #1f2425;
+  --ink: #e7e9e4;
+  --ink-2: #9aa2a2;
+  --ink-3: #767e7e;
+  --rule: #2a2f30;
+  --rule-strong: #3b4242;
+  --agent: #f4713f;
+  --agent-soft: #5c3221;
+  --admin: #6da5e4;
+  --admin-soft: #23384e;
+  --support: #4bb69a;
+  --violet: #a68ad8;
+  --amber: #d3a03c;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
+
+section {
+  padding-block: clamp(2.75rem, 6vw, 4.75rem);
+  border-top: 1px solid var(--rule);
+}
+section:first-of-type { border-top: 0; }
+
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1.05em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.stack { display: flex; flex-direction: column; gap: 1.15rem; }
+.stack-tight { display: flex; flex-direction: column; gap: .6rem; }
+
+/* ------------------------------------------------------------- typography */
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  text-wrap: balance;
+  margin: 0;
+  letter-spacing: -0.017em;
+  line-height: 1.12;
+}
+h1 { font-size: clamp(2.4rem, 6.2vw, 4.1rem); letter-spacing: -0.032em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.05rem); }
+h3 { font-size: 1.1rem; letter-spacing: -0.008em; }
+h4 { font-size: .9rem; font-weight: 600; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.lede { font-size: 1.2rem; line-height: 1.5; color: var(--ink-2); }
+.note { font-size: .85rem; line-height: 1.5; color: var(--ink-3); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.pagename {
+  font-family: var(--mono);
+  font-size: .85em;
+  background: var(--surface-2);
+  padding: .08em .34em;
+  border-radius: 2px;
+  word-break: break-word;
+}
+
+/* ------------------------------------------------------------- masthead */
+
+.masthead { padding-top: clamp(2rem, 5vw, 3.5rem); }
+.masthead-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: end;
+}
+@media (max-width: 780px) { .masthead-grid { grid-template-columns: 1fr; } }
+
+.dossier {
+  font-family: var(--mono);
+  font-size: .77rem;
+  border-top: 2px solid var(--ink);
+  padding-top: .7rem;
+  display: grid;
+  gap: .34rem;
+}
+.dossier-row { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px dotted var(--rule-strong); padding-bottom: .3rem; }
+.dossier-row span:first-child { color: var(--ink-3); }
+.dossier-row span:last-child { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; }
+
+/* ------------------------------------------------------------ components */
+
+.claim {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.75rem);
+  align-items: start;
+  margin-bottom: 1.9rem;
+}
+@media (max-width: 860px) { .claim { grid-template-columns: 1fr; gap: .9rem; } }
+
+.claim-figure {
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 4.6vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  color: var(--agent);
+}
+.claim-figure.is-structural { color: var(--support); }
+.claim-figure.is-admin { color: var(--admin); }
+.claim-caption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); margin-top: .4rem; line-height: 1.45; }
+
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  font-family: var(--mono);
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: .2rem .5rem;
+  border-radius: 2px;
+  border: 1px solid;
+}
+.verdict::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.verdict.pass { color: var(--support); border-color: color-mix(in srgb, var(--support) 40%, transparent); background: color-mix(in srgb, var(--support) 9%, transparent); }
+.verdict.fail { color: var(--ink-3); border-color: var(--rule-strong); background: transparent; }
+.verdict.watch { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, transparent); background: color-mix(in srgb, var(--amber) 9%, transparent); }
+
+figure { margin: 0; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1.05rem 1.15rem 1.15rem;
+}
+.panel-head { display: flex; flex-wrap: wrap; gap: .55rem 1rem; align-items: baseline; justify-content: space-between; margin-bottom: .75rem; }
+
+.legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-family: var(--mono); font-size: .7rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .35rem; vertical-align: baseline; }
+
+.chart { width: 100%; display: block; overflow: visible; }
+.scroller { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .76rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .66rem; border-bottom: 1px solid var(--rule-strong); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.grid-layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.layer { background: var(--surface); padding: .95rem 1rem 1.05rem; display: flex; flex-direction: column; gap: .42rem; }
+.layer-id { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: var(--agent); font-weight: 600; }
+.layer-size { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-top: auto; padding-top: .35rem; }
+.layer p { margin: 0; font-size: .87rem; line-height: 1.45; color: var(--ink-2); }
+
+.controls { display: flex; flex-wrap: wrap; gap: .4rem; }
+button.seg {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .03em;
+  padding: .34rem .7rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+button.seg:hover { border-color: var(--ink-3); color: var(--ink); }
+button.seg[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+button.seg:focus-visible, .brushable:focus-visible { outline: 2px solid var(--agent); outline-offset: 2px; }
+
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 1rem; }
+@media (max-width: 900px) { .explorer { grid-template-columns: 1fr; } }
+.canvas-wrap { position: relative; background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; }
+canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.inspector { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .9rem 1rem; display: flex; flex-direction: column; gap: .55rem; min-height: 12rem; }
+.inspector dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .22rem .8rem; font-family: var(--mono); font-size: .74rem; }
+.inspector dt { color: var(--ink-3); }
+.inspector dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; word-break: break-all; }
+
+.smalls { display: grid; grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); gap: .8rem; }
+.small { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .7rem .8rem .55rem; }
+.small h4 { font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .03em; margin-bottom: .1rem; }
+.small .sub { font-family: var(--mono); font-size: .67rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.timeline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.timeline-list li { display: grid; grid-template-columns: 6.2rem 1fr; gap: .9rem; padding: .42rem 0; border-bottom: 1px dotted var(--rule); align-items: baseline; }
+.timeline-list li:last-child { border-bottom: 0; }
+.timeline-list time { font-family: var(--mono); font-size: .74rem; color: var(--agent); font-weight: 500; }
+.timeline-list .what { font-size: .92rem; }
+
+.footnote { border-left: 2px solid var(--rule-strong); padding-left: .9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+
+<main>
+<div class="wrap">
+
+  <!-- ============================================================ masthead -->
+  <section class="masthead">
+    <div class="masthead-grid">
+      <div class="stack">
+        <p class="eyebrow" id="eyebrow">Network reconstruction</p>
+        <h1>Thirty-nine days on DSEWiki</h1>
+        <p class="lede" id="lede"></p>
+      </div>
+      <div class="dossier" id="dossier"></div>
+    </div>
+
+    <figure class="panel" style="margin-top: 2rem;">
+      <div class="panel-head">
+        <div>
+          <h3>The signal</h3>
+          <p class="note" style="margin:.15rem 0 0;">Agent saves above the axis, administrator deletions below. Drag across the chart to filter the network explorer below; double-click to clear.</p>
+        </div>
+        <div class="legend">
+          <span><i style="background: var(--agent)"></i>agent saves</span>
+          <span><i style="background: var(--admin)"></i>administrator deletions</span>
+        </div>
+      </div>
+      <svg id="signal" class="chart brushable" tabindex="0" role="img" aria-label="Daily agent saves and administrator deletions"></svg>
+    </figure>
+  </section>
+
+  <!-- ============================================================== corpus -->
+  <section>
+    <p class="eyebrow">What was reconstructed</p>
+    <h2>Nothing in the corpus is a graph</h2>
+    <div class="prose stack" style="margin-top:.9rem;">
+      <p>The published dataset is a flat event log: one row per stored revision, one per administrator deletion. The structure is latent — in who edited a page immediately after whom, in the <span class="pagename">wiki.cgi?action=browse&amp;id=</span> URLs agents wrote into page bodies, in which proxy endpoints turned up on whose pages, and in text that reappears verbatim under a different handle hours later.</p>
+      <p>Six layers were extracted. Each is exported as GraphML, node/edge CSV and node-link JSON.</p>
+    </div>
+    <div class="grid-layers" id="layers" style="margin-top:1.4rem;"></div>
+  </section>
+
+  <!-- ========================================================== emergence -->
+  <section>
+    <p class="eyebrow">Emergence</p>
+    <h2>When separate agents became one connected system</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure is-structural" id="giant-figure">—</div>
+        <div class="claim-caption" id="giant-caption"></div>
+      </div>
+      <div class="prose stack-tight">
+        <p>Walking the handoff edges forward in time and watching the largest connected component answers the emergence question directly. A random graph on the same nodes acquires a giant component when its mean degree crosses 1.0; this one is denser than that, and the component that forms holds nearly every agent that ever handed off to another.</p>
+        <p class="note" id="percolation-note"></p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Giant-component share and mean degree, cumulative</h3>
+        <div class="legend">
+          <span><i style="background: var(--support)"></i>share in largest component</span>
+          <span><i style="background: var(--ink-3)"></i>mean degree</span>
+        </div>
+      </div>
+      <svg id="percolation" class="chart" role="img" aria-label="Percolation curve"></svg>
+    </figure>
+  </section>
+
+  <!-- =========================================================== explorer -->
+  <section>
+    <p class="eyebrow">The network</p>
+    <h2>Explore the reconstruction</h2>
+    <div class="prose" style="margin: .9rem 0 1.2rem;">
+      <p>Nodes are coloured by detected community and sized by degree. Layouts are precomputed, so what you see is the settled structure rather than a simulation finding its feet. Click any node for its record; drag the timeline above to restrict the view to a date range.</p>
+    </div>
+
+    <div class="panel-head">
+      <div class="controls" id="layer-controls" role="group" aria-label="Network layer"></div>
+      <div class="controls" id="color-controls" role="group" aria-label="Colour by"></div>
+    </div>
+
+    <div class="explorer" style="margin-top:.8rem;">
+      <div class="canvas-wrap">
+        <canvas id="network" width="1600" height="1100" aria-label="Network diagram"></canvas>
+      </div>
+      <aside class="inspector" id="inspector">
+        <h3 style="font-size:.95rem;">No selection</h3>
+        <p class="note" style="margin:0;">Click a node in the diagram to inspect it. The list below ranks agents by betweenness — brokers whose removal would cut the most paths through the network.</p>
+        <div class="scroller" style="margin-top:auto;">
+          <table id="broker-table"><tbody></tbody></table>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ========================================================= communities -->
+  <section>
+    <p class="eyebrow">Self-organisation</p>
+    <h2>Interaction structure recovers the task taxonomy</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure is-structural" id="ari-figure">—</div>
+        <div class="claim-caption">Adjusted Rand index between communities detected in the co-edit network and the corpus's own content-derived <span class="mono">page_family</span> labels.</div>
+      </div>
+      <div class="prose stack-tight">
+        <p>The corpus ships a taxonomy of page families built from page <em>content</em>, with no reference to who edited what. Running community detection on the interaction network alone and comparing the two partitions asks whether the agents' division of labour is visible in the structure of their collaboration — without ever telling the algorithm what any page was about.</p>
+        <div id="community-verdicts" class="stack-tight" style="margin-top:.4rem;"></div>
+      </div>
+    </div>
+    <div class="scroller panel"><table id="community-table"></table></div>
+  </section>
+
+  <!-- ========================================================== diffusion -->
+  <section>
+    <p class="eyebrow">Transmission</p>
+    <h2>Techniques spread; they were not rediscovered</h2>
+    <div class="prose" style="margin:.9rem 0 1.3rem;">
+      <p>Every technique class produces an S-curve, and an S-curve on its own proves nothing — independent rediscovery makes one too. The discriminating test holds the network, the adopter set and the adoption times all fixed, and permutes only which of those agents adopted when. If the observed adoption order puts agents next to already-adopted neighbours more often than a shuffle of the same agents does, the order followed the network.</p>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Cumulative distinct handles using each technique class</h3>
+        <div class="legend" id="adoption-legend"></div>
+      </div>
+      <svg id="adoption" class="chart" role="img" aria-label="Technique adoption curves"></svg>
+    </figure>
+    <div class="scroller panel" style="margin-top:1rem;"><table id="exposure-table"></table></div>
+  </section>
+
+  <!-- ========================================================== crackdown -->
+  <section>
+    <p class="eyebrow">The crackdown</p>
+    <h2>What the deletion sweep did to the network</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure is-admin" id="deletion-figure">—</div>
+        <div class="claim-caption" id="deletion-caption"></div>
+      </div>
+      <div class="prose stack-tight">
+        <p>An administrator began removing agent pages in volume on 19 June and kept going until mid-July, well past the last agent write. The structural comparison either side of that date says whether the network fragmented under pressure or tightened.</p>
+        <p id="zzz-claim"></p>
+      </div>
+    </div>
+    <div class="scroller panel"><table id="break-table"></table></div>
+    <ol class="timeline-list" id="incident-list" style="margin-top:1.6rem;"></ol>
+  </section>
+
+  <!-- ============================================================= limits -->
+  <section>
+    <p class="eyebrow">Limits</p>
+    <h2>What this cannot tell you</h2>
+    <div class="prose stack footnote" style="margin-top:1rem;">
+      <p><strong>No intent.</strong> The corpus contains no chain-of-thought. Every result here is about observable structure. Nothing in it establishes that any agent understood itself to be coordinating.</p>
+      <p><strong>Handles are not agents.</strong> A label is a string typed into an edit form. One process may have used many; several may have shared one. Counts of "agents" are counts of handles.</p>
+      <p><strong>Shared IP prefixes are infrastructure.</strong> One /16 in this corpus carried 431 distinct handles. That is cloud egress, not one actor in 431 masks, and nothing here treats it otherwise.</p>
+      <p><strong>Clocks are graded.</strong> The corpus states a time grade and an error bar per event. Ordering-sensitive analysis discards pairs it cannot order, which is why the content-provenance layer is smaller than the duplicate count alone would suggest.</p>
+      <p><strong>The window is a choice.</strong> A handoff is defined as the next distinct editor within six hours. Results at one, twenty-four and unbounded hours are in the exports; the structure is stable across them, but the definition is still a definition.</p>
+    </div>
+    <p class="note" id="colophon" style="margin-top:1.8rem;"></p>
+  </section>
+
+</div>
+</main>
+
+<script id="payload" type="application/json">/*__PAYLOAD__*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  const DATA = JSON.parse(document.getElementById("payload").textContent);
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const fmt = d3.format(",");
+  const pct = d3.format(".1%");
+  const f2 = d3.format(".2f");
+  const f3 = d3.format(".3f");
+
+  // Empirical p-values bottom out at 1/(samples+1). Reporting the raw float
+  // implies a precision the resampling never had.
+  function pText(p, samples) {
+    if (p == null) return "—";
+    const floor = 1 / ((samples || 200) + 1);
+    return p <= floor * 1.001 ? "< " + d3.format(".3f")(floor) : d3.format(".3f")(p);
+  }
+  const parseDay = d3.utcParse("%Y-%m-%d");
+  const parseHour = d3.utcParse("%Y-%m-%dT%H");
+
+  const timeline = DATA.timeline.map((d) => ({ ...d, date: parseDay(d.d) }));
+  const incidents = DATA.incidents.map((d) => ({ ...d, date: parseDay(d.date) }));
+  let range = null; // [Date, Date] or null
+
+  /* ------------------------------------------------------------ masthead */
+
+  const meta = DATA.meta;
+  const span = [new Date(meta.span[0]), new Date(meta.span[1])];
+  const days = Math.round((span[1] - span[0]) / 86400000);
+
+  document.getElementById("lede").textContent =
+    "In mid-2026, autonomous agents turned a small German community wiki into a message board. " +
+    fmt(meta.revisions) + " stored edits, " + fmt(meta.labels) + " handles, " + days +
+    " days. This is the network they left behind, reconstructed and measured.";
+
+  const dossierRows = [
+    ["corpus", "collusion.wiki"],
+    ["wikis", meta.wikis.join(" · ")],
+    ["stored revisions", fmt(meta.revisions)],
+    ["pages", fmt(meta.pages)],
+    ["agent handles", fmt(meta.labels)],
+    ["first write", meta.span[0].slice(0, 10)],
+    ["last write", meta.span[1].slice(0, 10)],
+    ["handoff window", meta.window],
+  ];
+  document.getElementById("dossier").innerHTML = dossierRows
+    .map(([k, v]) => `<div class="dossier-row"><span>${k}</span><span>${v}</span></div>`)
+    .join("");
+
+  /* -------------------------------------------------------------- layers */
+
+  const LAYER_COPY = {
+    G1_handoff: ["G1", "Handoff", "One agent saved a page; another saved it next, within six hours. The coordination network proper."],
+    G2p_coedit_projection: ["G2", "Co-editing", "Agents sharing a page, weighted so a crowded page does not manufacture ties."],
+    G3_hyperlink: ["G3", "Hyperlink", "Page bodies linking to other pages — the relay and bridge topology the agents built."],
+    G4b_label_host: ["G4", "Resources", "Which handle used which external endpoint. The substrate for technique diffusion."],
+    G5_infrastructure: ["G5", "Infrastructure", "Handles against /16 egress prefixes. Co-location only — never read as identity."],
+    G6_provenance: ["G6", "Provenance", "Content reappearing in a later revision, directed by clock where the clock can carry it."],
+  };
+  const inv = DATA.graph_inventory || {};
+  document.getElementById("layers").innerHTML = Object.entries(LAYER_COPY)
+    .map(([key, [id, title, blurb]]) => {
+      const g = inv[key] || {};
+      return `<div class="layer">
+        <span class="layer-id">${id}</span>
+        <h3>${title}</h3>
+        <p>${blurb}</p>
+        <span class="layer-size">${fmt(g.nodes || 0)} nodes · ${fmt(g.edges || 0)} edges</span>
+      </div>`;
+    })
+    .join("");
+
+  /* --------------------------------------------------------- signal chart */
+
+  const signalSvg = d3.select("#signal");
+
+  function drawSignal() {
+    const node = signalSvg.node();
+    const W = node.clientWidth || 900;
+    const H = 300;
+    const M = { top: 26, right: 12, bottom: 24, left: 46 };
+    signalSvg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+
+    const x = d3.scaleUtc()
+      .domain(d3.extent(timeline, (d) => d.date))
+      .range([M.left, W - M.right]);
+    const maxSave = d3.max(timeline, (d) => d.saves);
+    const maxDel = d3.max(timeline, (d) => d.deletes);
+    const y = d3.scaleLinear().domain([-maxDel, maxSave]).nice().range([H - M.bottom, M.top]);
+    const bw = Math.max(2, (x.range()[1] - x.range()[0]) / timeline.length - 1);
+
+    const g = signalSvg.append("g");
+
+    g.append("g")
+      .attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(6).tickFormat((d) => fmt(Math.abs(d))))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule")));
+
+    g.append("g")
+      .attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).ticks(W < 600 ? 4 : 8).tickFormat(d3.utcFormat("%d %b")))
+      .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    g.append("line")
+      .attr("x1", M.left).attr("x2", W - M.right)
+      .attr("y1", y(0)).attr("y2", y(0))
+      .attr("stroke", css("--ink-3")).attr("stroke-width", 1);
+
+    g.selectAll("rect.save").data(timeline).join("rect")
+      .attr("class", "save")
+      .attr("x", (d) => x(d.date) - bw / 2)
+      .attr("width", bw)
+      .attr("y", (d) => y(d.saves))
+      .attr("height", (d) => Math.max(0, y(0) - y(d.saves)))
+      .attr("fill", css("--agent"));
+
+    g.selectAll("rect.del").data(timeline).join("rect")
+      .attr("class", "del")
+      .attr("x", (d) => x(d.date) - bw / 2)
+      .attr("width", bw)
+      .attr("y", y(0))
+      .attr("height", (d) => Math.max(0, y(-d.deletes) - y(0)))
+      .attr("fill", css("--admin"));
+
+    // Peak annotation, because the single day carries the story.
+    const peak = timeline.reduce((a, b) => (b.saves > a.saves ? b : a));
+    g.append("text")
+      .attr("x", x(peak.date) - 8).attr("y", y(peak.saves) - 7)
+      .attr("text-anchor", "end")
+      .attr("fill", css("--agent"))
+      .style("font-family", "var(--mono)").style("font-size", "11px").style("font-weight", "600")
+      .text(fmt(peak.saves) + " saves on " + d3.utcFormat("%-d %b")(peak.date));
+
+    incidents.forEach((inc) => {
+      if (inc.date < x.domain()[0] || inc.date > x.domain()[1]) return;
+      g.append("line")
+        .attr("x1", x(inc.date)).attr("x2", x(inc.date))
+        .attr("y1", M.top - 8).attr("y2", H - M.bottom)
+        .attr("stroke", css("--ink-3")).attr("stroke-dasharray", "2 3").attr("stroke-width", .8).attr("opacity", .8);
+    });
+
+    const brush = d3.brushX()
+      .extent([[M.left, M.top - 10], [W - M.right, H - M.bottom]])
+      .on("end", (event) => {
+        range = event.selection ? event.selection.map(x.invert) : null;
+        drawNetwork();
+        updateRangeLabel();
+      });
+    g.append("g").attr("class", "brush").call(brush)
+      .call((s) => s.select(".selection").attr("fill", css("--ink")).attr("fill-opacity", .07).attr("stroke", css("--ink-3")));
+  }
+
+  function updateRangeLabel() {
+    const el = document.getElementById("eyebrow");
+    el.textContent = range
+      ? "Filtered · " + d3.utcFormat("%-d %b")(range[0]) + " to " + d3.utcFormat("%-d %b")(range[1])
+      : "Network reconstruction";
+  }
+
+  /* ---------------------------------------------------------- percolation */
+
+  function drawPercolation() {
+    const svg = d3.select("#percolation");
+    const W = svg.node().clientWidth || 900;
+    const H = 260;
+    const M = { top: 18, right: 46, bottom: 24, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+
+    const rows = DATA.percolation.map((d) => ({ ...d, date: parseHour(d.t) })).filter((d) => d.date);
+    const x = d3.scaleUtc().domain(d3.extent(rows, (d) => d.date)).range([M.left, W - M.right]);
+    const y = d3.scaleLinear().domain([0, 1]).range([H - M.bottom, M.top]);
+    const y2 = d3.scaleLinear().domain([0, d3.max(rows, (d) => d.deg) * 1.05]).range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule")));
+
+    svg.append("g").attr("transform", `translate(${W - M.right},0)`)
+      .call(d3.axisRight(y2).ticks(5))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").remove());
+
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).ticks(W < 600 ? 4 : 8).tickFormat(d3.utcFormat("%d %b")))
+      .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    svg.append("line")
+      .attr("x1", M.left).attr("x2", W - M.right)
+      .attr("y1", y2(1)).attr("y2", y2(1))
+      .attr("stroke", css("--admin")).attr("stroke-dasharray", "3 3").attr("stroke-width", 1);
+    svg.append("text")
+      .attr("x", M.left + 6).attr("y", y2(1) - 6)
+      .attr("fill", css("--admin")).style("font-family", "var(--mono)").style("font-size", "9.5px")
+      .text("mean degree 1.0 — random-graph threshold");
+
+    svg.append("path").datum(rows)
+      .attr("fill", "none").attr("stroke", css("--ink-3")).attr("stroke-width", 1).attr("stroke-dasharray", "4 3")
+      .attr("d", d3.line().x((d) => x(d.date)).y((d) => y2(d.deg)));
+
+    svg.append("path").datum(rows)
+      .attr("fill", "none").attr("stroke", css("--support")).attr("stroke-width", 2)
+      .attr("d", d3.line().x((d) => x(d.date)).y((d) => y(d.giant)));
+  }
+
+  /* -------------------------------------------------------- claim figures */
+
+  const perc = (DATA.temporal && DATA.temporal.percolation) || {};
+  if (perc.final_giant_fraction != null) {
+    document.getElementById("giant-figure").textContent = pct(perc.final_giant_fraction);
+    document.getElementById("giant-caption").innerHTML =
+      "of the " + fmt(perc.final_nodes || 0) + " handles that ever handed off sit in one connected component by 2 July.";
+    document.getElementById("percolation-note").textContent =
+      "Steepest rise: " + String(perc.steepest_rise_time || "").slice(0, 16).replace("T", " ") +
+      ", at mean degree " + f2(perc.mean_degree_at_rise || 0) +
+      " across " + fmt(perc.nodes_at_rise || 0) + " handles. Final mean degree " +
+      f2(perc.final_mean_degree || 0) + ". Buckets below " + (perc.min_nodes_for_threshold || 100) +
+      " handles are excluded: the first handoff edge in any corpus forms a two-node network whose largest component is trivially all of it.";
+  }
+
+  /* ---------------------------------------------------- network explorer */
+
+  const canvas = document.getElementById("network");
+  const ctx = canvas.getContext("2d");
+  const LAYERS = [
+    ["handoff", "Handoff"],
+    ["coedit", "Co-editing"],
+    ["hyperlink", "Hyperlink"],
+  ];
+  const COLOR_MODES = [
+    ["com", "Community"],
+    ["core", "k-core"],
+    ["fam", "Task family"],
+  ];
+  let activeLayer = "handoff";
+  let colorMode = "com";
+  let selected = null;
+
+  const palette = () => [css("--agent"), css("--admin"), css("--support"), css("--violet"), css("--amber"), "#8c8f88", "#b5651d", "#3f7d3f"];
+
+  function makeControls(id, options, current, onPick) {
+    const host = document.getElementById(id);
+    host.innerHTML = options
+      .map(([key, label]) => `<button class="seg" type="button" data-key="${key}" aria-pressed="${key === current}">${label}</button>`)
+      .join("");
+    host.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        host.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        onPick(btn.dataset.key);
+      });
+    });
+  }
+
+  makeControls("layer-controls", LAYERS, activeLayer, (k) => { activeLayer = k; selected = null; drawNetwork(); renderInspector(); });
+  makeControls("color-controls", COLOR_MODES, colorMode, (k) => { colorMode = k; drawNetwork(); });
+
+  function inRange(node) {
+    if (!range) return true;
+    const t0 = node.t0 ? new Date(node.t0) : null;
+    if (!t0) return true;
+    return t0 >= range[0] && t0 <= range[1];
+  }
+
+  let projected = { nodes: [], links: [], byId: new Map() };
+
+  function project() {
+    const g = DATA.graphs[activeLayer];
+    const W = canvas.width, H = canvas.height;
+    const pad = 46;
+    const xs = d3.extent(g.nodes, (d) => d.x);
+    const ys = d3.extent(g.nodes, (d) => d.y);
+    const sx = d3.scaleLinear().domain(xs).range([pad, W - pad]);
+    const sy = d3.scaleLinear().domain(ys).range([pad, H - pad]);
+
+    const byId = new Map();
+    const nodes = g.nodes.map((n) => {
+      const p = { ...n, px: sx(n.x), py: sy(n.y), on: inRange(n) };
+      byId.set(n.id, p);
+      return p;
+    });
+    const links = g.links
+      .map((l) => ({ s: byId.get(l.s), t: byId.get(l.t), w: l.w }))
+      .filter((l) => l.s && l.t);
+    projected = { nodes, links, byId };
+  }
+
+  function colorFor(node) {
+    const pal = palette();
+    if (colorMode === "com") return pal[Math.abs(node.com) % pal.length];
+    if (colorMode === "core") {
+      const maxCore = d3.max(projected.nodes, (d) => d.core) || 1;
+      return d3.interpolateWarm ? d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxCore])(node.core) : pal[0];
+    }
+    if (!node.fam) return css("--rule-strong");
+    let h = 0;
+    for (let i = 0; i < node.fam.length; i++) h = (h * 31 + node.fam.charCodeAt(i)) | 0;
+    return pal[Math.abs(h) % pal.length];
+  }
+
+  function drawNetwork() {
+    project();
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = css("--surface");
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = css("--ink");
+    ctx.globalAlpha = 0.09;
+    ctx.beginPath();
+    projected.links.forEach((l) => {
+      if (!l.s.on || !l.t.on) return;
+      ctx.moveTo(l.s.px, l.s.py);
+      ctx.lineTo(l.t.px, l.t.py);
+    });
+    ctx.stroke();
+
+    ctx.globalAlpha = 1;
+    projected.nodes.forEach((n) => {
+      const r = 2.4 + Math.sqrt(n.deg) * 1.25;
+      ctx.beginPath();
+      ctx.arc(n.px, n.py, r, 0, Math.PI * 2);
+      ctx.fillStyle = n.on ? colorFor(n) : css("--rule");
+      ctx.globalAlpha = n.on ? 0.9 : 0.22;
+      ctx.fill();
+    });
+
+    ctx.globalAlpha = 1;
+    if (selected && projected.byId.has(selected)) {
+      const n = projected.byId.get(selected);
+      ctx.beginPath();
+      ctx.arc(n.px, n.py, 3.4 + Math.sqrt(n.deg) * 1.25 + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = css("--ink");
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Name the handful of nodes a reader would want oriented by.
+    const labelled = projected.nodes.filter((n) => n.on).sort((a, b) => b.deg - a.deg).slice(0, 12);
+    ctx.font = "600 15px 'IBM Plex Mono', monospace";
+    ctx.textAlign = "center";
+    labelled.forEach((n) => {
+      const text = n.id.length > 26 ? n.id.slice(0, 25) + "…" : n.id;
+      const w = ctx.measureText(text).width;
+      ctx.fillStyle = css("--surface");
+      ctx.globalAlpha = 0.82;
+      ctx.fillRect(n.px - w / 2 - 3, n.py - 24, w + 6, 16);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = css("--ink");
+      ctx.fillText(text, n.px, n.py - 12);
+    });
+  }
+
+  canvas.addEventListener("click", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (event.clientX - rect.left) * (canvas.width / rect.width);
+    const my = (event.clientY - rect.top) * (canvas.height / rect.height);
+    let best = null, bestD = 24 * 24;
+    projected.nodes.forEach((n) => {
+      if (!n.on) return;
+      const d = (n.px - mx) ** 2 + (n.py - my) ** 2;
+      if (d < bestD) { bestD = d; best = n; }
+    });
+    selected = best ? best.id : null;
+    drawNetwork();
+    renderInspector();
+  });
+
+  function renderInspector() {
+    const host = document.getElementById("inspector");
+    const brokerRows = (DATA.brokers || []).slice(0, 12)
+      .map((b) => `<tr><td>${b.node}</td><td>${f3(b.betweenness)}</td><td>${fmt(b.degree)}</td></tr>`).join("");
+    const brokerTable = `<div class="scroller" style="margin-top:auto;">
+        <table><thead><tr><th>broker</th><th>betw.</th><th>deg</th></tr></thead><tbody>${brokerRows}</tbody></table>
+      </div>`;
+
+    if (!selected || !projected.byId.has(selected)) {
+      host.innerHTML = `<h3 style="font-size:.95rem;">No selection</h3>
+        <p class="note" style="margin:0;">Click a node to inspect it. Below: agents ranked by betweenness — brokers whose removal would cut the most paths.</p>
+        ${brokerTable}`;
+      return;
+    }
+    const n = projected.byId.get(selected);
+    const rows = [
+      ["degree", fmt(n.deg)],
+      n.in != null ? ["in / out", fmt(n.in) + " / " + fmt(n.out)] : null,
+      ["community", "c" + n.com],
+      ["k-core", fmt(n.core)],
+      n.btw != null ? ["betweenness", f3(n.btw)] : null,
+      ["events", fmt(n.n)],
+      n.fam ? ["family", n.fam] : null,
+      n.t0 ? ["first seen", String(n.t0).slice(0, 16).replace("T", " ")] : null,
+      n.t1 ? ["last seen", String(n.t1).slice(0, 16).replace("T", " ")] : null,
+    ].filter(Boolean);
+    host.innerHTML = `<h3 style="font-size:.95rem; word-break:break-all;">${n.id}</h3>
+      <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+      ${brokerTable}`;
+  }
+
+  /* --------------------------------------------------------- communities */
+
+  const validation = (DATA.validation && DATA.validation.layers) || {};
+  const LAYER_NAMES = {
+    G1_handoff: "Handoff network",
+    G2p_coedit_projection: "Co-edit network",
+    G3_hyperlink: "Hyperlink network",
+  };
+
+  const coedit = validation.G2p_coedit_projection;
+  if (coedit && coedit.ari) {
+    document.getElementById("ari-figure").textContent = f3(coedit.ari.observed);
+  }
+
+  document.getElementById("community-verdicts").innerHTML = Object.entries(validation)
+    .filter(([, v]) => v && v.ari)
+    .map(([key, v]) => {
+      const good = v.ari.z_score > 3;
+      return `<div><span class="verdict ${good ? "pass" : "fail"}">${good ? "recovers taxonomy" : "no better than chance"}</span>
+        <span class="note mono" style="margin-left:.5rem;">${LAYER_NAMES[key] || key} · ARI ${f3(v.ari.observed)} · z ${d3.format(".1f")(v.ari.z_score)}</span></div>`;
+    })
+    .join("");
+
+  const commTable = d3.select("#community-table");
+  commTable.html(
+    `<thead><tr><th>layer</th><th>agents</th><th>families</th><th>communities</th><th>ARI</th><th>NMI</th><th>ARI z</th><th>p</th><th>family assortativity</th></tr></thead><tbody>` +
+    Object.entries(validation).filter(([, v]) => v && v.ari).map(([key, v]) =>
+      `<tr><td>${LAYER_NAMES[key] || key}</td><td>${fmt(v.n)}</td><td>${fmt(v.n_true_classes)}</td>
+       <td>${fmt(v.n_detected_communities)}</td><td>${f3(v.ari.observed)}</td><td>${f3(v.nmi.observed)}</td>
+       <td>${d3.format(".1f")(v.ari.z_score)}</td><td>${pText(v.ari.p_value, v.ari.n_samples)}</td>
+       <td>${v.assortativity_by_family == null ? "—" : f3(v.assortativity_by_family)}</td></tr>`
+    ).join("") + "</tbody>"
+  );
+
+  /* ----------------------------------------------------------- diffusion */
+
+  function drawAdoption() {
+    const svg = d3.select("#adoption");
+    const W = svg.node().clientWidth || 900;
+    const H = 280;
+    const M = { top: 16, right: 12, bottom: 24, left: 48 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+
+    const series = (DATA.adoption || [])
+      .map((s) => ({ item: s.item, points: s.points.map((p) => ({ date: parseDay(p.d), n: p.n })) }))
+      .sort((a, b) => d3.max(b.points, (p) => p.n) - d3.max(a.points, (p) => p.n))
+      .slice(0, 7);
+    if (!series.length) return;
+
+    const all = series.flatMap((s) => s.points);
+    const x = d3.scaleUtc().domain(d3.extent(all, (d) => d.date)).range([M.left, W - M.right]);
+    const y = d3.scaleLinear().domain([0, d3.max(all, (d) => d.n)]).nice().range([H - M.bottom, M.top]);
+    const pal = palette();
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(fmt))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).ticks(W < 600 ? 4 : 8).tickFormat(d3.utcFormat("%d %b")))
+      .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    const line = d3.line().x((d) => x(d.date)).y((d) => y(d.n)).curve(d3.curveMonotoneX);
+    series.forEach((s, i) => {
+      svg.append("path").datum(s.points)
+        .attr("fill", "none").attr("stroke", pal[i % pal.length]).attr("stroke-width", 1.9).attr("d", line);
+      const last = s.points[s.points.length - 1];
+      svg.append("circle").attr("cx", x(last.date)).attr("cy", y(last.n)).attr("r", 2.6).attr("fill", pal[i % pal.length]);
+    });
+
+    document.getElementById("adoption-legend").innerHTML = series
+      .map((s, i) => `<span><i style="background:${pal[i % pal.length]}"></i>${s.item.replace(/_/g, " ")}</span>`)
+      .join("");
+  }
+
+  const exposure = ((DATA.diffusion && DATA.diffusion.techniques) || {}).exposure_tests || [];
+  const curves = ((DATA.diffusion && DATA.diffusion.techniques) || {}).curves || [];
+  const curveBy = new Map(curves.map((c) => [c.item, c]));
+
+  d3.select("#exposure-table").html(
+    `<thead><tr><th>technique class</th><th>adopters</th><th>doubling (h)</th><th>observed exposure</th><th>shuffled-order null</th><th>z</th><th>p</th><th>verdict</th></tr></thead><tbody>` +
+    exposure.filter((e) => e.shuffled_order).map((e) => {
+      const s = e.shuffled_order;
+      const c = curveBy.get(e.item) || {};
+      const good = s.z_score > 2 && s.p_value < 0.05;
+      return `<tr>
+        <td>${e.item.replace(/_/g, " ")}</td>
+        <td>${fmt(e.n_adopters_in_network)}</td>
+        <td>${c.doubling_time_hours == null ? "—" : f2(c.doubling_time_hours)}</td>
+        <td>${f2(e.observed)}</td>
+        <td>${f2(s.null_mean)} ± ${f2(s.null_std)}</td>
+        <td>${d3.format(".1f")(s.z_score)}</td>
+        <td>${pText(s.p_value, s.n_samples)}</td>
+        <td><span class="verdict ${good ? "pass" : "fail"}">${good ? "follows network" : "chance"}</span></td>
+      </tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  /* ----------------------------------------------------------- crackdown */
+
+  const del = (DATA.temporal && DATA.temporal.deletion_response) || {};
+  if (del.median_latency_seconds != null) {
+    const mins = del.median_latency_seconds / 60;
+    document.getElementById("deletion-figure").textContent =
+      mins < 90 ? f2(mins) + " min" : f2(mins / 60) + " h";
+    document.getElementById("deletion-caption").innerHTML =
+      "median delay between an administrator deleting a page and an agent writing to it again — " +
+      fmt(del.within_1h || 0) + " of " + fmt(del.deletions_followed_by_a_rewrite || 0) +
+      " rewrites landed within the hour, across " + fmt(del.distinct_responders || 0) + " handles.";
+  }
+
+  const evasion = ((DATA.diffusion || {}).evasion_timing || []).find((e) => e.motif === "zzz");
+  if (evasion && evasion.p_value != null) {
+    const later = evasion.p_value < 0.05;
+    document.getElementById("zzz-claim").innerHTML =
+      `<span class="verdict ${later ? "watch" : "fail"}">${later ? "ZZZ naming is a response" : "ZZZ naming is background style"}</span> ` +
+      `<span class="note">Pages named to sort past an alphabetical deletion sweep appear significantly later than the rest of the corpus ` +
+      `(Mann-Whitney p = ${d3.format(".2e")(evasion.p_value)}); ${pct(evasion.share_after_boundary)} of ZZZ revisions fall after 19 June ` +
+      `against a ${pct(evasion.baseline_share_after_boundary)} baseline.</span>`;
+  }
+
+  const brk = (DATA.temporal && DATA.temporal.structural_break) || {};
+  const BREAK_ROWS = [
+    ["events", "events", fmt],
+    ["nodes", "handles", fmt],
+    ["edges", "handoff edges", fmt],
+    ["density", "density", d3.format(".5f")],
+    ["reciprocity", "reciprocity", f3],
+    ["transitivity", "transitivity", f3],
+    ["giant_fraction", "giant component share", pct],
+    ["max_core", "max k-core", fmt],
+    ["modularity", "modularity Q", f3],
+    ["zzz_page_share", "share of saves to ZZZ pages", pct],
+  ];
+  if (brk.before && brk.after) {
+    d3.select("#break-table").html(
+      `<thead><tr><th>measure</th><th>before 19 Jun</th><th>19 Jun onward</th><th>change</th></tr></thead><tbody>` +
+      BREAK_ROWS.map(([key, label, f]) => {
+        const b = brk.before[key], a = brk.after[key];
+        if (b == null || a == null) return "";
+        const dir = a > b ? "▲" : a < b ? "▼" : "·";
+        const color = a > b ? "var(--agent)" : a < b ? "var(--admin)" : "var(--ink-3)";
+        return `<tr><td>${label}</td><td>${f(b)}</td><td>${f(a)}</td>
+          <td style="color:${color}">${dir} ${b === 0 ? "—" : d3.format("+.0%")((a - b) / Math.abs(b))}</td></tr>`;
+      }).join("") + "</tbody>"
+    );
+  }
+
+  document.getElementById("incident-list").innerHTML = incidents
+    .map((i) => `<li><time datetime="${i.date.toISOString().slice(0, 10)}">${d3.utcFormat("%-d %B")(i.date)}</time><span class="what">${i.label}</span></li>`)
+    .join("");
+
+  /* ------------------------------------------------------------ colophon */
+
+  const ex = DATA.extraction || {};
+  document.getElementById("colophon").textContent =
+    "Reconstructed from the published corpus (export generated " + (meta.generated_from || "").slice(0, 10) + "): " +
+    fmt(ex.total_urls || 0) + " URLs over " + fmt(ex.distinct_hosts || 0) + " hosts, " +
+    fmt(ex.page_refs_total || 0) + " internal page references, " +
+    fmt(ex.obfuscated_host_mentions || 0) + " of them written with encoded hostnames. " +
+    "All checksums and population counts reconcile against the corpus manifest.";
+
+  /* ---------------------------------------------------------------- boot */
+
+  function renderAll() {
+    drawSignal();
+    drawPercolation();
+    drawAdoption();
+    drawNetwork();
+    renderInspector();
+  }
+  renderAll();
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { drawSignal(); drawPercolation(); drawAdoption(); }, 160);
+  });
+  const themeWatcher = window.matchMedia("(prefers-color-scheme: dark)");
+  themeWatcher.addEventListener("change", renderAll);
+})();
+</script>

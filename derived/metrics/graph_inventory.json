@@ -1,0 +1,124 @@
+{
+  "G1_handoff": {
+    "layer": "handoff",
+    "directed": true,
+    "nodes": 2456,
+    "edges": 6664,
+    "density": 0.0011052362724480386,
+    "total_weight": 8404.0,
+    "kinds": {
+      "label": 2456
+    }
+  },
+  "G2_coedit_bipartite": {
+    "layer": "coedit_bipartite",
+    "directed": false,
+    "nodes": 7123,
+    "edges": 9642,
+    "density": 0.00038013005557302714,
+    "total_weight": 13661.0,
+    "kinds": {
+      "page": 4024,
+      "label": 3099
+    }
+  },
+  "G2p_coedit_projection": {
+    "layer": "coedit_projection",
+    "directed": false,
+    "nodes": 2584,
+    "edges": 136628,
+    "density": 0.0409404669013519,
+    "total_weight": 3409.0000000002133,
+    "kinds": {
+      "label": 2584
+    }
+  },
+  "G3_hyperlink": {
+    "layer": "hyperlink",
+    "directed": true,
+    "nodes": 1483,
+    "edges": 2487,
+    "density": 0.0011315830423613367,
+    "total_weight": 11032.0,
+    "kinds": {
+      "page": 1483
+    }
+  },
+  "G4_resource_bipartite": {
+    "layer": "resource_bipartite",
+    "directed": false,
+    "nodes": 3360,
+    "edges": 6471,
+    "density": 0.0011467060774890485,
+    "total_weight": 23326.0,
+    "kinds": {
+      "page": 3180,
+      "host": 180
+    }
+  },
+  "G4b_label_host": {
+    "layer": "label_host",
+    "directed": false,
+    "nodes": 2517,
+    "edges": 8469,
+    "density": 0.0026746581118031725,
+    "total_weight": 22600.0,
+    "kinds": {
+      "label": 2342,
+      "host": 175
+    }
+  },
+  "G5_infrastructure": {
+    "layer": "infrastructure",
+    "directed": false,
+    "nodes": 3289,
+    "edges": 11730,
+    "density": 0.0021693634832320964,
+    "total_weight": 13661.0,
+    "kinds": {
+      "label": 3099,
+      "ip16": 190
+    }
+  },
+  "G6_provenance": {
+    "layer": "provenance",
+    "directed": true,
+    "nodes": 6197,
+    "edges": 9689,
+    "density": 0.0002523399720787865,
+    "total_weight": 8864.047897523538,
+    "kinds": {
+      "revision": 6197
+    }
+  },
+  "handoff_window_sensitivity": {
+    "1h": {
+      "nodes": 2341,
+      "edges": 6240,
+      "events": 7924,
+      "reciprocity": 0.22147435897435896,
+      "density": 0.0011391143386017372
+    },
+    "6h": {
+      "nodes": 2456,
+      "edges": 6664,
+      "events": 8404,
+      "reciprocity": 0.2187875150060024,
+      "density": 0.0011052362724480386
+    },
+    "24h": {
+      "nodes": 2492,
+      "edges": 6801,
+      "events": 8551,
+      "reciprocity": 0.21673283340685193,
+      "density": 0.0010955974413184414
+    },
+    "inf": {
+      "nodes": 2584,
+      "edges": 7084,
+      "events": 8846,
+      "reciprocity": 0.20863918690005648,
+      "density": 0.0010613573627996343
+    }
+  }
+}
