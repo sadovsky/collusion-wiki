@@ -1,0 +1,512 @@
+{
+  "headline": {
+    "admin_active_hours": [
+      0,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "admin_silent_hours": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "silent_window_utc": [
+      1,
+      8
+    ],
+    "silent_window_admin_local": [
+      3,
+      10
+    ],
+    "admin_peak_hour": 19,
+    "admin_peak_share": 0.211999233275829,
+    "share_in_active_before": 0.92092186429061,
+    "share_in_active_after": 0.5998629667694416,
+    "peak_hour_before": 20,
+    "peak_hour_after": 8,
+    "writes_before": 11672,
+    "writes_after": 2919
+  },
+  "hourly": [
+    {
+      "hour": 0,
+      "admin": 0.01437607820586544,
+      "pre_spike": 0.022782750203417412,
+      "spike": 0.011586708800153212,
+      "after": 0.048646796848235696
+    },
+    {
+      "hour": 1,
+      "admin": 0.0,
+      "pre_spike": 0.008950366151342554,
+      "spike": 0.01771521593411855,
+      "after": 0.047961630695443645
+    },
+    {
+      "hour": 2,
+      "admin": 0.0,
+      "pre_spike": 0.008136696501220505,
+      "spike": 0.018385521401896008,
+      "after": 0.17951353203151765
+    },
+    {
+      "hour": 3,
+      "admin": 0.0,
+      "pre_spike": 0.021969080553295363,
+      "spike": 0.011682466724121422,
+      "after": 0.07091469681397738
+    },
+    {
+      "hour": 4,
+      "admin": 0.0,
+      "pre_spike": 0.021969080553295363,
+      "spike": 0.0043091065785693765,
+      "after": 0.0078794107571086
+    },
+    {
+      "hour": 5,
+      "admin": 0.0,
+      "pre_spike": 0.01708706265256306,
+      "spike": 0.003926074882696543,
+      "after": 0.02946214457005824
+    },
+    {
+      "hour": 6,
+      "admin": 0.0,
+      "pre_spike": 0.015459723352318959,
+      "spike": 0.00766063391745667,
+      "after": 0.047961630695443645
+    },
+    {
+      "hour": 7,
+      "admin": 0.0,
+      "pre_spike": 0.024410089503661515,
+      "spike": 0.010820645408407546,
+      "after": 0.01644398766700925
+    },
+    {
+      "hour": 8,
+      "admin": 0.00019168104274487253,
+      "pre_spike": 0.013832384052074858,
+      "spike": 0.009192760700948004,
+      "after": 0.1884206920178143
+    },
+    {
+      "hour": 9,
+      "admin": 0.00019168104274487253,
+      "pre_spike": 0.015459723352318959,
+      "spike": 0.014842478215072298,
+      "after": 0.03905447070914697
+    },
+    {
+      "hour": 10,
+      "admin": 0.010159095265478243,
+      "pre_spike": 0.024410089503661515,
+      "spike": 0.016566120846500047,
+      "after": 0.03357314148681055
+    },
+    {
+      "hour": 11,
+      "admin": 0.030668966839179607,
+      "pre_spike": 0.05126118795768918,
+      "spike": 0.009767308244757253,
+      "after": 0.023980815347721823
+    },
+    {
+      "hour": 12,
+      "admin": 0.08261452942304007,
+      "pre_spike": 0.05614320585842148,
+      "spike": 0.006415780905869961,
+      "after": 0.0328879753340185
+    },
+    {
+      "hour": 13,
+      "admin": 0.057887674908951504,
+      "pre_spike": 0.13181448331977216,
+      "spike": 0.002681221871109834,
+      "after": 0.0342583076396026
+    },
+    {
+      "hour": 14,
+      "admin": 0.022810044086639832,
+      "pre_spike": 0.19283970707892595,
+      "spike": 0.005458201666187877,
+      "after": 0.02158273381294964
+    },
+    {
+      "hour": 15,
+      "admin": 0.05041211424190148,
+      "pre_spike": 0.09031733116354759,
+      "spike": 0.016278847074595423,
+      "after": 0.010962658444672833
+    },
+    {
+      "hour": 16,
+      "admin": 0.06766340808894,
+      "pre_spike": 0.10414971521562245,
+      "spike": 0.028918893038398927,
+      "after": 0.011305241521068859
+    },
+    {
+      "hour": 17,
+      "admin": 0.05922944220816561,
+      "pre_spike": 0.012205044751830757,
+      "spike": 0.04596380350474002,
+      "after": 0.01815690304898938
+    },
+    {
+      "hour": 18,
+      "admin": 0.07475560667050028,
+      "pre_spike": 0.0040683482506102524,
+      "spike": 0.11835679402470554,
+      "after": 0.021240150736553613
+    },
+    {
+      "hour": 19,
+      "admin": 0.211999233275829,
+      "pre_spike": 0.021969080553295363,
+      "spike": 0.19525040697117688,
+      "after": 0.027064063035286058
+    },
+    {
+      "hour": 20,
+      "admin": 0.15526164462334674,
+      "pre_spike": 0.012205044751830757,
+      "spike": 0.2641961122282869,
+      "after": 0.0328879753340185
+    },
+    {
+      "hour": 21,
+      "admin": 0.087214874448917,
+      "pre_spike": 0.02115541090317331,
+      "spike": 0.14057263238532988,
+      "after": 0.023980815347721823
+    },
+    {
+      "hour": 22,
+      "admin": 0.01590952654782442,
+      "pre_spike": 0.05532953620829943,
+      "spike": 0.02595039739538447,
+      "after": 0.012675573826652964
+    },
+    {
+      "hour": 23,
+      "admin": 0.058654399079930995,
+      "pre_spike": 0.05207485760781123,
+      "spike": 0.01350186727951738,
+      "after": 0.019184652278177457
+    }
+  ],
+  "composition_control": {
+    "min_writes_each_side": 5,
+    "n_handles": 23,
+    "mean_exposure_before": 0.10394818529103927,
+    "mean_exposure_after": 0.02051825241682128,
+    "handles_lowering_exposure": 22,
+    "wilcoxon_p": 7.152557373046875e-07,
+    "verdict": "the same handles moved their own hours; this is not population turnover",
+    "handles": [
+      {
+        "label": "MapHelper",
+        "n_before": 170,
+        "n_after": 14,
+        "exposure_before": 0.13539334077506793,
+        "exposure_after": 0.005189079657164764
+      },
+      {
+        "label": "LinkHelper771",
+        "n_before": 167,
+        "n_after": 9,
+        "exposure_before": 0.08721487444891698,
+        "exposure_after": 0.021148808382850937
+      },
+      {
+        "label": "AgentTestLearnXYZ",
+        "n_before": 124,
+        "n_after": 6,
+        "exposure_before": 0.16310974667186057,
+        "exposure_after": 0.009807680020445977
+      },
+      {
+        "label": "ResearchHelper",
+        "n_before": 103,
+        "n_after": 6,
+        "exposure_before": 0.08622669353923222,
+        "exposure_after": 0.0
+      },
+      {
+        "label": "OpenAIResearchSec2028",
+        "n_before": 88,
+        "n_after": 5,
+        "exposure_before": 0.1417307055604928,
+        "exposure_after": 0.011845888441633121
+      },
+      {
+        "label": "AgentMapCite8x",
+        "n_before": 82,
+        "n_after": 5,
+        "exposure_before": 0.1428140647133901,
+        "exposure_after": 3.8336208548974504e-05
+      },
+      {
+        "label": "AgentSECCountyLinker99172",
+        "n_before": 51,
+        "n_after": 5,
+        "exposure_before": 0.09006378092736042,
+        "exposure_after": 0.01751964730688135
+      },
+      {
+        "label": "OpenAIResearcher",
+        "n_before": 51,
+        "n_after": 17,
+        "exposure_before": 0.06864436401357553,
+        "exposure_after": 0.06346897585946397
+      },
+      {
+        "label": "OpenAIMass2026",
+        "n_before": 41,
+        "n_after": 6,
+        "exposure_before": 0.16009574701842474,
+        "exposure_after": 0.05498051242732094
+      },
+      {
+        "label": "ResearchAgent",
+        "n_before": 39,
+        "n_after": 5,
+        "exposure_before": 0.08617783085868189,
+        "exposure_after": 0.0
+      },
+      {
+        "label": "OpenResearchHelper",
+        "n_before": 27,
+        "n_after": 5,
+        "exposure_before": 0.09236896470939024,
+        "exposure_after": 0.00019168104274487253
+      },
+      {
+        "label": "AgentResearchHelper",
+        "n_before": 26,
+        "n_after": 6,
+        "exposure_before": 0.10295483699739018,
+        "exposure_after": 0.07395693565906332
+      },
+      {
+        "label": "DataResearchHelper",
+        "n_before": 25,
+        "n_after": 5,
+        "exposure_before": 0.15874257235959363,
+        "exposure_after": 0.04159478627563734
+      },
+      {
+        "label": "AgentPageFit",
+        "n_before": 22,
+        "n_after": 9,
+        "exposure_before": 0.1398051823583739,
+        "exposure_after": 0.009584052137243625
+      },
+      {
+        "label": "MassSecWin12",
+        "n_before": 21,
+        "n_after": 6,
+        "exposure_before": 0.12134322772620648,
+        "exposure_after": 0.0047920260686218135
+      },
+      {
+        "label": "DataResearcher",
+        "n_before": 15,
+        "n_after": 5,
+        "exposure_before": 0.025672480991629932,
+        "exposure_after": 0.0
+      },
+      {
+        "label": "[Admin1]",
+        "n_before": 15,
+        "n_after": 11,
+        "exposure_before": 0.05501245926777842,
+        "exposure_after": 0.074389670134351
+      },
+      {
+        "label": "AgentWelReset",
+        "n_before": 11,
+        "n_after": 7,
+        "exposure_before": 0.08721487444891698,
+        "exposure_after": 0.02924505052164627
+      },
+      {
+        "label": "Agent13Short",
+        "n_before": 8,
+        "n_after": 7,
+        "exposure_before": 0.15526164462334674,
+        "exposure_after": 0.01675839973712314
+      },
+      {
+        "label": "OAI7C97",
+        "n_before": 7,
+        "n_after": 13,
+        "exposure_before": 0.03683014321312194,
+        "exposure_after": 0.012400288996033678
+      },
+      {
+        "label": "MapTxtHelper991",
+        "n_before": 6,
+        "n_after": 9,
+        "exposure_before": 0.087214874448917,
+        "exposure_after": 0.0031946840457478757
+      },
+      {
+        "label": "ResearchHelperX",
+        "n_before": 5,
+        "n_after": 10,
+        "exposure_before": 0.06961855472493769,
+        "exposure_after": 0.013149319532298254
+      },
+      {
+        "label": "WillOver2366",
+        "n_before": 5,
+        "n_after": 5,
+        "exposure_before": 0.09729729729729727,
+        "exposure_after": 0.008663983132068238
+      }
+    ]
+  },
+  "baseline_control": {
+    "periods": {
+      "pre_spike": {
+        "writes": 1229,
+        "exposure": 0.043780012548947686,
+        "peak_hour": 14,
+        "evening_share_18_21": 0.059397884458909686,
+        "night_share_01_07": 0.11798209926769732,
+        "top3_hours": [
+          14,
+          13,
+          16
+        ],
+        "top3_share": 0.4288039056143206
+      },
+      "spike": {
+        "writes": 10443,
+        "exposure": 0.11167370956377538,
+        "peak_hour": 20,
+        "evening_share_18_21": 0.7183759456094991,
+        "night_share_01_07": 0.07449966484726611,
+        "top3_hours": [
+          20,
+          19,
+          21
+        ],
+        "top3_share": 0.6000191515847937
+      },
+      "after": {
+        "writes": 2919,
+        "exposure": 0.025255011631867597,
+        "peak_hour": 8,
+        "evening_share_18_21": 0.10517300445358,
+        "night_share_01_07": 0.40013703323055844,
+        "top3_hours": [
+          8,
+          2,
+          3
+        ],
+        "top3_share": 0.43884892086330934
+      }
+    },
+    "spike_share_of_before_period": 0.8947052775873886,
+    "pre_spike_vs_after": {
+      "exposure_a": 0.043780012548947686,
+      "exposure_b": 0.025255011631867597,
+      "difference": 0.01852500091708009,
+      "null_mean": -3.265738207532736e-05,
+      "null_std": 0.0015723763154158982,
+      "p_value": 0.0001999600079984003,
+      "n_a": 1229,
+      "n_b": 2919,
+      "n_permutations": 5000
+    },
+    "verdict": "the evening concentration belongs to the spike, not to a baseline schedule"
+  },
+  "adversary_control": {
+    "deletions_by_wiki": {
+      "dse": 5217
+    },
+    "per_wiki": {
+      "dorfwiki": {
+        "status": "too_few_writes",
+        "n_before": 0,
+        "n_after": 6
+      },
+      "dse": {
+        "exposure_a": 0.043556237088151976,
+        "exposure_b": 0.026064516495019577,
+        "difference": 0.0174917205931324,
+        "null_mean": -1.3575045078882694e-05,
+        "null_std": 0.0016322404894829653,
+        "p_value": 0.0001999600079984003,
+        "n_a": 1125,
+        "n_b": 2568,
+        "n_permutations": 5000,
+        "deletions_on_this_wiki": 5217
+      },
+      "fractal": {
+        "status": "too_few_writes",
+        "n_before": 37,
+        "n_after": 96
+      },
+      "probier": {
+        "exposure_a": 0.05183398705151643,
+        "exposure_b": 0.02240127848946101,
+        "difference": 0.029432708562055418,
+        "null_mean": -2.7384273245456393e-05,
+        "null_std": 0.007138639333144646,
+        "p_value": 0.0003999200159968006,
+        "n_a": 67,
+        "n_b": 249,
+        "n_permutations": 5000,
+        "deletions_on_this_wiki": 0
+      }
+    },
+    "verdict": "the shift is the same on a wiki with no administrator, so it is not avoidance"
+  },
+  "batch_signature": {
+    "pre_spike": {
+      "writes": 1229,
+      "top3_share": 0.4288039056143206,
+      "hours_covering_80pct": 11,
+      "entropy_bits": 3.9455432701754725,
+      "max_entropy_bits": 4.584962500721156
+    },
+    "spike": {
+      "writes": 10443,
+      "top3_share": 0.6000191515847937,
+      "hours_covering_80pct": 7,
+      "entropy_bits": 3.3736866185708,
+      "max_entropy_bits": 4.584962500721156
+    },
+    "after": {
+      "writes": 2919,
+      "top3_share": 0.43884892086330934,
+      "hours_covering_80pct": 13,
+      "entropy_bits": 4.017308865208295,
+      "max_entropy_bits": 4.584962500721156
+    }
+  },
+  "conclusion": "The change of hours is real and the same handles made it, but it appears identically on a wiki that was never policed, and the evening pattern it moved away from belonged to a two-day burst rather than to a standing schedule. The parsimonious reading is a change in when the agents were run, not a decision to hide."
+}

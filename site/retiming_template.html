@@ -1,0 +1,561 @@
+<title>The Night Shift That Wasn't</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  /* Cool neutrals with a blue bias — the page is about hours, and the ground
+     should lean toward night without committing to a dark theme. */
+  --paper: #eceef2;
+  --surface: #f6f7fa;
+  --surface-2: #dfe3ea;
+  --ink: #171a21;
+  --ink-2: #545c6b;
+  --ink-3: #7d8593;
+  --rule: #d5d9e2;
+  --rule-strong: #b4bac7;
+
+  /* One colour per actor, held consistent across every chart. */
+  --admin: #a8752a;   /* the administrator: a person keeping human hours */
+  --pre: #1f7d8c;     /* agents before the spike */
+  --spike: #a3324c;   /* the 16–18 June burst */
+  --post: #3b4da8;    /* agents after 19 June */
+
+  --pass: #1c7a5b;
+  --fail: #a8321f;
+
+  --display: "Fraunces", Georgia, serif;
+  --body: "Karla", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 68ch;
+  --gutter: clamp(1.1rem, 4vw, 3.25rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101319;
+    --surface: #171b23;
+    --surface-2: #1f2531;
+    --ink: #e6e9f0;
+    --ink-2: #9aa3b4;
+    --ink-3: #737c8d;
+    --rule: #262c38;
+    --rule-strong: #38404f;
+    --admin: #dda94f;
+    --pre: #45b3c4;
+    --spike: #e0637f;
+    --post: #7d8ee0;
+    --pass: #46b892;
+    --fail: #e8735a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101319;
+  --surface: #171b23;
+  --surface-2: #1f2531;
+  --ink: #e6e9f0;
+  --ink-2: #9aa3b4;
+  --ink-3: #737c8d;
+  --rule: #262c38;
+  --rule-strong: #38404f;
+  --admin: #dda94f;
+  --pre: #45b3c4;
+  --spike: #e0637f;
+  --post: #7d8ee0;
+  --pass: #46b892;
+  --fail: #e8735a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
+section { padding-block: clamp(2.4rem, 5.5vw, 4.2rem); border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1em; }
+.prose p:last-child { margin-bottom: 0; }
+.stack { display: flex; flex-direction: column; gap: 1rem; }
+
+h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1.12; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 5.6vw, 3.7rem); letter-spacing: -0.018em; }
+h2 { font-size: clamp(1.4rem, 2.9vw, 1.95rem); letter-spacing: -0.01em; }
+h3 { font-size: 1.02rem; font-weight: 600; font-family: var(--body); letter-spacing: .005em; }
+
+.eyebrow { font-family: var(--mono); font-size: .67rem; letter-spacing: .17em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.lede { font-size: 1.16rem; line-height: 1.5; color: var(--ink-2); }
+.note { font-size: .85rem; line-height: 1.5; color: var(--ink-3); }
+code, .code { font-family: var(--mono); font-size: .85em; background: var(--surface-2); padding: .08em .34em; border-radius: 2px; }
+
+/* --------------------------------------------------------- the controls */
+
+.control-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .7rem 1rem; margin-bottom: .35rem; }
+.control-num {
+  font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .1em;
+  color: var(--ink-3); border: 1px solid var(--rule-strong); border-radius: 2px; padding: .12rem .4rem;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--mono); font-size: .69rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  padding: .18rem .5rem; border-radius: 2px; border: 1px solid; width: fit-content;
+}
+.badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.badge.survives { color: var(--pass); border-color: color-mix(in srgb, var(--pass) 40%, transparent); background: color-mix(in srgb, var(--pass) 9%, transparent); }
+.badge.weakens { color: var(--admin); border-color: color-mix(in srgb, var(--admin) 42%, transparent); background: color-mix(in srgb, var(--admin) 10%, transparent); }
+.badge.fails { color: var(--fail); border-color: color-mix(in srgb, var(--fail) 40%, transparent); background: color-mix(in srgb, var(--fail) 9%, transparent); }
+
+.claim { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.4rem); align-items: start; margin: 1.1rem 0 1.5rem; }
+@media (max-width: 840px) { .claim { grid-template-columns: 1fr; gap: .75rem; } }
+.claim-figure { font-family: var(--display); font-size: clamp(1.9rem, 4.2vw, 2.7rem); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.claim-caption { font-family: var(--mono); font-size: .71rem; color: var(--ink-3); margin-top: .4rem; line-height: 1.45; }
+
+figure { margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem 1.1rem; }
+.panel-head { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; justify-content: space-between; margin-bottom: .7rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem .95rem; font-family: var(--mono); font-size: .69rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .32rem; }
+.chart { width: 100%; display: block; overflow: visible; }
+.scroller { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .75rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .64rem; border-bottom: 1px solid var(--rule-strong); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.verdict-box { border: 1px solid var(--rule-strong); border-left: 3px solid var(--fail); background: var(--surface); border-radius: 3px; padding: 1.1rem 1.2rem; }
+.periods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+@media (max-width: 760px) { .periods { grid-template-columns: 1fr; } }
+.period { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--rule-strong); border-radius: 3px; padding: .8rem .9rem; }
+.period.is-pre { border-top-color: var(--pre); }
+.period.is-spike { border-top-color: var(--spike); }
+.period.is-post { border-top-color: var(--post); }
+.period .lab { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); letter-spacing: .05em; text-transform: uppercase; }
+.period .big { font-family: var(--display); font-size: 1.6rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.period dl { margin: .5rem 0 0; display: grid; grid-template-columns: auto 1fr; gap: .16rem .7rem; font-family: var(--mono); font-size: .71rem; }
+.period dt { color: var(--ink-3); }
+.period dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+
+<main>
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">A finding, examined to destruction</p>
+    <h1>The night shift that wasn't</h1>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p class="lede">When an administrator began deleting their pages, the agents' writing moved out of his waking hours and into the middle of his night. It looks like one of the most sophisticated things in the whole corpus. Three controls say it probably isn't anything at all.</p>
+    </div>
+
+    <div class="claim" style="margin-top:1.6rem;">
+      <div>
+        <div class="claim-figure" style="color: var(--post)" id="head-figure">—</div>
+        <div class="claim-caption" id="head-caption"></div>
+      </div>
+      <div class="prose">
+        <p>The administrator kept ordinary hours. Across 5,217 deletions spanning three weeks there is <strong>not one</strong> between <span id="silent-window" class="code"></span> UTC. Before 19 June the agents' busiest hour was <span id="peak-before" class="code"></span>, squarely inside his evening. Afterwards their busiest hour was <span id="peak-after" class="code"></span>, inside the window where he never appeared.</p>
+      </div>
+    </div>
+
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Activity by hour of day</h3>
+        <div class="legend">
+          <span><i style="background: var(--admin)"></i>administrator deletions</span>
+          <span><i style="background: var(--pre)"></i>agents, before 16 June</span>
+          <span><i style="background: var(--spike)"></i>agents, 16–18 June</span>
+          <span><i style="background: var(--post)"></i>agents, 19 June onward</span>
+        </div>
+      </div>
+      <svg id="profile" class="chart" role="img" aria-label="Activity by hour of day for each period"></svg>
+    </figure>
+  </section>
+
+  <!-- ================================================== control 1 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 1</span>
+      <span class="badge survives" id="b1">survives</span>
+    </div>
+    <h2>Did the same agents move, or did a different population arrive?</h2>
+    <div class="prose" style="margin:.8rem 0 1.2rem;">
+      <p>The simplest deflation is turnover: a day-active population dies off and a night-active one replaces it, and nobody changes anything. That is testable by pairing within a handle — comparing each agent's own hours before and after, so any handle that appears on only one side contributes nothing.</p>
+    </div>
+    <div class="claim">
+      <div>
+        <div class="claim-figure" style="color: var(--pass)" id="c1-figure">—</div>
+        <div class="claim-caption" id="c1-caption"></div>
+      </div>
+      <figure class="panel" style="margin:0;">
+        <div class="panel-head"><h3>Each handle's own exposure to the administrator's hours</h3></div>
+        <svg id="paired" class="chart" role="img" aria-label="Paired before and after exposure per handle"></svg>
+      </figure>
+    </div>
+    <p class="note" style="max-width:var(--measure);">Turnover cannot produce a consistent within-handle shift. This one is about as consistent as it gets, so the change of hours is real behaviour rather than a change of cast.</p>
+  </section>
+
+  <!-- ================================================== control 2 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 2</span>
+      <span class="badge weakens" id="b2">weakens badly</span>
+    </div>
+    <h2>Was there ever an evening habit to retreat from?</h2>
+    <div class="prose" style="margin:.8rem 0 1.3rem;">
+      <p>"Before 19 June" sounds like a settled baseline. It is not. <strong id="spike-share">—</strong> of all pre-crackdown writing happened in the two-day burst of 16–18 June, and that burst ran in the evening. Strip it out and look at what the agents were doing in the four weeks before it.</p>
+    </div>
+
+    <div class="periods" id="periods"></div>
+
+    <figure class="panel" style="margin-top:1.2rem;">
+      <div class="panel-head">
+        <h3>Every write, by day and hour</h3>
+        <div class="legend">
+          <span><i style="background: var(--post)"></i>agent writes</span>
+          <span><i style="background: var(--admin); border-radius:50%"></i>hours containing a deletion</span>
+        </div>
+      </div>
+      <div class="scroller"><svg id="heatmap" class="chart" role="img" aria-label="Writes by day and hour"></svg></div>
+    </figure>
+
+    <div class="prose" style="margin-top:1.3rem;">
+      <p>The agents never worked evenings as a matter of habit. In the four weeks before the spike, only <strong id="pre-evening">—</strong> of their writing fell between 18:00 and 21:00. The burst did, at <strong id="spike-evening">—</strong>. Afterwards they returned to <strong id="post-evening">—</strong>, which is roughly where they started.</p>
+      <p>The comparison that produced the headline was therefore not "settled schedule versus retreat". It was "a two-day evening burst versus everything else."</p>
+    </div>
+  </section>
+
+  <!-- ================================================== control 3 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 3</span>
+      <span class="badge fails" id="b3">fails</span>
+    </div>
+    <h2>The same shift happens where there is no one to hide from</h2>
+    <div class="prose" style="margin:.8rem 0 1.3rem;">
+      <p>A residual shift survives control 2: excluding the spike entirely, agents still moved to hours the administrator was less active in <span id="clean-p" class="code"></span>. So the question becomes whether that residual is avoidance.</p>
+      <p>Every one of the corpus's <strong>5,217</strong> deletions landed on a single wiki. On <span class="code">probier</span> nothing was ever deleted — there was no administrator to avoid, and almost no shared population: only 19 of 3,102 handles ever wrote to more than one wiki, and after the crackdown just one of the eight active probier handles also wrote on the policed wiki.</p>
+    </div>
+
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Change in exposure to the administrator's hours, by wiki</h3>
+        <div class="legend"><span>left: before the spike · right: after 19 June · lower is further from the administrator's hours</span></div>
+      </div>
+      <svg id="wikis" class="chart" role="img" aria-label="Exposure change by wiki"></svg>
+    </figure>
+
+    <div class="prose" style="margin-top:1.3rem;">
+      <p id="c3-text"></p>
+      <p>If the agents were avoiding this administrator, the shift should be concentrated where he was deleting. It is not. It is at least as large on a wiki he never touched, among handles that mostly never wrote where he was working.</p>
+    </div>
+  </section>
+
+  <!-- ================================================== what's actually there -->
+  <section>
+    <p class="eyebrow">What the data does show</p>
+    <h2>Two clocks, and only one of them belongs to a person</h2>
+    <div class="prose stack" style="margin:.9rem 0 1.3rem;">
+      <p>The administrator's hours look like a person's. Silent through the small hours, rising through the afternoon, peaking at <span id="admin-peak" class="code"></span> UTC — which in Central European time, where a German-language wiki hosted in Austria would put him, is an ordinary evening.</p>
+      <p>The agents' hours look like a schedule. In every period their writing is compressed into a few narrow blocks rather than spread across the day; what changes between periods is where the blocks sit, not how tightly they are packed.</p>
+    </div>
+    <div class="scroller panel"><table id="batch-table"></table></div>
+  </section>
+
+  <!-- ================================================== verdict -->
+  <section>
+    <p class="eyebrow">Verdict</p>
+    <h2>A schedule moved; nobody hid</h2>
+    <div class="verdict-box" style="margin-top:1.1rem;">
+      <p style="margin:0 0 .8rem;"><strong>The change of hours is real.</strong> The same handles made it, it is large, and it does reduce overlap with the administrator. Control 1 rules out turnover and nothing here disputes the arithmetic.</p>
+      <p style="margin:0 0 .8rem;"><strong>The evasion reading is not supported.</strong> The evening pattern it supposedly retreats from belonged to a two-day burst, not a standing habit. The residual shift appears just as strongly on a wiki with no administrator and a largely separate set of handles. Both windows are narrow batch blocks, before and after.</p>
+      <p style="margin:0;">The parsimonious explanation is that the agents' activity window moved because <em>whatever ran them</em> moved — and that this happened to reduce their overlap with a person who was deleting their pages. Coincidence is a weaker story than adversarial adaptation. It is also the one the controls support.</p>
+    </div>
+
+    <div class="prose stack" style="margin-top:1.7rem; border-left:2px solid var(--rule-strong); padding-left:1rem;">
+      <p class="note"><strong>What would change this.</strong> Control 3 rules out avoidance targeted at the policed wiki. It cannot rule out a global schedule change adopted <em>because of</em> that wiki and applied everywhere — that would look identical here. Distinguishing them needs something the corpus does not contain.</p>
+      <p class="note"><strong>Small numbers.</strong> The unpoliced comparison rests on 67 pre-spike and 249 post-crackdown writes from 20 handles. The permutation test is significant, but it is one wiki.</p>
+      <p class="note"><strong>No intent either way.</strong> The corpus has no chain-of-thought. This page argues that the observable pattern does not require a decision to hide, not that no agent made one.</p>
+    </div>
+    <p class="note" id="colophon" style="margin-top:1.5rem;"></p>
+  </section>
+
+</div>
+</main>
+
+<script id="payload" type="application/json">/*__PAYLOAD__*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const P = JSON.parse(document.getElementById("payload").textContent);
+  const A = P.analysis;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = d3.format(",");
+  const pct1 = d3.format(".1%");
+  const pct0 = d3.format(".0%");
+  const f4 = d3.format(".4f");
+  const hh = (h) => String(h).padStart(2, "0") + ":00";
+
+  const H = A.headline, B = A.baseline_control, C1 = A.composition_control, C3 = A.adversary_control;
+
+  /* ------------------------------------------------------------ headline */
+
+  document.getElementById("head-figure").textContent = hh(H.peak_hour_before) + " → " + hh(H.peak_hour_after);
+  document.getElementById("head-caption").innerHTML =
+    `the agents' busiest hour of the day, before and after 19 June. The administrator's own busiest hour was ` +
+    `${hh(H.admin_peak_hour)}, carrying ${pct0(H.admin_peak_share)} of all his deletions.`;
+  document.getElementById("silent-window").textContent = hh(H.silent_window_utc[0]) + "–" + hh(H.silent_window_utc[1]);
+  document.getElementById("peak-before").textContent = hh(H.peak_hour_before);
+  document.getElementById("peak-after").textContent = hh(H.peak_hour_after);
+  document.getElementById("admin-peak").textContent = hh(H.admin_peak_hour);
+
+  /* ------------------------------------------------------ hourly profile */
+
+  function drawProfile() {
+    const svg = d3.select("#profile");
+    const W = svg.node().clientWidth || 900, Ht = 320;
+    const M = { top: 18, right: 14, bottom: 40, left: 48 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+
+    const rows = A.hourly;
+    const x = d3.scalePoint().domain(d3.range(24)).range([M.left, W - M.right]);
+    const maxV = d3.max(rows, (d) => Math.max(d.admin, d.pre_spike, d.spike, d.after));
+    const y = d3.scaleLinear().domain([0, maxV]).nice().range([Ht - M.bottom, M.top]);
+
+    // The administrator's silent window, as a night band.
+    const silent = H.admin_silent_hours;
+    if (silent.length) {
+      svg.append("rect")
+        .attr("x", x(silent[0]) - x.step() / 2).attr("y", M.top)
+        .attr("width", x(silent[silent.length - 1]) - x(silent[0]) + x.step())
+        .attr("height", Ht - M.bottom - M.top)
+        .attr("fill", css("--post")).attr("opacity", 0.08);
+      svg.append("text")
+        .attr("x", x(silent[0]) + 4).attr("y", M.top + 12)
+        .attr("fill", css("--post")).style("font-family", "var(--mono)").style("font-size", "9.5px").style("font-weight", "600")
+        .text("no deletions ever recorded in this window");
+    }
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${Ht - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", W - M.right).attr("y", Ht - 6).attr("text-anchor", "end")
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px")
+      .text("hour of day, UTC · share of that period's events");
+
+    const area = d3.area().x((d) => x(d.hour)).y0(y(0)).y1((d) => y(d.admin)).curve(d3.curveLinear);
+    svg.append("path").datum(rows).attr("fill", css("--admin")).attr("opacity", .17).attr("d", area);
+
+    [["admin", "--admin", 1.5, "3 3"], ["pre_spike", "--pre", 2, null], ["spike", "--spike", 2, null], ["after", "--post", 2.4, null]]
+      .forEach(([key, tok, wdt, dash]) => {
+        const line = d3.line().x((d) => x(d.hour)).y((d) => y(d[key])).curve(d3.curveLinear);
+        const p = svg.append("path").datum(rows).attr("fill", "none").attr("stroke", css(tok)).attr("stroke-width", wdt).attr("d", line);
+        if (dash) p.attr("stroke-dasharray", dash);
+      });
+  }
+
+  /* --------------------------------------------------------- control 1 */
+
+  document.getElementById("c1-figure").textContent = C1.handles_lowering_exposure + " of " + C1.n_handles;
+  document.getElementById("c1-caption").innerHTML =
+    `handles active on both sides of 19 June moved their <em>own</em> writing to quieter hours ` +
+    `(Wilcoxon p = ${d3.format(".1e")(C1.wilcoxon_p)}). Mean exposure fell ${f4(C1.mean_exposure_before)} → ${f4(C1.mean_exposure_after)}.`;
+
+  function drawPaired() {
+    const svg = d3.select("#paired");
+    const W = svg.node().clientWidth || 460, Ht = 300;
+    const M = { top: 18, right: 60, bottom: 34, left: 60 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+    const rows = C1.handles || [];
+    if (!rows.length) return;
+    const maxE = d3.max(rows, (d) => Math.max(d.exposure_before, d.exposure_after));
+    const y = d3.scaleLinear().domain([0, maxE]).nice().range([Ht - M.bottom, M.top]);
+    const xL = M.left, xR = W - M.right;
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".2f")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+
+    [[xL, "before"], [xR, "after"]].forEach(([xx, lab]) => {
+      svg.append("text").attr("x", xx).attr("y", Ht - 14).attr("text-anchor", "middle")
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px").text(lab);
+    });
+
+    rows.forEach((d) => {
+      const down = d.exposure_after < d.exposure_before;
+      svg.append("line")
+        .attr("x1", xL).attr("x2", xR)
+        .attr("y1", y(d.exposure_before)).attr("y2", y(d.exposure_after))
+        .attr("stroke", down ? css("--pass") : css("--fail"))
+        .attr("stroke-width", 1.3).attr("opacity", .62);
+      svg.append("circle").attr("cx", xL).attr("cy", y(d.exposure_before)).attr("r", 2.6).attr("fill", css("--ink-3"));
+      svg.append("circle").attr("cx", xR).attr("cy", y(d.exposure_after)).attr("r", 2.6)
+        .attr("fill", down ? css("--pass") : css("--fail"));
+    });
+  }
+
+  /* --------------------------------------------------------- control 2 */
+
+  document.getElementById("spike-share").textContent = pct0(B.spike_share_of_before_period);
+  const PL = { pre_spike: ["24 May – 15 June", "is-pre"], spike: ["16 – 18 June", "is-spike"], after: ["19 June onward", "is-post"] };
+  document.getElementById("periods").innerHTML = Object.entries(PL).map(([key, [label, cls]]) => {
+    const p = B.periods[key];
+    return `<div class="period ${cls}">
+      <span class="lab">${label}</span>
+      <div class="big">${hh(p.peak_hour)}</div>
+      <span class="note" style="font-size:.72rem;">busiest hour</span>
+      <dl>
+        <dt>writes</dt><dd>${fmt(p.writes)}</dd>
+        <dt>evening 18–21</dt><dd>${pct1(p.evening_share_18_21)}</dd>
+        <dt>night 01–07</dt><dd>${pct1(p.night_share_01_07)}</dd>
+        <dt>admin exposure</dt><dd>${f4(p.exposure)}</dd>
+      </dl>
+    </div>`;
+  }).join("");
+
+  document.getElementById("pre-evening").textContent = pct1(B.periods.pre_spike.evening_share_18_21);
+  document.getElementById("spike-evening").textContent = pct1(B.periods.spike.evening_share_18_21);
+  document.getElementById("post-evening").textContent = pct1(B.periods.after.evening_share_18_21);
+
+  function drawHeatmap() {
+    const svg = d3.select("#heatmap");
+    const days = Array.from(new Set(P.day_hour.map((d) => d.d))).sort();
+    const cell = 15, M = { top: 16, right: 12, bottom: 30, left: 42 };
+    const W = Math.max(svg.node().clientWidth || 900, M.left + M.right + days.length * cell);
+    const Ht = M.top + M.bottom + 24 * cell;
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("width", W).attr("height", Ht).selectAll("*").remove();
+
+    const x = d3.scaleBand().domain(days).range([M.left, M.left + days.length * cell]).padding(0.06);
+    const y = d3.scaleBand().domain(d3.range(24)).range([M.top, M.top + 24 * cell]).padding(0.06);
+    const maxW = d3.max(P.day_hour, (d) => d.w) || 1;
+    const colour = d3.scaleSequentialLog(d3.interpolatePuBu).domain([1, maxW]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).tickValues([0, 4, 8, 12, 16, 20]).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").remove());
+
+    svg.selectAll("rect.c").data(P.day_hour.filter((d) => d.w > 0)).join("rect")
+      .attr("class", "c")
+      .attr("x", (d) => x(d.d)).attr("y", (d) => y(d.h))
+      .attr("width", x.bandwidth()).attr("height", y.bandwidth())
+      .attr("fill", (d) => colour(d.w))
+      .append("title").text((d) => `${d.d} ${String(d.h).padStart(2, "0")}:00 — ${fmt(d.w)} writes`);
+
+    svg.selectAll("circle.x").data(P.day_hour.filter((d) => d.x > 0)).join("circle")
+      .attr("class", "x")
+      .attr("cx", (d) => x(d.d) + x.bandwidth() / 2).attr("cy", (d) => y(d.h) + y.bandwidth() / 2)
+      .attr("r", 2.1).attr("fill", css("--admin")).attr("opacity", .95);
+
+    const every = Math.ceil(days.length / 14);
+    svg.selectAll("text.d").data(days.filter((_, i) => i % every === 0)).join("text")
+      .attr("class", "d")
+      .attr("transform", (d) => `translate(${x(d) + x.bandwidth() / 2},${M.top + 24 * cell + 8}) rotate(45)`)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.5px")
+      .text((d) => d.slice(5));
+  }
+
+  /* --------------------------------------------------------- control 3 */
+
+  const clean = B.pre_spike_vs_after;
+  document.getElementById("clean-p").textContent = "p = " + f4(clean.p_value);
+
+  function drawWikis() {
+    const svg = d3.select("#wikis");
+    const W = svg.node().clientWidth || 900, Ht = 260;
+    const M = { top: 22, right: 150, bottom: 34, left: 70 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+
+    const entries = Object.entries(C3.per_wiki).filter(([, v]) => v && v.p_value != null);
+    if (!entries.length) return;
+    const maxE = d3.max(entries, ([, v]) => Math.max(v.exposure_a, v.exposure_b));
+    const y = d3.scaleLinear().domain([0, maxE * 1.15]).range([Ht - M.bottom, M.top]);
+    const xL = M.left + 40, xR = W - M.right;
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".3f")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    [[xL, "before the spike"], [xR, "after 19 June"]].forEach(([xx, lab]) => {
+      svg.append("text").attr("x", xx).attr("y", Ht - 12).attr("text-anchor", "middle")
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px").text(lab);
+    });
+
+    entries.forEach(([wiki, v]) => {
+      const policed = v.deletions_on_this_wiki > 0;
+      const colour = policed ? css("--fail") : css("--pass");
+      svg.append("line").attr("x1", xL).attr("x2", xR)
+        .attr("y1", y(v.exposure_a)).attr("y2", y(v.exposure_b))
+        .attr("stroke", colour).attr("stroke-width", 2.4).attr("opacity", .9);
+      svg.append("circle").attr("cx", xL).attr("cy", y(v.exposure_a)).attr("r", 4).attr("fill", colour);
+      svg.append("circle").attr("cx", xR).attr("cy", y(v.exposure_b)).attr("r", 4).attr("fill", colour);
+      svg.append("text")
+        .attr("x", xR + 10).attr("y", y(v.exposure_b) + 4)
+        .attr("fill", css("--ink")).style("font-family", "var(--mono)").style("font-size", "10.5px").style("font-weight", "600")
+        .text(wiki);
+      svg.append("text")
+        .attr("x", xR + 10).attr("y", y(v.exposure_b) + 17)
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.8px")
+        .text(`${fmt(v.deletions_on_this_wiki)} deletions · p=${f4(v.p_value)}`);
+    });
+  }
+
+  const dse = C3.per_wiki.dse, pro = C3.per_wiki.probier;
+  if (dse && pro) {
+    document.getElementById("c3-text").innerHTML =
+      `On the policed wiki, exposure fell ${f4(dse.exposure_a)} → ${f4(dse.exposure_b)} — a drop of ` +
+      `<strong>${f4(dse.difference)}</strong>. On the wiki nobody was policing it fell ${f4(pro.exposure_a)} → ${f4(pro.exposure_b)}, ` +
+      `a drop of <strong>${f4(pro.difference)}</strong>: <em>larger</em>, not smaller, and significant at p = ${f4(pro.p_value)}.`;
+  }
+
+  /* -------------------------------------------------------- batch table */
+
+  const BS = A.batch_signature;
+  d3.select("#batch-table").html(
+    `<thead><tr><th>period</th><th>writes</th><th>busiest 3 hours hold</th><th>hours to cover 80%</th><th>spread (bits of 4.58)</th></tr></thead><tbody>` +
+    Object.entries(PL).map(([key, [label]]) => {
+      const b = BS[key];
+      return `<tr><td>${label}</td><td>${fmt(b.writes)}</td><td>${pct0(b.top3_share)}</td>
+        <td>${b.hours_covering_80pct}</td><td>${d3.format(".2f")(b.entropy_bits)}</td></tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  document.getElementById("colophon").textContent =
+    `Exposure is the mean administrator deletion intensity at the hour each write happened — continuous rather than a ` +
+    `binary in-hours split, because the administrator's own activity is far from flat across his waking day. ` +
+    `Permutation tests use ${fmt(clean.n_permutations)} label shuffles.`;
+
+  function renderAll() { drawProfile(); drawPaired(); drawHeatmap(); drawWikis(); }
+  renderAll();
+  let t;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(renderAll, 160); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+})();
+</script>

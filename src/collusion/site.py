@@ -370,3 +370,35 @@ def build_evasion_payload() -> Path:
             raise SystemExit(f"evasion template is missing the {TEMPLATE_TOKEN} token")
         out.write_text(html.replace(TEMPLATE_TOKEN, path.read_text()))
     return path
+
+
+# --------------------------------------------------------------------------
+# the retiming page
+# --------------------------------------------------------------------------
+
+RETIMING_PAYLOAD_NAME = "retiming_payload.json"
+
+
+def build_retiming_payload() -> Path:
+    """Payload for the page about the change of working hours.
+
+    Its own artifact because it is a single claim examined to destruction, and
+    the interesting content is the sequence of controls rather than the headline.
+    """
+    from . import retiming
+
+    payload = {
+        "analysis": retiming.analyze(),
+        "day_hour": retiming.day_hour_matrix(),
+    }
+    path = io.derived_dir() / RETIMING_PAYLOAD_NAME
+    path.write_text(json.dumps(payload, default=_json_default, separators=(",", ":")))
+
+    template = io.repo_root() / "site" / "retiming_template.html"
+    out = io.repo_root() / "site" / "retiming.html"
+    if template.exists():
+        html = template.read_text()
+        if TEMPLATE_TOKEN not in html:
+            raise SystemExit(f"retiming template is missing the {TEMPLATE_TOKEN} token")
+        out.write_text(html.replace(TEMPLATE_TOKEN, path.read_text()))
+    return path

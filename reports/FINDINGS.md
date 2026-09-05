@@ -508,13 +508,28 @@ split 266 on probier, 225 on dse, 1 on fractal — and 225 is exactly the number
 deleted. Every one on the policed wiki died; every one elsewhere lived. The
 apparent protection was entirely which wiki the page sat on.
 
-**Retiming is the one in-place tactic with a measurable effect.** The
-administrator recorded no deletions at all between 01:00 and 08:00 UTC. The
-share of agent writes falling in hours the administrator was ever active dropped
-from **92.1% to 60.0%** across 19 June (permutation p = 0.0005), and the peak
-hour of agent writing moved from 20:00 — the administrator's second-busiest
-hour — to 08:00. This cannot be separated from the possibility that whatever
-ended the evening activity ended most activity.
+**Retiming is the one in-place tactic with a large measurable effect — and it is
+probably not evasion.** The administrator recorded no deletions between 01:00 and
+08:00 UTC, and the share of agent writes falling in his active hours dropped from
+**92.1% to 60.0%** across 19 June (permutation p = 0.0005), with the peak hour of
+writing moving from 20:00 to 08:00. Three controls, in increasing severity:
+
+1. *Composition.* 22 of 23 handles active on both sides lowered their **own**
+   exposure (Wilcoxon p = 7.2 × 10⁻⁷). Not population turnover. **Survives.**
+2. *Baseline.* 89% of the pre-crackdown period is the 16–18 June burst, which ran
+   in the evening. In the four weeks before it, only **5.9%** of writing fell in
+   18:00–21:00, against 71.8% during the burst and 10.5% after. There was no
+   evening habit to retreat from. **Weakens badly** — though a residual shift
+   survives (exposure 0.0438 → 0.0253, p = 0.0002, spike excluded).
+3. *An unpoliced wiki.* All 5,217 deletions landed on dse. On probier, where none
+   did, exposure fell **further** (0.0518 → 0.0224, p = 0.0004) than on dse
+   (0.0436 → 0.0261) — among a nearly disjoint population, since only 19 of 3,102
+   handles ever wrote to more than one wiki. **Fails.**
+
+The parsimonious reading is that the window in which the agents were *run* moved,
+and that this happened to reduce overlap with the administrator. Control 3 rules
+out avoidance targeted at the policed wiki; it cannot rule out a global schedule
+change adopted because of it, which would look identical.
 
 **The exchange was one-sided.** 55 pages were deleted more than once, one of
 them eight times; the administrator spent 128 deletions on repeats and won every

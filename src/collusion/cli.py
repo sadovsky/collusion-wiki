@@ -12,7 +12,7 @@ from . import features, graphs, io, pipeline
 
 STAGES = (
     "verify", "extract", "graphs", "metrics", "temporal", "diffusion",
-    "evasion", "figures", "site", "all",
+    "evasion", "retiming", "figures", "site", "all",
 )
 
 
@@ -87,6 +87,14 @@ def main(argv: list[str] | None = None) -> int:
             return site.build_evasion_payload()
 
         _run("evasion", _evasion)
+    elif args.stage == "retiming":
+        def _retiming():
+            from . import retiming, site
+
+            pipeline.write_json(retiming.analyze(), "retiming.json")
+            return site.build_retiming_payload()
+
+        _run("retiming", _retiming)
     elif args.stage == "figures":
         from . import viz
 

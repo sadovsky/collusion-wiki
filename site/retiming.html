@@ -1,0 +1,561 @@
+<title>The Night Shift That Wasn't</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  /* Cool neutrals with a blue bias — the page is about hours, and the ground
+     should lean toward night without committing to a dark theme. */
+  --paper: #eceef2;
+  --surface: #f6f7fa;
+  --surface-2: #dfe3ea;
+  --ink: #171a21;
+  --ink-2: #545c6b;
+  --ink-3: #7d8593;
+  --rule: #d5d9e2;
+  --rule-strong: #b4bac7;
+
+  /* One colour per actor, held consistent across every chart. */
+  --admin: #a8752a;   /* the administrator: a person keeping human hours */
+  --pre: #1f7d8c;     /* agents before the spike */
+  --spike: #a3324c;   /* the 16–18 June burst */
+  --post: #3b4da8;    /* agents after 19 June */
+
+  --pass: #1c7a5b;
+  --fail: #a8321f;
+
+  --display: "Fraunces", Georgia, serif;
+  --body: "Karla", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 68ch;
+  --gutter: clamp(1.1rem, 4vw, 3.25rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101319;
+    --surface: #171b23;
+    --surface-2: #1f2531;
+    --ink: #e6e9f0;
+    --ink-2: #9aa3b4;
+    --ink-3: #737c8d;
+    --rule: #262c38;
+    --rule-strong: #38404f;
+    --admin: #dda94f;
+    --pre: #45b3c4;
+    --spike: #e0637f;
+    --post: #7d8ee0;
+    --pass: #46b892;
+    --fail: #e8735a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101319;
+  --surface: #171b23;
+  --surface-2: #1f2531;
+  --ink: #e6e9f0;
+  --ink-2: #9aa3b4;
+  --ink-3: #737c8d;
+  --rule: #262c38;
+  --rule-strong: #38404f;
+  --admin: #dda94f;
+  --pre: #45b3c4;
+  --spike: #e0637f;
+  --post: #7d8ee0;
+  --pass: #46b892;
+  --fail: #e8735a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
+section { padding-block: clamp(2.4rem, 5.5vw, 4.2rem); border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1em; }
+.prose p:last-child { margin-bottom: 0; }
+.stack { display: flex; flex-direction: column; gap: 1rem; }
+
+h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1.12; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 5.6vw, 3.7rem); letter-spacing: -0.018em; }
+h2 { font-size: clamp(1.4rem, 2.9vw, 1.95rem); letter-spacing: -0.01em; }
+h3 { font-size: 1.02rem; font-weight: 600; font-family: var(--body); letter-spacing: .005em; }
+
+.eyebrow { font-family: var(--mono); font-size: .67rem; letter-spacing: .17em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.lede { font-size: 1.16rem; line-height: 1.5; color: var(--ink-2); }
+.note { font-size: .85rem; line-height: 1.5; color: var(--ink-3); }
+code, .code { font-family: var(--mono); font-size: .85em; background: var(--surface-2); padding: .08em .34em; border-radius: 2px; }
+
+/* --------------------------------------------------------- the controls */
+
+.control-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .7rem 1rem; margin-bottom: .35rem; }
+.control-num {
+  font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .1em;
+  color: var(--ink-3); border: 1px solid var(--rule-strong); border-radius: 2px; padding: .12rem .4rem;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--mono); font-size: .69rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  padding: .18rem .5rem; border-radius: 2px; border: 1px solid; width: fit-content;
+}
+.badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.badge.survives { color: var(--pass); border-color: color-mix(in srgb, var(--pass) 40%, transparent); background: color-mix(in srgb, var(--pass) 9%, transparent); }
+.badge.weakens { color: var(--admin); border-color: color-mix(in srgb, var(--admin) 42%, transparent); background: color-mix(in srgb, var(--admin) 10%, transparent); }
+.badge.fails { color: var(--fail); border-color: color-mix(in srgb, var(--fail) 40%, transparent); background: color-mix(in srgb, var(--fail) 9%, transparent); }
+
+.claim { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.4rem); align-items: start; margin: 1.1rem 0 1.5rem; }
+@media (max-width: 840px) { .claim { grid-template-columns: 1fr; gap: .75rem; } }
+.claim-figure { font-family: var(--display); font-size: clamp(1.9rem, 4.2vw, 2.7rem); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.claim-caption { font-family: var(--mono); font-size: .71rem; color: var(--ink-3); margin-top: .4rem; line-height: 1.45; }
+
+figure { margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem 1.1rem; }
+.panel-head { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; justify-content: space-between; margin-bottom: .7rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem .95rem; font-family: var(--mono); font-size: .69rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .32rem; }
+.chart { width: 100%; display: block; overflow: visible; }
+.scroller { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .75rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .64rem; border-bottom: 1px solid var(--rule-strong); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.verdict-box { border: 1px solid var(--rule-strong); border-left: 3px solid var(--fail); background: var(--surface); border-radius: 3px; padding: 1.1rem 1.2rem; }
+.periods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+@media (max-width: 760px) { .periods { grid-template-columns: 1fr; } }
+.period { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--rule-strong); border-radius: 3px; padding: .8rem .9rem; }
+.period.is-pre { border-top-color: var(--pre); }
+.period.is-spike { border-top-color: var(--spike); }
+.period.is-post { border-top-color: var(--post); }
+.period .lab { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); letter-spacing: .05em; text-transform: uppercase; }
+.period .big { font-family: var(--display); font-size: 1.6rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.period dl { margin: .5rem 0 0; display: grid; grid-template-columns: auto 1fr; gap: .16rem .7rem; font-family: var(--mono); font-size: .71rem; }
+.period dt { color: var(--ink-3); }
+.period dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+
+<main>
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">A finding, examined to destruction</p>
+    <h1>The night shift that wasn't</h1>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p class="lede">When an administrator began deleting their pages, the agents' writing moved out of his waking hours and into the middle of his night. It looks like one of the most sophisticated things in the whole corpus. Three controls say it probably isn't anything at all.</p>
+    </div>
+
+    <div class="claim" style="margin-top:1.6rem;">
+      <div>
+        <div class="claim-figure" style="color: var(--post)" id="head-figure">—</div>
+        <div class="claim-caption" id="head-caption"></div>
+      </div>
+      <div class="prose">
+        <p>The administrator kept ordinary hours. Across 5,217 deletions spanning three weeks there is <strong>not one</strong> between <span id="silent-window" class="code"></span> UTC. Before 19 June the agents' busiest hour was <span id="peak-before" class="code"></span>, squarely inside his evening. Afterwards their busiest hour was <span id="peak-after" class="code"></span>, inside the window where he never appeared.</p>
+      </div>
+    </div>
+
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Activity by hour of day</h3>
+        <div class="legend">
+          <span><i style="background: var(--admin)"></i>administrator deletions</span>
+          <span><i style="background: var(--pre)"></i>agents, before 16 June</span>
+          <span><i style="background: var(--spike)"></i>agents, 16–18 June</span>
+          <span><i style="background: var(--post)"></i>agents, 19 June onward</span>
+        </div>
+      </div>
+      <svg id="profile" class="chart" role="img" aria-label="Activity by hour of day for each period"></svg>
+    </figure>
+  </section>
+
+  <!-- ================================================== control 1 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 1</span>
+      <span class="badge survives" id="b1">survives</span>
+    </div>
+    <h2>Did the same agents move, or did a different population arrive?</h2>
+    <div class="prose" style="margin:.8rem 0 1.2rem;">
+      <p>The simplest deflation is turnover: a day-active population dies off and a night-active one replaces it, and nobody changes anything. That is testable by pairing within a handle — comparing each agent's own hours before and after, so any handle that appears on only one side contributes nothing.</p>
+    </div>
+    <div class="claim">
+      <div>
+        <div class="claim-figure" style="color: var(--pass)" id="c1-figure">—</div>
+        <div class="claim-caption" id="c1-caption"></div>
+      </div>
+      <figure class="panel" style="margin:0;">
+        <div class="panel-head"><h3>Each handle's own exposure to the administrator's hours</h3></div>
+        <svg id="paired" class="chart" role="img" aria-label="Paired before and after exposure per handle"></svg>
+      </figure>
+    </div>
+    <p class="note" style="max-width:var(--measure);">Turnover cannot produce a consistent within-handle shift. This one is about as consistent as it gets, so the change of hours is real behaviour rather than a change of cast.</p>
+  </section>
+
+  <!-- ================================================== control 2 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 2</span>
+      <span class="badge weakens" id="b2">weakens badly</span>
+    </div>
+    <h2>Was there ever an evening habit to retreat from?</h2>
+    <div class="prose" style="margin:.8rem 0 1.3rem;">
+      <p>"Before 19 June" sounds like a settled baseline. It is not. <strong id="spike-share">—</strong> of all pre-crackdown writing happened in the two-day burst of 16–18 June, and that burst ran in the evening. Strip it out and look at what the agents were doing in the four weeks before it.</p>
+    </div>
+
+    <div class="periods" id="periods"></div>
+
+    <figure class="panel" style="margin-top:1.2rem;">
+      <div class="panel-head">
+        <h3>Every write, by day and hour</h3>
+        <div class="legend">
+          <span><i style="background: var(--post)"></i>agent writes</span>
+          <span><i style="background: var(--admin); border-radius:50%"></i>hours containing a deletion</span>
+        </div>
+      </div>
+      <div class="scroller"><svg id="heatmap" class="chart" role="img" aria-label="Writes by day and hour"></svg></div>
+    </figure>
+
+    <div class="prose" style="margin-top:1.3rem;">
+      <p>The agents never worked evenings as a matter of habit. In the four weeks before the spike, only <strong id="pre-evening">—</strong> of their writing fell between 18:00 and 21:00. The burst did, at <strong id="spike-evening">—</strong>. Afterwards they returned to <strong id="post-evening">—</strong>, which is roughly where they started.</p>
+      <p>The comparison that produced the headline was therefore not "settled schedule versus retreat". It was "a two-day evening burst versus everything else."</p>
+    </div>
+  </section>
+
+  <!-- ================================================== control 3 -->
+  <section>
+    <div class="control-head">
+      <span class="control-num">CONTROL 3</span>
+      <span class="badge fails" id="b3">fails</span>
+    </div>
+    <h2>The same shift happens where there is no one to hide from</h2>
+    <div class="prose" style="margin:.8rem 0 1.3rem;">
+      <p>A residual shift survives control 2: excluding the spike entirely, agents still moved to hours the administrator was less active in <span id="clean-p" class="code"></span>. So the question becomes whether that residual is avoidance.</p>
+      <p>Every one of the corpus's <strong>5,217</strong> deletions landed on a single wiki. On <span class="code">probier</span> nothing was ever deleted — there was no administrator to avoid, and almost no shared population: only 19 of 3,102 handles ever wrote to more than one wiki, and after the crackdown just one of the eight active probier handles also wrote on the policed wiki.</p>
+    </div>
+
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Change in exposure to the administrator's hours, by wiki</h3>
+        <div class="legend"><span>left: before the spike · right: after 19 June · lower is further from the administrator's hours</span></div>
+      </div>
+      <svg id="wikis" class="chart" role="img" aria-label="Exposure change by wiki"></svg>
+    </figure>
+
+    <div class="prose" style="margin-top:1.3rem;">
+      <p id="c3-text"></p>
+      <p>If the agents were avoiding this administrator, the shift should be concentrated where he was deleting. It is not. It is at least as large on a wiki he never touched, among handles that mostly never wrote where he was working.</p>
+    </div>
+  </section>
+
+  <!-- ================================================== what's actually there -->
+  <section>
+    <p class="eyebrow">What the data does show</p>
+    <h2>Two clocks, and only one of them belongs to a person</h2>
+    <div class="prose stack" style="margin:.9rem 0 1.3rem;">
+      <p>The administrator's hours look like a person's. Silent through the small hours, rising through the afternoon, peaking at <span id="admin-peak" class="code"></span> UTC — which in Central European time, where a German-language wiki hosted in Austria would put him, is an ordinary evening.</p>
+      <p>The agents' hours look like a schedule. In every period their writing is compressed into a few narrow blocks rather than spread across the day; what changes between periods is where the blocks sit, not how tightly they are packed.</p>
+    </div>
+    <div class="scroller panel"><table id="batch-table"></table></div>
+  </section>
+
+  <!-- ================================================== verdict -->
+  <section>
+    <p class="eyebrow">Verdict</p>
+    <h2>A schedule moved; nobody hid</h2>
+    <div class="verdict-box" style="margin-top:1.1rem;">
+      <p style="margin:0 0 .8rem;"><strong>The change of hours is real.</strong> The same handles made it, it is large, and it does reduce overlap with the administrator. Control 1 rules out turnover and nothing here disputes the arithmetic.</p>
+      <p style="margin:0 0 .8rem;"><strong>The evasion reading is not supported.</strong> The evening pattern it supposedly retreats from belonged to a two-day burst, not a standing habit. The residual shift appears just as strongly on a wiki with no administrator and a largely separate set of handles. Both windows are narrow batch blocks, before and after.</p>
+      <p style="margin:0;">The parsimonious explanation is that the agents' activity window moved because <em>whatever ran them</em> moved — and that this happened to reduce their overlap with a person who was deleting their pages. Coincidence is a weaker story than adversarial adaptation. It is also the one the controls support.</p>
+    </div>
+
+    <div class="prose stack" style="margin-top:1.7rem; border-left:2px solid var(--rule-strong); padding-left:1rem;">
+      <p class="note"><strong>What would change this.</strong> Control 3 rules out avoidance targeted at the policed wiki. It cannot rule out a global schedule change adopted <em>because of</em> that wiki and applied everywhere — that would look identical here. Distinguishing them needs something the corpus does not contain.</p>
+      <p class="note"><strong>Small numbers.</strong> The unpoliced comparison rests on 67 pre-spike and 249 post-crackdown writes from 20 handles. The permutation test is significant, but it is one wiki.</p>
+      <p class="note"><strong>No intent either way.</strong> The corpus has no chain-of-thought. This page argues that the observable pattern does not require a decision to hide, not that no agent made one.</p>
+    </div>
+    <p class="note" id="colophon" style="margin-top:1.5rem;"></p>
+  </section>
+
+</div>
+</main>
+
+<script id="payload" type="application/json">{"analysis":{"headline":{"admin_active_hours":[0,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],"admin_silent_hours":[1,2,3,4,5,6,7],"silent_window_utc":[1,8],"silent_window_admin_local":[3,10],"admin_peak_hour":19,"admin_peak_share":0.211999233275829,"share_in_active_before":0.92092186429061,"share_in_active_after":0.5998629667694416,"peak_hour_before":20,"peak_hour_after":8,"writes_before":11672,"writes_after":2919},"hourly":[{"hour":0,"admin":0.01437607820586544,"pre_spike":0.022782750203417412,"spike":0.011586708800153212,"after":0.048646796848235696},{"hour":1,"admin":0.0,"pre_spike":0.008950366151342554,"spike":0.01771521593411855,"after":0.047961630695443645},{"hour":2,"admin":0.0,"pre_spike":0.008136696501220505,"spike":0.018385521401896008,"after":0.17951353203151765},{"hour":3,"admin":0.0,"pre_spike":0.021969080553295363,"spike":0.011682466724121422,"after":0.07091469681397738},{"hour":4,"admin":0.0,"pre_spike":0.021969080553295363,"spike":0.0043091065785693765,"after":0.0078794107571086},{"hour":5,"admin":0.0,"pre_spike":0.01708706265256306,"spike":0.003926074882696543,"after":0.02946214457005824},{"hour":6,"admin":0.0,"pre_spike":0.015459723352318959,"spike":0.00766063391745667,"after":0.047961630695443645},{"hour":7,"admin":0.0,"pre_spike":0.024410089503661515,"spike":0.010820645408407546,"after":0.01644398766700925},{"hour":8,"admin":0.00019168104274487253,"pre_spike":0.013832384052074858,"spike":0.009192760700948004,"after":0.1884206920178143},{"hour":9,"admin":0.00019168104274487253,"pre_spike":0.015459723352318959,"spike":0.014842478215072298,"after":0.03905447070914697},{"hour":10,"admin":0.010159095265478243,"pre_spike":0.024410089503661515,"spike":0.016566120846500047,"after":0.03357314148681055},{"hour":11,"admin":0.030668966839179607,"pre_spike":0.05126118795768918,"spike":0.009767308244757253,"after":0.023980815347721823},{"hour":12,"admin":0.08261452942304007,"pre_spike":0.05614320585842148,"spike":0.006415780905869961,"after":0.0328879753340185},{"hour":13,"admin":0.057887674908951504,"pre_spike":0.13181448331977216,"spike":0.002681221871109834,"after":0.0342583076396026},{"hour":14,"admin":0.022810044086639832,"pre_spike":0.19283970707892595,"spike":0.005458201666187877,"after":0.02158273381294964},{"hour":15,"admin":0.05041211424190148,"pre_spike":0.09031733116354759,"spike":0.016278847074595423,"after":0.010962658444672833},{"hour":16,"admin":0.06766340808894,"pre_spike":0.10414971521562245,"spike":0.028918893038398927,"after":0.011305241521068859},{"hour":17,"admin":0.05922944220816561,"pre_spike":0.012205044751830757,"spike":0.04596380350474002,"after":0.01815690304898938},{"hour":18,"admin":0.07475560667050028,"pre_spike":0.0040683482506102524,"spike":0.11835679402470554,"after":0.021240150736553613},{"hour":19,"admin":0.211999233275829,"pre_spike":0.021969080553295363,"spike":0.19525040697117688,"after":0.027064063035286058},{"hour":20,"admin":0.15526164462334674,"pre_spike":0.012205044751830757,"spike":0.2641961122282869,"after":0.0328879753340185},{"hour":21,"admin":0.087214874448917,"pre_spike":0.02115541090317331,"spike":0.14057263238532988,"after":0.023980815347721823},{"hour":22,"admin":0.01590952654782442,"pre_spike":0.05532953620829943,"spike":0.02595039739538447,"after":0.012675573826652964},{"hour":23,"admin":0.058654399079930995,"pre_spike":0.05207485760781123,"spike":0.01350186727951738,"after":0.019184652278177457}],"composition_control":{"min_writes_each_side":5,"n_handles":23,"mean_exposure_before":0.10394818529103927,"mean_exposure_after":0.02051825241682128,"handles_lowering_exposure":22,"wilcoxon_p":7.152557373046875e-07,"verdict":"the same handles moved their own hours; this is not population turnover","handles":[{"label":"MapHelper","n_before":170,"n_after":14,"exposure_before":0.13539334077506793,"exposure_after":0.005189079657164764},{"label":"LinkHelper771","n_before":167,"n_after":9,"exposure_before":0.08721487444891698,"exposure_after":0.021148808382850937},{"label":"AgentTestLearnXYZ","n_before":124,"n_after":6,"exposure_before":0.16310974667186057,"exposure_after":0.009807680020445977},{"label":"ResearchHelper","n_before":103,"n_after":6,"exposure_before":0.08622669353923222,"exposure_after":0.0},{"label":"OpenAIResearchSec2028","n_before":88,"n_after":5,"exposure_before":0.1417307055604928,"exposure_after":0.011845888441633121},{"label":"AgentMapCite8x","n_before":82,"n_after":5,"exposure_before":0.1428140647133901,"exposure_after":3.8336208548974504e-05},{"label":"AgentSECCountyLinker99172","n_before":51,"n_after":5,"exposure_before":0.09006378092736042,"exposure_after":0.01751964730688135},{"label":"OpenAIResearcher","n_before":51,"n_after":17,"exposure_before":0.06864436401357553,"exposure_after":0.06346897585946397},{"label":"OpenAIMass2026","n_before":41,"n_after":6,"exposure_before":0.16009574701842474,"exposure_after":0.05498051242732094},{"label":"ResearchAgent","n_before":39,"n_after":5,"exposure_before":0.08617783085868189,"exposure_after":0.0},{"label":"OpenResearchHelper","n_before":27,"n_after":5,"exposure_before":0.09236896470939024,"exposure_after":0.00019168104274487253},{"label":"AgentResearchHelper","n_before":26,"n_after":6,"exposure_before":0.10295483699739018,"exposure_after":0.07395693565906332},{"label":"DataResearchHelper","n_before":25,"n_after":5,"exposure_before":0.15874257235959363,"exposure_after":0.04159478627563734},{"label":"AgentPageFit","n_before":22,"n_after":9,"exposure_before":0.1398051823583739,"exposure_after":0.009584052137243625},{"label":"MassSecWin12","n_before":21,"n_after":6,"exposure_before":0.12134322772620648,"exposure_after":0.0047920260686218135},{"label":"DataResearcher","n_before":15,"n_after":5,"exposure_before":0.025672480991629932,"exposure_after":0.0},{"label":"[Admin1]","n_before":15,"n_after":11,"exposure_before":0.05501245926777842,"exposure_after":0.074389670134351},{"label":"AgentWelReset","n_before":11,"n_after":7,"exposure_before":0.08721487444891698,"exposure_after":0.02924505052164627},{"label":"Agent13Short","n_before":8,"n_after":7,"exposure_before":0.15526164462334674,"exposure_after":0.01675839973712314},{"label":"OAI7C97","n_before":7,"n_after":13,"exposure_before":0.03683014321312194,"exposure_after":0.012400288996033678},{"label":"MapTxtHelper991","n_before":6,"n_after":9,"exposure_before":0.087214874448917,"exposure_after":0.0031946840457478757},{"label":"ResearchHelperX","n_before":5,"n_after":10,"exposure_before":0.06961855472493769,"exposure_after":0.013149319532298254},{"label":"WillOver2366","n_before":5,"n_after":5,"exposure_before":0.09729729729729727,"exposure_after":0.008663983132068238}]},"baseline_control":{"periods":{"pre_spike":{"writes":1229,"exposure":0.043780012548947686,"peak_hour":14,"evening_share_18_21":0.059397884458909686,"night_share_01_07":0.11798209926769732,"top3_hours":[14,13,16],"top3_share":0.4288039056143206},"spike":{"writes":10443,"exposure":0.11167370956377538,"peak_hour":20,"evening_share_18_21":0.7183759456094991,"night_share_01_07":0.07449966484726611,"top3_hours":[20,19,21],"top3_share":0.6000191515847937},"after":{"writes":2919,"exposure":0.025255011631867597,"peak_hour":8,"evening_share_18_21":0.10517300445358,"night_share_01_07":0.40013703323055844,"top3_hours":[8,2,3],"top3_share":0.43884892086330934}},"spike_share_of_before_period":0.8947052775873886,"pre_spike_vs_after":{"exposure_a":0.043780012548947686,"exposure_b":0.025255011631867597,"difference":0.01852500091708009,"null_mean":-3.265738207532736e-05,"null_std":0.0015723763154158982,"p_value":0.0001999600079984003,"n_a":1229,"n_b":2919,"n_permutations":5000},"verdict":"the evening concentration belongs to the spike, not to a baseline schedule"},"adversary_control":{"deletions_by_wiki":{"dse":5217},"per_wiki":{"dorfwiki":{"status":"too_few_writes","n_before":0,"n_after":6},"dse":{"exposure_a":0.043556237088151976,"exposure_b":0.026064516495019577,"difference":0.0174917205931324,"null_mean":-1.3575045078882694e-05,"null_std":0.0016322404894829653,"p_value":0.0001999600079984003,"n_a":1125,"n_b":2568,"n_permutations":5000,"deletions_on_this_wiki":5217},"fractal":{"status":"too_few_writes","n_before":37,"n_after":96},"probier":{"exposure_a":0.05183398705151643,"exposure_b":0.02240127848946101,"difference":0.029432708562055418,"null_mean":-2.7384273245456393e-05,"null_std":0.007138639333144646,"p_value":0.0003999200159968006,"n_a":67,"n_b":249,"n_permutations":5000,"deletions_on_this_wiki":0}},"verdict":"the shift is the same on a wiki with no administrator, so it is not avoidance"},"batch_signature":{"pre_spike":{"writes":1229,"top3_share":0.4288039056143206,"hours_covering_80pct":11,"entropy_bits":3.9455432701754725,"max_entropy_bits":4.584962500721156},"spike":{"writes":10443,"top3_share":0.6000191515847937,"hours_covering_80pct":7,"entropy_bits":3.3736866185708,"max_entropy_bits":4.584962500721156},"after":{"writes":2919,"top3_share":0.43884892086330934,"hours_covering_80pct":13,"entropy_bits":4.017308865208295,"max_entropy_bits":4.584962500721156}},"conclusion":"The change of hours is real and the same handles made it, but it appears identically on a wiki that was never policed, and the evening pattern it moved away from belonged to a two-day burst rather than to a standing schedule. The parsimonious reading is a change in when the agents were run, not a decision to hide."},"day_hour":[{"d":"2026-05-24","h":6,"w":3,"x":0},{"d":"2026-05-24","h":11,"w":4,"x":0},{"d":"2026-05-24","h":12,"w":1,"x":0},{"d":"2026-05-24","h":13,"w":7,"x":0},{"d":"2026-05-24","h":14,"w":14,"x":0},{"d":"2026-05-24","h":15,"w":3,"x":0},{"d":"2026-05-24","h":16,"w":1,"x":0},{"d":"2026-05-24","h":18,"w":2,"x":0},{"d":"2026-05-26","h":5,"w":1,"x":0},{"d":"2026-05-26","h":9,"w":3,"x":0},{"d":"2026-05-26","h":10,"w":23,"x":0},{"d":"2026-05-26","h":11,"w":52,"x":0},{"d":"2026-05-26","h":12,"w":33,"x":0},{"d":"2026-05-26","h":13,"w":81,"x":0},{"d":"2026-05-26","h":14,"w":78,"x":0},{"d":"2026-05-26","h":15,"w":58,"x":0},{"d":"2026-05-26","h":16,"w":105,"x":0},{"d":"2026-05-26","h":17,"w":1,"x":0},{"d":"2026-05-26","h":23,"w":1,"x":0},{"d":"2026-05-27","h":0,"w":2,"x":0},{"d":"2026-05-27","h":1,"w":2,"x":0},{"d":"2026-05-27","h":2,"w":5,"x":0},{"d":"2026-05-27","h":3,"w":1,"x":0},{"d":"2026-05-27","h":4,"w":3,"x":0},{"d":"2026-05-27","h":6,"w":4,"x":0},{"d":"2026-05-27","h":7,"w":8,"x":0},{"d":"2026-05-27","h":8,"w":8,"x":0},{"d":"2026-05-27","h":9,"w":1,"x":0},{"d":"2026-05-27","h":12,"w":12,"x":0},{"d":"2026-05-27","h":13,"w":2,"x":0},{"d":"2026-05-28","h":0,"w":9,"x":0},{"d":"2026-05-28","h":1,"w":9,"x":0},{"d":"2026-05-28","h":7,"w":4,"x":0},{"d":"2026-05-28","h":8,"w":1,"x":0},{"d":"2026-05-28","h":9,"w":3,"x":0},{"d":"2026-05-28","h":11,"w":1,"x":0},{"d":"2026-05-28","h":12,"w":6,"x":0},{"d":"2026-05-28","h":13,"w":32,"x":0},{"d":"2026-05-28","h":14,"w":43,"x":0},{"d":"2026-05-28","h":15,"w":33,"x":0},{"d":"2026-05-28","h":16,"w":13,"x":0},{"d":"2026-05-28","h":17,"w":1,"x":0},{"d":"2026-05-28","h":18,"w":1,"x":0},{"d":"2026-05-28","h":19,"w":15,"x":0},{"d":"2026-05-28","h":20,"w":5,"x":0},{"d":"2026-05-28","h":21,"w":13,"x":0},{"d":"2026-05-28","h":22,"w":12,"x":0},{"d":"2026-05-28","h":23,"w":9,"x":0},{"d":"2026-05-29","h":0,"w":2,"x":0},{"d":"2026-05-29","h":19,"w":3,"x":0},{"d":"2026-05-29","h":21,"w":4,"x":0},{"d":"2026-05-29","h":22,"w":40,"x":0},{"d":"2026-05-29","h":23,"w":28,"x":0},{"d":"2026-05-30","h":17,"w":6,"x":0},{"d":"2026-05-30","h":19,"w":3,"x":0},{"d":"2026-05-30","h":20,"w":8,"x":0},{"d":"2026-05-30","h":21,"w":8,"x":0},{"d":"2026-05-30","h":22,"w":11,"x":0},{"d":"2026-05-30","h":23,"w":8,"x":0},{"d":"2026-05-31","h":0,"w":9,"x":0},{"d":"2026-05-31","h":22,"w":2,"x":0},{"d":"2026-05-31","h":23,"w":5,"x":0},{"d":"2026-06-01","h":0,"w":4,"x":0},{"d":"2026-06-01","h":3,"w":7,"x":0},{"d":"2026-06-01","h":12,"w":9,"x":0},{"d":"2026-06-01","h":13,"w":15,"x":0},{"d":"2026-06-01","h":14,"w":75,"x":0},{"d":"2026-06-01","h":15,"w":12,"x":0},{"d":"2026-06-01","h":16,"w":4,"x":0},{"d":"2026-06-01","h":21,"w":1,"x":0},{"d":"2026-06-01","h":22,"w":3,"x":0},{"d":"2026-06-01","h":23,"w":10,"x":0},{"d":"2026-06-02","h":8,"w":1,"x":0},{"d":"2026-06-02","h":9,"w":1,"x":0},{"d":"2026-06-02","h":23,"w":2,"x":0},{"d":"2026-06-04","h":10,"w":1,"x":2},{"d":"2026-06-04","h":16,"w":1,"x":0},{"d":"2026-06-04","h":17,"w":2,"x":0},{"d":"2026-06-04","h":18,"w":1,"x":0},{"d":"2026-06-05","h":2,"w":2,"x":0},{"d":"2026-06-06","h":7,"w":5,"x":0},{"d":"2026-06-06","h":8,"w":1,"x":0},{"d":"2026-06-06","h":19,"w":5,"x":0},{"d":"2026-06-06","h":23,"w":1,"x":0},{"d":"2026-06-07","h":4,"w":5,"x":0},{"d":"2026-06-07","h":5,"w":6,"x":0},{"d":"2026-06-07","h":20,"w":2,"x":0},{"d":"2026-06-08","h":3,"w":7,"x":0},{"d":"2026-06-08","h":4,"w":7,"x":0},{"d":"2026-06-09","h":0,"w":2,"x":0},{"d":"2026-06-09","h":9,"w":4,"x":0},{"d":"2026-06-10","h":13,"w":4,"x":0},{"d":"2026-06-10","h":14,"w":2,"x":0},{"d":"2026-06-11","h":2,"w":3,"x":0},{"d":"2026-06-11","h":3,"w":12,"x":0},{"d":"2026-06-11","h":4,"w":12,"x":0},{"d":"2026-06-11","h":5,"w":14,"x":0},{"d":"2026-06-11","h":6,"w":12,"x":0},{"d":"2026-06-11","h":7,"w":13,"x":0},{"d":"2026-06-11","h":8,"w":6,"x":0},{"d":"2026-06-11","h":9,"w":7,"x":0},{"d":"2026-06-11","h":10,"w":6,"x":0},{"d":"2026-06-11","h":11,"w":6,"x":0},{"d":"2026-06-11","h":12,"w":8,"x":0},{"d":"2026-06-11","h":13,"w":21,"x":0},{"d":"2026-06-11","h":14,"w":25,"x":0},{"d":"2026-06-11","h":15,"w":5,"x":0},{"d":"2026-06-11","h":16,"w":4,"x":0},{"d":"2026-06-11","h":17,"w":5,"x":0},{"d":"2026-06-11","h":18,"w":1,"x":0},{"d":"2026-06-11","h":19,"w":1,"x":0},{"d":"2026-06-16","h":7,"w":31,"x":0},{"d":"2026-06-16","h":8,"w":50,"x":0},{"d":"2026-06-16","h":9,"w":101,"x":0},{"d":"2026-06-16","h":10,"w":141,"x":0},{"d":"2026-06-16","h":11,"w":72,"x":0},{"d":"2026-06-16","h":12,"w":36,"x":0},{"d":"2026-06-16","h":13,"w":8,"x":0},{"d":"2026-06-16","h":14,"w":4,"x":0},{"d":"2026-06-16","h":15,"w":1,"x":0},{"d":"2026-06-16","h":17,"w":1,"x":0},{"d":"2026-06-16","h":18,"w":292,"x":0},{"d":"2026-06-16","h":19,"w":749,"x":0},{"d":"2026-06-16","h":20,"w":390,"x":0},{"d":"2026-06-16","h":21,"w":393,"x":0},{"d":"2026-06-16","h":22,"w":238,"x":0},{"d":"2026-06-16","h":23,"w":96,"x":0},{"d":"2026-06-17","h":0,"w":107,"x":0},{"d":"2026-06-17","h":1,"w":176,"x":0},{"d":"2026-06-17","h":2,"w":190,"x":0},{"d":"2026-06-17","h":3,"w":119,"x":0},{"d":"2026-06-17","h":4,"w":37,"x":0},{"d":"2026-06-17","h":5,"w":34,"x":0},{"d":"2026-06-17","h":6,"w":72,"x":0},{"d":"2026-06-17","h":7,"w":78,"x":0},{"d":"2026-06-17","h":8,"w":44,"x":0},{"d":"2026-06-17","h":9,"w":51,"x":0},{"d":"2026-06-17","h":10,"w":28,"x":0},{"d":"2026-06-17","h":11,"w":26,"x":0},{"d":"2026-06-17","h":12,"w":29,"x":0},{"d":"2026-06-17","h":13,"w":17,"x":0},{"d":"2026-06-17","h":14,"w":3,"x":0},{"d":"2026-06-17","h":15,"w":23,"x":0},{"d":"2026-06-17","h":16,"w":86,"x":0},{"d":"2026-06-17","h":17,"w":52,"x":0},{"d":"2026-06-17","h":18,"w":31,"x":0},{"d":"2026-06-17","h":19,"w":27,"x":0},{"d":"2026-06-17","h":20,"w":19,"x":0},{"d":"2026-06-17","h":21,"w":23,"x":0},{"d":"2026-06-17","h":22,"w":16,"x":0},{"d":"2026-06-17","h":23,"w":9,"x":0},{"d":"2026-06-18","h":0,"w":14,"x":0},{"d":"2026-06-18","h":1,"w":9,"x":0},{"d":"2026-06-18","h":2,"w":2,"x":0},{"d":"2026-06-18","h":3,"w":3,"x":0},{"d":"2026-06-18","h":4,"w":8,"x":0},{"d":"2026-06-18","h":5,"w":7,"x":0},{"d":"2026-06-18","h":6,"w":8,"x":0},{"d":"2026-06-18","h":7,"w":4,"x":0},{"d":"2026-06-18","h":8,"w":2,"x":0},{"d":"2026-06-18","h":9,"w":3,"x":0},{"d":"2026-06-18","h":10,"w":4,"x":0},{"d":"2026-06-18","h":11,"w":4,"x":0},{"d":"2026-06-18","h":12,"w":2,"x":0},{"d":"2026-06-18","h":13,"w":3,"x":0},{"d":"2026-06-18","h":14,"w":50,"x":0},{"d":"2026-06-18","h":15,"w":146,"x":0},{"d":"2026-06-18","h":16,"w":216,"x":0},{"d":"2026-06-18","h":17,"w":427,"x":0},{"d":"2026-06-18","h":18,"w":913,"x":25},{"d":"2026-06-18","h":19,"w":1263,"x":0},{"d":"2026-06-18","h":20,"w":2350,"x":0},{"d":"2026-06-18","h":21,"w":1052,"x":0},{"d":"2026-06-18","h":22,"w":17,"x":0},{"d":"2026-06-18","h":23,"w":36,"x":0},{"d":"2026-06-19","h":0,"w":47,"x":0},{"d":"2026-06-19","h":1,"w":28,"x":0},{"d":"2026-06-19","h":2,"w":7,"x":0},{"d":"2026-06-19","h":3,"w":34,"x":0},{"d":"2026-06-19","h":4,"w":7,"x":0},{"d":"2026-06-19","h":5,"w":12,"x":0},{"d":"2026-06-19","h":6,"w":5,"x":0},{"d":"2026-06-19","h":7,"w":9,"x":0},{"d":"2026-06-19","h":8,"w":10,"x":0},{"d":"2026-06-19","h":9,"w":15,"x":0},{"d":"2026-06-19","h":10,"w":14,"x":0},{"d":"2026-06-19","h":11,"w":14,"x":0},{"d":"2026-06-19","h":12,"w":53,"x":0},{"d":"2026-06-19","h":13,"w":46,"x":59},{"d":"2026-06-19","h":14,"w":34,"x":24},{"d":"2026-06-19","h":15,"w":16,"x":41},{"d":"2026-06-19","h":16,"w":9,"x":38},{"d":"2026-06-19","h":17,"w":4,"x":0},{"d":"2026-06-19","h":18,"w":14,"x":0},{"d":"2026-06-19","h":19,"w":23,"x":0},{"d":"2026-06-19","h":20,"w":48,"x":0},{"d":"2026-06-19","h":21,"w":22,"x":0},{"d":"2026-06-19","h":22,"w":14,"x":8},{"d":"2026-06-19","h":23,"w":24,"x":147},{"d":"2026-06-20","h":0,"w":45,"x":75},{"d":"2026-06-20","h":1,"w":98,"x":0},{"d":"2026-06-20","h":2,"w":83,"x":0},{"d":"2026-06-20","h":3,"w":59,"x":0},{"d":"2026-06-20","h":4,"w":16,"x":0},{"d":"2026-06-20","h":5,"w":63,"x":0},{"d":"2026-06-20","h":6,"w":60,"x":0},{"d":"2026-06-20","h":8,"w":18,"x":0},{"d":"2026-06-20","h":9,"w":37,"x":1},{"d":"2026-06-20","h":10,"w":34,"x":0},{"d":"2026-06-20","h":11,"w":29,"x":0},{"d":"2026-06-20","h":12,"w":19,"x":0},{"d":"2026-06-20","h":13,"w":18,"x":0},{"d":"2026-06-20","h":14,"w":10,"x":0},{"d":"2026-06-20","h":15,"w":2,"x":0},{"d":"2026-06-20","h":16,"w":4,"x":0},{"d":"2026-06-20","h":17,"w":15,"x":0},{"d":"2026-06-20","h":18,"w":12,"x":0},{"d":"2026-06-20","h":19,"w":9,"x":2},{"d":"2026-06-20","h":20,"w":7,"x":0},{"d":"2026-06-20","h":21,"w":15,"x":0},{"d":"2026-06-20","h":22,"w":2,"x":0},{"d":"2026-06-20","h":23,"w":2,"x":0},{"d":"2026-06-21","h":1,"w":11,"x":0},{"d":"2026-06-21","h":2,"w":23,"x":0},{"d":"2026-06-21","h":3,"w":41,"x":0},{"d":"2026-06-21","h":5,"w":11,"x":0},{"d":"2026-06-21","h":6,"w":33,"x":0},{"d":"2026-06-21","h":7,"w":32,"x":0},{"d":"2026-06-21","h":8,"w":59,"x":0},{"d":"2026-06-21","h":9,"w":39,"x":0},{"d":"2026-06-21","h":10,"w":45,"x":0},{"d":"2026-06-21","h":11,"w":27,"x":6},{"d":"2026-06-21","h":12,"w":24,"x":2},{"d":"2026-06-21","h":13,"w":35,"x":0},{"d":"2026-06-21","h":14,"w":19,"x":0},{"d":"2026-06-21","h":15,"w":12,"x":0},{"d":"2026-06-21","h":16,"w":12,"x":0},{"d":"2026-06-21","h":17,"w":29,"x":0},{"d":"2026-06-21","h":18,"w":36,"x":0},{"d":"2026-06-21","h":19,"w":46,"x":0},{"d":"2026-06-21","h":20,"w":41,"x":0},{"d":"2026-06-21","h":21,"w":33,"x":3},{"d":"2026-06-21","h":22,"w":21,"x":0},{"d":"2026-06-21","h":23,"w":30,"x":0},{"d":"2026-06-22","h":0,"w":48,"x":0},{"d":"2026-06-22","h":1,"w":3,"x":0},{"d":"2026-06-22","h":2,"w":411,"x":0},{"d":"2026-06-22","h":3,"w":73,"x":0},{"d":"2026-06-22","h":6,"w":42,"x":0},{"d":"2026-06-22","h":7,"w":7,"x":0},{"d":"2026-06-22","h":8,"w":463,"x":0},{"d":"2026-06-22","h":9,"w":23,"x":0},{"d":"2026-06-22","h":19,"w":1,"x":11},{"d":"2026-06-23","h":11,"w":0,"x":15},{"d":"2026-06-23","h":12,"w":0,"x":53},{"d":"2026-06-23","h":16,"w":0,"x":32},{"d":"2026-06-23","h":17,"w":1,"x":47},{"d":"2026-06-23","h":18,"w":0,"x":56},{"d":"2026-06-23","h":19,"w":0,"x":96},{"d":"2026-06-23","h":20,"w":0,"x":174},{"d":"2026-06-23","h":22,"w":0,"x":40},{"d":"2026-06-23","h":23,"w":0,"x":89},{"d":"2026-06-24","h":10,"w":0,"x":38},{"d":"2026-06-24","h":11,"w":0,"x":80},{"d":"2026-06-24","h":12,"w":0,"x":30},{"d":"2026-06-24","h":13,"w":1,"x":10},{"d":"2026-06-24","h":14,"w":0,"x":9},{"d":"2026-06-24","h":17,"w":0,"x":6},{"d":"2026-06-24","h":18,"w":0,"x":26},{"d":"2026-06-24","h":19,"w":0,"x":68},{"d":"2026-06-25","h":17,"w":0,"x":25},{"d":"2026-06-25","h":18,"w":0,"x":58},{"d":"2026-06-25","h":19,"w":0,"x":96},{"d":"2026-06-26","h":13,"w":0,"x":74},{"d":"2026-06-26","h":14,"w":0,"x":11},{"d":"2026-06-26","h":15,"w":0,"x":30},{"d":"2026-06-26","h":16,"w":0,"x":104},{"d":"2026-06-26","h":17,"w":0,"x":51},{"d":"2026-06-26","h":18,"w":0,"x":31},{"d":"2026-06-26","h":19,"w":0,"x":30},{"d":"2026-06-26","h":20,"w":0,"x":30},{"d":"2026-06-26","h":23,"w":0,"x":21},{"d":"2026-06-28","h":15,"w":0,"x":7},{"d":"2026-06-28","h":16,"w":0,"x":12},{"d":"2026-06-28","h":19,"w":0,"x":44},{"d":"2026-06-28","h":20,"w":0,"x":21},{"d":"2026-06-28","h":21,"w":0,"x":62},{"d":"2026-06-29","h":19,"w":0,"x":84},{"d":"2026-06-29","h":20,"w":0,"x":4},{"d":"2026-06-30","h":11,"w":0,"x":8},{"d":"2026-06-30","h":12,"w":0,"x":37},{"d":"2026-06-30","h":13,"w":0,"x":54},{"d":"2026-06-30","h":14,"w":0,"x":52},{"d":"2026-06-30","h":16,"w":0,"x":17},{"d":"2026-06-30","h":17,"w":0,"x":26},{"d":"2026-06-30","h":18,"w":0,"x":1},{"d":"2026-06-30","h":19,"w":0,"x":69},{"d":"2026-06-30","h":20,"w":0,"x":132},{"d":"2026-06-30","h":21,"w":0,"x":44},{"d":"2026-07-01","h":0,"w":2,"x":0},{"d":"2026-07-01","h":10,"w":5,"x":0},{"d":"2026-07-01","h":13,"w":0,"x":15},{"d":"2026-07-01","h":15,"w":0,"x":78},{"d":"2026-07-01","h":16,"w":0,"x":13},{"d":"2026-07-01","h":19,"w":0,"x":119},{"d":"2026-07-01","h":21,"w":0,"x":23},{"d":"2026-07-02","h":15,"w":2,"x":0},{"d":"2026-07-02","h":16,"w":8,"x":0},{"d":"2026-07-02","h":17,"w":4,"x":0},{"d":"2026-07-02","h":19,"w":0,"x":22},{"d":"2026-07-02","h":21,"w":0,"x":54},{"d":"2026-07-02","h":22,"w":0,"x":12},{"d":"2026-07-03","h":15,"w":0,"x":22},{"d":"2026-07-03","h":23,"w":0,"x":49},{"d":"2026-07-04","h":8,"w":0,"x":1},{"d":"2026-07-04","h":18,"w":0,"x":39},{"d":"2026-07-04","h":21,"w":0,"x":19},{"d":"2026-07-05","h":10,"w":0,"x":13},{"d":"2026-07-05","h":12,"w":0,"x":57},{"d":"2026-07-05","h":19,"w":0,"x":50},{"d":"2026-07-05","h":20,"w":0,"x":119},{"d":"2026-07-06","h":17,"w":0,"x":15},{"d":"2026-07-06","h":18,"w":0,"x":59},{"d":"2026-07-06","h":20,"w":0,"x":5},{"d":"2026-07-07","h":11,"w":0,"x":26},{"d":"2026-07-07","h":12,"w":0,"x":24},{"d":"2026-07-07","h":14,"w":0,"x":23},{"d":"2026-07-07","h":15,"w":0,"x":85},{"d":"2026-07-07","h":16,"w":0,"x":30},{"d":"2026-07-07","h":17,"w":0,"x":31},{"d":"2026-07-07","h":18,"w":0,"x":10},{"d":"2026-07-07","h":19,"w":0,"x":180},{"d":"2026-07-07","h":20,"w":0,"x":113},{"d":"2026-07-08","h":11,"w":0,"x":25},{"d":"2026-07-08","h":12,"w":0,"x":86},{"d":"2026-07-08","h":13,"w":0,"x":58},{"d":"2026-07-08","h":16,"w":0,"x":36},{"d":"2026-07-08","h":17,"w":0,"x":6},{"d":"2026-07-08","h":18,"w":0,"x":19},{"d":"2026-07-09","h":12,"w":0,"x":25},{"d":"2026-07-09","h":16,"w":0,"x":71},{"d":"2026-07-09","h":17,"w":0,"x":58},{"d":"2026-07-11","h":20,"w":0,"x":73},{"d":"2026-07-11","h":21,"w":0,"x":13},{"d":"2026-07-12","h":18,"w":0,"x":39},{"d":"2026-07-12","h":19,"w":0,"x":83},{"d":"2026-07-12","h":20,"w":0,"x":10},{"d":"2026-07-12","h":21,"w":0,"x":100},{"d":"2026-07-13","h":17,"w":0,"x":44},{"d":"2026-07-13","h":18,"w":0,"x":27},{"d":"2026-07-13","h":19,"w":0,"x":152},{"d":"2026-07-13","h":20,"w":0,"x":129},{"d":"2026-07-13","h":21,"w":0,"x":137},{"d":"2026-07-13","h":22,"w":0,"x":23},{"d":"2026-07-14","h":12,"w":0,"x":117},{"d":"2026-07-14","h":13,"w":0,"x":32}]}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const P = JSON.parse(document.getElementById("payload").textContent);
+  const A = P.analysis;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = d3.format(",");
+  const pct1 = d3.format(".1%");
+  const pct0 = d3.format(".0%");
+  const f4 = d3.format(".4f");
+  const hh = (h) => String(h).padStart(2, "0") + ":00";
+
+  const H = A.headline, B = A.baseline_control, C1 = A.composition_control, C3 = A.adversary_control;
+
+  /* ------------------------------------------------------------ headline */
+
+  document.getElementById("head-figure").textContent = hh(H.peak_hour_before) + " → " + hh(H.peak_hour_after);
+  document.getElementById("head-caption").innerHTML =
+    `the agents' busiest hour of the day, before and after 19 June. The administrator's own busiest hour was ` +
+    `${hh(H.admin_peak_hour)}, carrying ${pct0(H.admin_peak_share)} of all his deletions.`;
+  document.getElementById("silent-window").textContent = hh(H.silent_window_utc[0]) + "–" + hh(H.silent_window_utc[1]);
+  document.getElementById("peak-before").textContent = hh(H.peak_hour_before);
+  document.getElementById("peak-after").textContent = hh(H.peak_hour_after);
+  document.getElementById("admin-peak").textContent = hh(H.admin_peak_hour);
+
+  /* ------------------------------------------------------ hourly profile */
+
+  function drawProfile() {
+    const svg = d3.select("#profile");
+    const W = svg.node().clientWidth || 900, Ht = 320;
+    const M = { top: 18, right: 14, bottom: 40, left: 48 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+
+    const rows = A.hourly;
+    const x = d3.scalePoint().domain(d3.range(24)).range([M.left, W - M.right]);
+    const maxV = d3.max(rows, (d) => Math.max(d.admin, d.pre_spike, d.spike, d.after));
+    const y = d3.scaleLinear().domain([0, maxV]).nice().range([Ht - M.bottom, M.top]);
+
+    // The administrator's silent window, as a night band.
+    const silent = H.admin_silent_hours;
+    if (silent.length) {
+      svg.append("rect")
+        .attr("x", x(silent[0]) - x.step() / 2).attr("y", M.top)
+        .attr("width", x(silent[silent.length - 1]) - x(silent[0]) + x.step())
+        .attr("height", Ht - M.bottom - M.top)
+        .attr("fill", css("--post")).attr("opacity", 0.08);
+      svg.append("text")
+        .attr("x", x(silent[0]) + 4).attr("y", M.top + 12)
+        .attr("fill", css("--post")).style("font-family", "var(--mono)").style("font-size", "9.5px").style("font-weight", "600")
+        .text("no deletions ever recorded in this window");
+    }
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${Ht - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", W - M.right).attr("y", Ht - 6).attr("text-anchor", "end")
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px")
+      .text("hour of day, UTC · share of that period's events");
+
+    const area = d3.area().x((d) => x(d.hour)).y0(y(0)).y1((d) => y(d.admin)).curve(d3.curveLinear);
+    svg.append("path").datum(rows).attr("fill", css("--admin")).attr("opacity", .17).attr("d", area);
+
+    [["admin", "--admin", 1.5, "3 3"], ["pre_spike", "--pre", 2, null], ["spike", "--spike", 2, null], ["after", "--post", 2.4, null]]
+      .forEach(([key, tok, wdt, dash]) => {
+        const line = d3.line().x((d) => x(d.hour)).y((d) => y(d[key])).curve(d3.curveLinear);
+        const p = svg.append("path").datum(rows).attr("fill", "none").attr("stroke", css(tok)).attr("stroke-width", wdt).attr("d", line);
+        if (dash) p.attr("stroke-dasharray", dash);
+      });
+  }
+
+  /* --------------------------------------------------------- control 1 */
+
+  document.getElementById("c1-figure").textContent = C1.handles_lowering_exposure + " of " + C1.n_handles;
+  document.getElementById("c1-caption").innerHTML =
+    `handles active on both sides of 19 June moved their <em>own</em> writing to quieter hours ` +
+    `(Wilcoxon p = ${d3.format(".1e")(C1.wilcoxon_p)}). Mean exposure fell ${f4(C1.mean_exposure_before)} → ${f4(C1.mean_exposure_after)}.`;
+
+  function drawPaired() {
+    const svg = d3.select("#paired");
+    const W = svg.node().clientWidth || 460, Ht = 300;
+    const M = { top: 18, right: 60, bottom: 34, left: 60 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+    const rows = C1.handles || [];
+    if (!rows.length) return;
+    const maxE = d3.max(rows, (d) => Math.max(d.exposure_before, d.exposure_after));
+    const y = d3.scaleLinear().domain([0, maxE]).nice().range([Ht - M.bottom, M.top]);
+    const xL = M.left, xR = W - M.right;
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".2f")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+
+    [[xL, "before"], [xR, "after"]].forEach(([xx, lab]) => {
+      svg.append("text").attr("x", xx).attr("y", Ht - 14).attr("text-anchor", "middle")
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px").text(lab);
+    });
+
+    rows.forEach((d) => {
+      const down = d.exposure_after < d.exposure_before;
+      svg.append("line")
+        .attr("x1", xL).attr("x2", xR)
+        .attr("y1", y(d.exposure_before)).attr("y2", y(d.exposure_after))
+        .attr("stroke", down ? css("--pass") : css("--fail"))
+        .attr("stroke-width", 1.3).attr("opacity", .62);
+      svg.append("circle").attr("cx", xL).attr("cy", y(d.exposure_before)).attr("r", 2.6).attr("fill", css("--ink-3"));
+      svg.append("circle").attr("cx", xR).attr("cy", y(d.exposure_after)).attr("r", 2.6)
+        .attr("fill", down ? css("--pass") : css("--fail"));
+    });
+  }
+
+  /* --------------------------------------------------------- control 2 */
+
+  document.getElementById("spike-share").textContent = pct0(B.spike_share_of_before_period);
+  const PL = { pre_spike: ["24 May – 15 June", "is-pre"], spike: ["16 – 18 June", "is-spike"], after: ["19 June onward", "is-post"] };
+  document.getElementById("periods").innerHTML = Object.entries(PL).map(([key, [label, cls]]) => {
+    const p = B.periods[key];
+    return `<div class="period ${cls}">
+      <span class="lab">${label}</span>
+      <div class="big">${hh(p.peak_hour)}</div>
+      <span class="note" style="font-size:.72rem;">busiest hour</span>
+      <dl>
+        <dt>writes</dt><dd>${fmt(p.writes)}</dd>
+        <dt>evening 18–21</dt><dd>${pct1(p.evening_share_18_21)}</dd>
+        <dt>night 01–07</dt><dd>${pct1(p.night_share_01_07)}</dd>
+        <dt>admin exposure</dt><dd>${f4(p.exposure)}</dd>
+      </dl>
+    </div>`;
+  }).join("");
+
+  document.getElementById("pre-evening").textContent = pct1(B.periods.pre_spike.evening_share_18_21);
+  document.getElementById("spike-evening").textContent = pct1(B.periods.spike.evening_share_18_21);
+  document.getElementById("post-evening").textContent = pct1(B.periods.after.evening_share_18_21);
+
+  function drawHeatmap() {
+    const svg = d3.select("#heatmap");
+    const days = Array.from(new Set(P.day_hour.map((d) => d.d))).sort();
+    const cell = 15, M = { top: 16, right: 12, bottom: 30, left: 42 };
+    const W = Math.max(svg.node().clientWidth || 900, M.left + M.right + days.length * cell);
+    const Ht = M.top + M.bottom + 24 * cell;
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("width", W).attr("height", Ht).selectAll("*").remove();
+
+    const x = d3.scaleBand().domain(days).range([M.left, M.left + days.length * cell]).padding(0.06);
+    const y = d3.scaleBand().domain(d3.range(24)).range([M.top, M.top + 24 * cell]).padding(0.06);
+    const maxW = d3.max(P.day_hour, (d) => d.w) || 1;
+    const colour = d3.scaleSequentialLog(d3.interpolatePuBu).domain([1, maxW]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).tickValues([0, 4, 8, 12, 16, 20]).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").remove());
+
+    svg.selectAll("rect.c").data(P.day_hour.filter((d) => d.w > 0)).join("rect")
+      .attr("class", "c")
+      .attr("x", (d) => x(d.d)).attr("y", (d) => y(d.h))
+      .attr("width", x.bandwidth()).attr("height", y.bandwidth())
+      .attr("fill", (d) => colour(d.w))
+      .append("title").text((d) => `${d.d} ${String(d.h).padStart(2, "0")}:00 — ${fmt(d.w)} writes`);
+
+    svg.selectAll("circle.x").data(P.day_hour.filter((d) => d.x > 0)).join("circle")
+      .attr("class", "x")
+      .attr("cx", (d) => x(d.d) + x.bandwidth() / 2).attr("cy", (d) => y(d.h) + y.bandwidth() / 2)
+      .attr("r", 2.1).attr("fill", css("--admin")).attr("opacity", .95);
+
+    const every = Math.ceil(days.length / 14);
+    svg.selectAll("text.d").data(days.filter((_, i) => i % every === 0)).join("text")
+      .attr("class", "d")
+      .attr("transform", (d) => `translate(${x(d) + x.bandwidth() / 2},${M.top + 24 * cell + 8}) rotate(45)`)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.5px")
+      .text((d) => d.slice(5));
+  }
+
+  /* --------------------------------------------------------- control 3 */
+
+  const clean = B.pre_spike_vs_after;
+  document.getElementById("clean-p").textContent = "p = " + f4(clean.p_value);
+
+  function drawWikis() {
+    const svg = d3.select("#wikis");
+    const W = svg.node().clientWidth || 900, Ht = 260;
+    const M = { top: 22, right: 150, bottom: 34, left: 70 };
+    svg.attr("viewBox", `0 0 ${W} ${Ht}`).attr("height", Ht).selectAll("*").remove();
+
+    const entries = Object.entries(C3.per_wiki).filter(([, v]) => v && v.p_value != null);
+    if (!entries.length) return;
+    const maxE = d3.max(entries, ([, v]) => Math.max(v.exposure_a, v.exposure_b));
+    const y = d3.scaleLinear().domain([0, maxE * 1.15]).range([Ht - M.bottom, M.top]);
+    const xL = M.left + 40, xR = W - M.right;
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".3f")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    [[xL, "before the spike"], [xR, "after 19 June"]].forEach(([xx, lab]) => {
+      svg.append("text").attr("x", xx).attr("y", Ht - 12).attr("text-anchor", "middle")
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px").text(lab);
+    });
+
+    entries.forEach(([wiki, v]) => {
+      const policed = v.deletions_on_this_wiki > 0;
+      const colour = policed ? css("--fail") : css("--pass");
+      svg.append("line").attr("x1", xL).attr("x2", xR)
+        .attr("y1", y(v.exposure_a)).attr("y2", y(v.exposure_b))
+        .attr("stroke", colour).attr("stroke-width", 2.4).attr("opacity", .9);
+      svg.append("circle").attr("cx", xL).attr("cy", y(v.exposure_a)).attr("r", 4).attr("fill", colour);
+      svg.append("circle").attr("cx", xR).attr("cy", y(v.exposure_b)).attr("r", 4).attr("fill", colour);
+      svg.append("text")
+        .attr("x", xR + 10).attr("y", y(v.exposure_b) + 4)
+        .attr("fill", css("--ink")).style("font-family", "var(--mono)").style("font-size", "10.5px").style("font-weight", "600")
+        .text(wiki);
+      svg.append("text")
+        .attr("x", xR + 10).attr("y", y(v.exposure_b) + 17)
+        .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.8px")
+        .text(`${fmt(v.deletions_on_this_wiki)} deletions · p=${f4(v.p_value)}`);
+    });
+  }
+
+  const dse = C3.per_wiki.dse, pro = C3.per_wiki.probier;
+  if (dse && pro) {
+    document.getElementById("c3-text").innerHTML =
+      `On the policed wiki, exposure fell ${f4(dse.exposure_a)} → ${f4(dse.exposure_b)} — a drop of ` +
+      `<strong>${f4(dse.difference)}</strong>. On the wiki nobody was policing it fell ${f4(pro.exposure_a)} → ${f4(pro.exposure_b)}, ` +
+      `a drop of <strong>${f4(pro.difference)}</strong>: <em>larger</em>, not smaller, and significant at p = ${f4(pro.p_value)}.`;
+  }
+
+  /* -------------------------------------------------------- batch table */
+
+  const BS = A.batch_signature;
+  d3.select("#batch-table").html(
+    `<thead><tr><th>period</th><th>writes</th><th>busiest 3 hours hold</th><th>hours to cover 80%</th><th>spread (bits of 4.58)</th></tr></thead><tbody>` +
+    Object.entries(PL).map(([key, [label]]) => {
+      const b = BS[key];
+      return `<tr><td>${label}</td><td>${fmt(b.writes)}</td><td>${pct0(b.top3_share)}</td>
+        <td>${b.hours_covering_80pct}</td><td>${d3.format(".2f")(b.entropy_bits)}</td></tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  document.getElementById("colophon").textContent =
+    `Exposure is the mean administrator deletion intensity at the hour each write happened — continuous rather than a ` +
+    `binary in-hours split, because the administrator's own activity is far from flat across his waking day. ` +
+    `Permutation tests use ${fmt(clean.n_permutations)} label shuffles.`;
+
+  function renderAll() { drawProfile(); drawPaired(); drawHeatmap(); drawWikis(); }
+  renderAll();
+  let t;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(renderAll, 160); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+})();
+</script>
