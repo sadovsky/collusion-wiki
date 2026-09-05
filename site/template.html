@@ -370,6 +370,25 @@ canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
     </div>
   </section>
 
+  <!-- =========================================================== structure -->
+  <section>
+    <p class="eyebrow">Structure</p>
+    <h2>Every number against the null that would have killed it</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure is-structural" id="recip-figure">—</div>
+        <div class="claim-caption" id="recip-caption"></div>
+      </div>
+      <div class="prose stack-tight">
+        <p>A bare network statistic means almost nothing. Reciprocal handoff pairs sound like coordination until you know how many a random graph with the same degree sequence produces. Each statistic below is compared against a degree-preserving rewiring of the same graph, so what is reported is the excess over what the degrees alone force.</p>
+        <p class="note" id="null-note"></p>
+      </div>
+    </div>
+    <div class="scroller panel"><table id="structure-table"></table></div>
+    <div class="scroller panel" style="margin-top:1rem;"><table id="degree-table"></table></div>
+    <p class="note" style="max-width:var(--measure); margin-top:.9rem;">Clustering in a bipartite graph or its projection is structurally determined — every page's set of editors becomes a clique by construction — so those layers get a reduced null budget and their transitivity is not read as a fact about agent behaviour.</p>
+  </section>
+
   <!-- ========================================================= communities -->
   <section>
     <p class="eyebrow">Self-organisation</p>
@@ -848,6 +867,87 @@ canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
       <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
       ${brokerTable}`;
   }
+
+  /* ----------------------------------------------------------- structure */
+
+  const structure = DATA.structure || {};
+  const SHORT_NAMES = {
+    G1_handoff: "handoff",
+    G2_coedit_bipartite: "co-edit (bipartite)",
+    G2p_coedit_projection: "co-edit (projected)",
+    G3_hyperlink: "hyperlink",
+    G4_resource_bipartite: "page ↔ host",
+    G4b_label_host: "handle ↔ host",
+    G5_infrastructure: "handle ↔ /16",
+    G6_provenance: "provenance",
+  };
+
+  function cell(stat) {
+    if (!stat) return "<td>—</td><td>—</td><td>—</td>";
+    return `<td>${f3(stat.observed)}</td><td>${f3(stat.null_mean)} ± ${f3(stat.null_std)}</td>` +
+           `<td>${Math.abs(stat.z_score) > 999 ? "—" : d3.format(".1f")(stat.z_score)}</td>`;
+  }
+
+  const structureRows = Object.entries(structure).filter(([, v]) => v && v.cohesion);
+  d3.select("#structure-table").html(
+    `<thead><tr>
+      <th>layer</th><th>nodes</th><th>edges</th><th>giant</th><th>max k-core</th>
+      <th>transitivity</th><th>rewired null</th><th>z</th>
+      <th>modularity Q</th><th>rewired null</th><th>z</th><th>nulls</th>
+    </tr></thead><tbody>` +
+    structureRows.map(([key, v]) => {
+      const comp = v.components || {};
+      const giant = comp.giant_fraction != null ? comp.giant_fraction
+        : comp.giant_weak_fraction != null ? comp.giant_weak_fraction : null;
+      const q = (v.communities || {}).modularity_vs_rewired;
+      return `<tr>
+        <td>${SHORT_NAMES[key] || key}</td>
+        <td>${fmt(v.summary.nodes)}</td>
+        <td>${fmt(v.summary.edges)}</td>
+        <td>${giant == null ? "—" : pct(giant)}</td>
+        <td>${fmt((v.kcore || {}).max_core || 0)}</td>
+        ${cell(v.cohesion.transitivity)}
+        ${cell(q)}
+        <td>${(v.cohesion.null_samples ?? v.cohesion.transitivity?.n_samples) || "—"}</td>
+      </tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  const handoff = structure.G1_handoff;
+  if (handoff && handoff.cohesion && handoff.cohesion.reciprocity) {
+    const r = handoff.cohesion.reciprocity;
+    document.getElementById("recip-figure").textContent = "z = " + d3.format(".0f")(r.z_score);
+    document.getElementById("recip-caption").innerHTML =
+      "reciprocity of the handoff network: " + f3(r.observed) + " observed against " +
+      f3(r.null_mean) + " ± " + f3(r.null_std) + " under degree-preserving rewiring.";
+    document.getElementById("null-note").textContent =
+      "Reciprocity here means A handed off to B and B also handed off to A. Rewiring preserves " +
+      "every agent's in- and out-degree exactly and destroys only who is wired to whom, so the gap " +
+      "is the part that the degree sequence does not explain.";
+  }
+
+  // Degree distributions, with the model selection shown rather than assumed.
+  const degreeRows = [];
+  structureRows.forEach(([key, v]) => {
+    Object.entries(v.degrees || {}).forEach(([direction, fit]) => {
+      if (!fit || !fit.alpha) return;
+      degreeRows.push({ layer: SHORT_NAMES[key] || key, direction, ...fit });
+    });
+  });
+  d3.select("#degree-table").html(
+    `<thead><tr><th>layer</th><th>degree</th><th>n</th><th>mean</th><th>max</th>
+      <th>α</th><th>KS</th><th>log-likelihood ratio</th><th>better fit</th></tr></thead><tbody>` +
+    degreeRows.map((r) => {
+      const pl = r.preferred === "power_law";
+      return `<tr>
+        <td>${r.layer}</td><td>${r.direction}</td><td>${fmt(r.n)}</td>
+        <td>${f2(r.mean)}</td><td>${fmt(r.max)}</td>
+        <td>${f2(r.alpha)}</td><td>${f3(r.ks_distance)}</td>
+        <td>${d3.format(".1f")(r.likelihood_ratio)} (p ${d3.format(".3f")(r.likelihood_ratio_p)})</td>
+        <td><span class="verdict ${pl ? "pass" : "fail"}">${r.preferred.replace("_", " ")}</span></td>
+      </tr>`;
+    }).join("") + "</tbody>"
+  );
 
   /* --------------------------------------------------------- communities */
 
