@@ -172,6 +172,12 @@ would sort to the end of an alphabetical deletion sweep. If that is a *response*
 to deletion rather than background naming style, ZZZ revisions should be
 concentrated later than the rest of the corpus. They are:
 
+> **Revised by the appendix.** The timing result below stands, but the
+> *explanation* does not. Deletions were not systematically alphabetical (median
+> Spearman ρ = 0.116 across 25 sittings), only five of the seventeen `ZZZ` pages
+> actually begin with Z, and every one of them was deleted anyway. The marker is
+> late; the mechanism it is named for was not how the deletions were done.
+
 - **38.7%** of ZZZ revisions fall after 19 June, against a **19.5%** baseline.
 - Mann-Whitney, one-sided later-than-baseline: **p = 5.5 × 10⁻⁶**.
 
