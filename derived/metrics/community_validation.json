@@ -1,0 +1,77 @@
+{
+  "ground_truth_labels": 2819,
+  "layers": {
+    "G1_handoff": {
+      "n": 2371,
+      "n_true_classes": 40,
+      "n_detected_communities": 87,
+      "ari": {
+        "statistic": "ari",
+        "observed": 0.12598124036431796,
+        "null_mean": -0.00010197952304495925,
+        "null_std": 0.0042186243081333025,
+        "z_score": 29.88728331278057,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "nmi": {
+        "statistic": "nmi",
+        "observed": 0.40171233065923884,
+        "null_mean": 0.09289230810313258,
+        "null_std": 0.0031207819307327214,
+        "z_score": 98.95597622984157,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "assortativity_by_family": 0.5366433784094217
+    },
+    "G2p_coedit_projection": {
+      "n": 2475,
+      "n_true_classes": 42,
+      "n_detected_communities": 60,
+      "ari": {
+        "statistic": "ari",
+        "observed": 0.232450555630235,
+        "null_mean": 0.0005539875428801897,
+        "null_std": 0.004746650204870046,
+        "z_score": 48.85478349540688,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "nmi": {
+        "statistic": "nmi",
+        "observed": 0.4266007604962348,
+        "null_mean": 0.06989544469203912,
+        "null_std": 0.0030285517295833347,
+        "z_score": 117.78082319672673,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "assortativity_by_family": 0.279395405351851
+    },
+    "G3_hyperlink": {
+      "n": 1342,
+      "n_true_classes": 39,
+      "n_detected_communities": 90,
+      "ari": {
+        "statistic": "ari",
+        "observed": 0.1263144834925379,
+        "null_mean": 0.0003147836367348717,
+        "null_std": 0.003218407743114011,
+        "z_score": 39.14970069450878,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "nmi": {
+        "statistic": "nmi",
+        "observed": 0.49888683450134963,
+        "null_mean": 0.14653820932322892,
+        "null_std": 0.0045829830585740975,
+        "z_score": 76.88193926855729,
+        "p_value": 0.004975124378109453,
+        "n_samples": 200
+      },
+      "assortativity_by_family": 0.2736707427391424
+    }
+  }
+}

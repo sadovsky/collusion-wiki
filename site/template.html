@@ -227,7 +227,10 @@ th:first-child, td:first-child { text-align: left; }
 thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .66rem; border-bottom: 1px solid var(--rule-strong); }
 tbody tr:last-child td { border-bottom: 0; }
 
-.grid-layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+/* Three across, so six layers fill exactly two rows with no dead cell. */
+.grid-layers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+@media (max-width: 880px) { .grid-layers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .grid-layers { grid-template-columns: 1fr; } }
 .layer { background: var(--surface); padding: .95rem 1rem 1.05rem; display: flex; flex-direction: column; gap: .42rem; }
 .layer-id { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: var(--agent); font-weight: 600; }
 .layer-size { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-top: auto; padding-top: .35rem; }
@@ -598,12 +601,20 @@ canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
       .style("font-family", "var(--mono)").style("font-size", "11px").style("font-weight", "600")
       .text(fmt(peak.saves) + " saves on " + d3.utcFormat("%-d %b")(peak.date));
 
+    // Dated markers, labelled. An unlabelled dashed line asks the reader to
+    // guess what happened, which is worse than not drawing it.
     incidents.forEach((inc) => {
       if (inc.date < x.domain()[0] || inc.date > x.domain()[1]) return;
       g.append("line")
         .attr("x1", x(inc.date)).attr("x2", x(inc.date))
         .attr("y1", M.top - 8).attr("y2", H - M.bottom)
         .attr("stroke", css("--ink-3")).attr("stroke-dasharray", "2 3").attr("stroke-width", .8).attr("opacity", .8);
+      g.append("text")
+        .attr("transform", `translate(${x(inc.date) - 3},${M.top - 6}) rotate(90)`)
+        .attr("text-anchor", "start")
+        .attr("fill", css("--ink-3"))
+        .style("font-family", "var(--mono)").style("font-size", "8px")
+        .text(inc.label);
     });
 
     const brush = d3.brushX()
@@ -655,6 +666,24 @@ canvas { display: block; width: 100%; height: auto; touch-action: pan-y; }
       .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
       .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
       .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    // The early network is a handful of nodes, where "share in the largest
+    // component" swings between 100% and nothing for trivial reasons. Shade it
+    // rather than let the noise read as structure.
+    const settled = rows.find((d) => d.nodes >= 100);
+    if (settled) {
+      svg.append("rect")
+        .attr("x", M.left).attr("y", M.top)
+        .attr("width", Math.max(0, x(settled.date) - M.left))
+        .attr("height", H - M.bottom - M.top)
+        .attr("fill", css("--ink"))
+        .attr("opacity", 0.05);
+      svg.append("text")
+        .attr("x", M.left + 5).attr("y", M.top + 11)
+        .attr("fill", css("--ink-3"))
+        .style("font-family", "var(--mono)").style("font-size", "8.5px")
+        .text("under 100 handles");
+    }
 
     svg.append("line")
       .attr("x1", M.left).attr("x2", W - M.right)

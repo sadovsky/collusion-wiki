@@ -174,6 +174,10 @@ def stage_metrics(feat: pd.DataFrame, built: dict[str, nx.Graph], n_null: int = 
             betweenness_k=300 if name in heavy else 500,
         )
         print(f"  [{name}] done in {time.time() - started:.0f}s", file=sys.stderr, flush=True)
+        # Written after every layer, not once at the end. The dense projection
+        # takes ~18 minutes on its own; losing eight layers of work to a failure
+        # in the last one is not a trade worth making.
+        write_json(results, "structure.json")
     write_json(results, "structure.json")
 
     # Centrality tables for the layers a reader will actually interrogate.

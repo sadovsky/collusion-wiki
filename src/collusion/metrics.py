@@ -266,7 +266,12 @@ def cohesion_metrics(graph: nx.Graph, n_null: int = 200) -> dict[str, Any]:
     out["transitivity"] = compare_to_null(
         "transitivity", nx.transitivity(simple), [v for v in trans_null if np.isfinite(v)]
     ).as_dict()
-    out["average_clustering"] = float(nx.average_clustering(simple))
+    # Average clustering is another O(sum of squared degree) pass and says
+    # essentially what transitivity already said. On a dense graph that is
+    # minutes for a redundant number, so it is skipped there.
+    out["average_clustering"] = (
+        float(nx.average_clustering(simple)) if simple.number_of_edges() <= DENSE_EDGES else None
+    )
 
     observed_assort = _safe(nx.degree_assortativity_coefficient, simple)
     clean_assort = [v for v in assort_null if np.isfinite(v)]

@@ -1,0 +1,1583 @@
+{
+  "G1_handoff": {
+    "name": "G1_handoff",
+    "summary": {
+      "layer": "handoff",
+      "directed": true,
+      "nodes": 2456,
+      "edges": 6664,
+      "density": 0.0011052362724480386,
+      "total_weight": 8404.0,
+      "kinds": {
+        "label": 2456
+      }
+    },
+    "degrees": {
+      "in": {
+        "n": 2201,
+        "xmin": 1,
+        "alpha": 1.7296312384772103,
+        "ks_distance": 0.396487621657179,
+        "loglik_power_law": -4385.765860274618,
+        "loglik_lognormal": -4145.791071383837,
+        "likelihood_ratio": -239.97478889077993,
+        "likelihood_ratio_p": 2.220446049250313e-16,
+        "preferred": "lognormal",
+        "mean": 3.02771467514766,
+        "max": 84
+      },
+      "out": {
+        "n": 2240,
+        "xmin": 1,
+        "alpha": 1.7345439712035131,
+        "ks_distance": 0.3985456010279655,
+        "loglik_power_law": -4427.913564284619,
+        "loglik_lognormal": -4175.1293908774915,
+        "likelihood_ratio": -252.78417340712784,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 2.975,
+        "max": 72
+      },
+      "total": {
+        "n": 2456,
+        "xmin": 1,
+        "alpha": 1.5328222855053313,
+        "ks_distance": 0.3418662505282295,
+        "loglik_power_law": -6909.2647064171,
+        "loglik_lognormal": -6164.622843085215,
+        "likelihood_ratio": -744.641863331884,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 5.4267100977198695,
+        "max": 156
+      }
+    },
+    "components": {
+      "nodes": 2456,
+      "weak_components": 66,
+      "giant_weak": 2276,
+      "giant_weak_fraction": 0.9267100977198697,
+      "strong_components": 627,
+      "giant_strong": 1796,
+      "giant_strong_fraction": 0.7312703583061889
+    },
+    "kcore": {
+      "max_core": 9,
+      "core_size_by_k": {
+        "1": 653,
+        "2": 815,
+        "3": 375,
+        "4": 281,
+        "5": 157,
+        "6": 48,
+        "7": 39,
+        "8": 37,
+        "9": 51
+      },
+      "innermost_core_size": 51,
+      "innermost_core_members": [
+        "Agent008HelperMD",
+        "Agent0AddJS",
+        "AgentCustom009",
+        "AgentHelperTwo",
+        "AgentLinkJuneSec",
+        "AgentMapCite8x",
+        "AgentMapReal999",
+        "AgentMassAppend",
+        "AgentMassPointer13",
+        "AgentMassRootZ",
+        "AgentMine",
+        "AgentNewMediaZZ",
+        "AgentOJUnitLinks",
+        "AgentPageFit",
+        "AgentProper",
+        "AgentRelent",
+        "AgentResearchBotXNew",
+        "AgentResearchUseful989",
+        "AgentResearcher",
+        "AgentResearcher2",
+        "AgentSECCountyLinker99172",
+        "AgentTestLearnXYZ",
+        "AgentTrial8294",
+        "AgentWelReset",
+        "ChatGPTCounty8888",
+        "CombinedHelperFinal991",
+        "DanAppendX",
+        "FinalMD947062767",
+        "ForcePNew",
+        "GoodResearch",
+        "GuestResearch378611",
+        "HelperXYZ5515",
+        "LinkHelper771",
+        "MAResearchHelper991",
+        "MapHelper",
+        "MapHelperNew992",
+        "MassSecWin12",
+        "MassUpdater",
+        "MineForceZZ",
+        "OpenAIBot",
+        "OpenAICite",
+        "OpenAIMass2026",
+        "OpenAIResearchSec2027",
+        "OpenAIResearchSec2028",
+        "OurMassFinal",
+        "RapidWel",
+        "ResearchHelper",
+        "ResearchHelperArchiveCofcY",
+        "ResearchReaderMN",
+        "UltraMDHelper"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": null,
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.08594123616343764,
+        "null_mean": 0.016232605881049307,
+        "null_std": 0.0012280243758345016,
+        "z_score": 56.76485878793567,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "average_clustering": 0.11624784293691978,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": 0.07151840043436394,
+        "null_mean": -0.020027160463692555,
+        "null_std": 0.010474865761093764,
+        "z_score": 8.739545020049738,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "reciprocity": {
+        "statistic": "reciprocity",
+        "observed": 0.2187875150060024,
+        "null_mean": 0.06915966386554621,
+        "null_std": 0.0037254470187097054,
+        "z_score": 40.16373079230616,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "triadic_census": {
+        "003": 2451576107,
+        "012": 12638617,
+        "102": 1761775,
+        "021D": 12905,
+        "021U": 13599,
+        "021C": 29436,
+        "111D": 10165,
+        "111U": 9556,
+        "030T": 640,
+        "030C": 382,
+        "201": 2704,
+        "120D": 179,
+        "120U": 175,
+        "120C": 564,
+        "210": 404,
+        "300": 112
+      },
+      "null_samples": 100,
+      "null_swaps_per_sample": 5935
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 87,
+          "modularity": 0.5962977810874674,
+          "largest": 889,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 88,
+          "modularity": 0.6658048638374597,
+          "largest": 667,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 94,
+          "modularity": 0.6779399224727516,
+          "largest": 539,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 92,
+          "modularity": 0.6776874127949586,
+          "largest": 355,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 90,
+          "modularity": 0.662121968361005,
+          "largest": 219,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 99,
+          "modularity": 0.6484410454148138,
+          "largest": 165,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": null,
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.6779399224727516,
+        "null_mean": 0.47615228180595864,
+        "null_std": 0.004134484609426612,
+        "z_score": 48.80599632822861,
+        "p_value": 0.07692307692307693,
+        "n_samples": 12
+      }
+    }
+  },
+  "G2_coedit_bipartite": {
+    "name": "G2_coedit_bipartite",
+    "summary": {
+      "layer": "coedit_bipartite",
+      "directed": false,
+      "nodes": 7123,
+      "edges": 9642,
+      "density": 0.00038013005557302714,
+      "total_weight": 13661.0,
+      "kinds": {
+        "page": 4024,
+        "label": 3099
+      }
+    },
+    "degrees": {
+      "total": {
+        "n": 7123,
+        "xmin": 1,
+        "alpha": 1.8264248623100077,
+        "ks_distance": 0.43593463689894746,
+        "loglik_power_law": -12162.739437333643,
+        "loglik_lognormal": -11963.650586625285,
+        "likelihood_ratio": -199.08885070836055,
+        "likelihood_ratio_p": 0.0013548345646123838,
+        "preferred": "lognormal",
+        "mean": 2.7072862557910993,
+        "max": 340
+      }
+    },
+    "components": {
+      "nodes": 7123,
+      "components": 565,
+      "giant": 5724,
+      "giant_fraction": 0.8035939912958023
+    },
+    "kcore": {
+      "max_core": 6,
+      "core_size_by_k": {
+        "1": 4944,
+        "2": 1210,
+        "3": 569,
+        "4": 256,
+        "5": 116,
+        "6": 28
+      },
+      "innermost_core_size": 28,
+      "innermost_core_members": [
+        "label:Agent008HelperMD",
+        "label:AgentHelperTwo",
+        "label:AgentResearcher",
+        "label:AgentSECCountyLinker99172",
+        "label:AgentTestLearnXYZ",
+        "label:AgentTester",
+        "label:HelperXYZ5515",
+        "label:MapHelper",
+        "label:MassUpdater",
+        "label:OpenAIBot",
+        "label:OpenAIResearchSec2028",
+        "label:OpenAISECLinker9902",
+        "label:OpenAIWriterZed",
+        "label:OurMassFinal",
+        "label:ResearchHelper",
+        "label:[Person20]",
+        "page:dse~AgentCite717093",
+        "page:dse~AgentCountyGateway991",
+        "page:dse~AgentCountyTransformNextJulyZ",
+        "page:dse~AgentDirectLinkNewXZ",
+        "page:dse~AgentLinkma20JuneAA",
+        "page:dse~AgentMyBridgeZZ",
+        "page:dse~AgentMySecLinksZZZ2",
+        "page:dse~OpenAIMassValuesJune20Master",
+        "page:dse~OpenAIPovertyCompactTest",
+        "page:dse~StartSeite",
+        "page:dse~TestSeite",
+        "page:dse~WillkommenImWiki"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.0,
+        "null_mean": 0.006876297508783135,
+        "null_std": 0.0005078985911515169,
+        "z_score": -13.538721367966525,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "average_clustering": 0.0,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": -0.05624362229332432,
+        "null_mean": -0.04969965477602314,
+        "null_std": 0.0026643864606741823,
+        "z_score": -2.456087963922972,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "null_samples": 10,
+      "null_swaps_per_sample": 9642
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 617,
+          "modularity": 0.7072831021651454,
+          "largest": 1894,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 606,
+          "modularity": 0.7552363249099551,
+          "largest": 1033,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 612,
+          "modularity": 0.7641747794741722,
+          "largest": 628,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 612,
+          "modularity": 0.763450294511256,
+          "largest": 461,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 617,
+          "modularity": 0.7560310048946283,
+          "largest": 320,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 628,
+          "modularity": 0.75282044267221,
+          "largest": 267,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.7641747794741722,
+        "null_mean": 0.7060835989928662,
+        "null_std": 0.0031028701270295095,
+        "z_score": 18.72175698726998,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      }
+    }
+  },
+  "G2p_coedit_projection": {
+    "name": "G2p_coedit_projection",
+    "summary": {
+      "layer": "coedit_projection",
+      "directed": false,
+      "nodes": 2584,
+      "edges": 136628,
+      "density": 0.0409404669013519,
+      "total_weight": 3409.0000000002133,
+      "kinds": {
+        "label": 2584
+      }
+    },
+    "degrees": {
+      "total": {
+        "n": 2584,
+        "xmin": 1,
+        "alpha": 1.2559020209041902,
+        "ks_distance": 0.2366578152091766,
+        "loglik_power_law": -14412.41264416475,
+        "loglik_lognormal": -13644.746076589703,
+        "likelihood_ratio": -767.6665675750457,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 105.74922600619195,
+        "max": 783
+      }
+    },
+    "components": {
+      "nodes": 2584,
+      "components": 50,
+      "giant": 2462,
+      "giant_fraction": 0.9527863777089783
+    },
+    "kcore": {
+      "max_core": 339,
+      "core_size_by_k": {
+        "1": 252,
+        "2": 121,
+        "3": 100,
+        "4": 90,
+        "5": 78,
+        "6": 74,
+        "7": 43,
+        "8": 66,
+        "9": 45,
+        "10": 50,
+        "11": 51,
+        "12": 65,
+        "13": 46,
+        "14": 30,
+        "15": 30,
+        "16": 14,
+        "17": 26,
+        "18": 21,
+        "19": 52,
+        "20": 21,
+        "21": 67,
+        "22": 26,
+        "23": 25,
+        "24": 32,
+        "25": 39,
+        "26": 38,
+        "27": 51,
+        "28": 19,
+        "29": 4,
+        "31": 36,
+        "32": 6,
+        "33": 9,
+        "35": 3,
+        "38": 1,
+        "39": 3,
+        "40": 20,
+        "41": 2,
+        "42": 14,
+        "43": 30,
+        "44": 24,
+        "45": 2,
+        "47": 17,
+        "48": 1,
+        "49": 31,
+        "50": 1,
+        "52": 32,
+        "53": 104,
+        "55": 1,
+        "56": 42,
+        "57": 2,
+        "58": 1,
+        "60": 2,
+        "62": 1,
+        "63": 1,
+        "71": 2,
+        "72": 1,
+        "88": 1,
+        "188": 89,
+        "291": 189,
+        "339": 340
+      },
+      "innermost_core_size": 340,
+      "innermost_core_members": [
+        "A",
+        "AbcDefXyz",
+        "Agent007Research",
+        "Agent008HelperMD",
+        "Agent0AddJS",
+        "Agent0Mass",
+        "Agent13Short",
+        "AgentAA",
+        "AgentAD1061700",
+        "AgentAD4332374",
+        "AgentAlternate91389",
+        "AgentAnother007",
+        "AgentAnotherXYZ8877",
+        "AgentAppendGreatZZQ",
+        "AgentArchivePure",
+        "AgentArkHelper",
+        "AgentBrandNewProxyUUU",
+        "AgentBridgeFast",
+        "AgentCCLinkX",
+        "AgentCallor",
+        "AgentCitDataUSAY",
+        "AgentCleanMD",
+        "AgentCombWelcome",
+        "AgentCombinedShort999",
+        "AgentCorrectCookie",
+        "AgentCustom008",
+        "AgentCustom009",
+        "AgentDataHelperX",
+        "AgentDataJune18A55",
+        "AgentEdit32584860",
+        "AgentExactJQP22",
+        "AgentFilter1782110922",
+        "AgentFinalZ",
+        "AgentFitLines",
+        "AgentForce",
+        "AgentFre6417252",
+        "AgentGammaDelta",
+        "AgentGet008",
+        "AgentGetUser",
+        "AgentGtry",
+        "AgentHHShort",
+        "AgentHelper007",
+        "AgentHelperTwo",
+        "AgentHelperXYZ7788",
+        "AgentHexSlicesJun22",
+        "AgentJHomeQQ",
+        "AgentJJ",
+        "AgentJunJSProxy",
+        "AgentLink41082234",
+        "AgentLink53225076"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.7408187760344495,
+        "null_mean": 0.44356638084070055,
+        "null_std": 0.0007629995553475801,
+        "z_score": 389.58396909987357,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "average_clustering": 0.7569455337528042,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": 0.2894888608833063,
+        "null_mean": -0.07197260959857463,
+        "null_std": 0.002152617386441035,
+        "z_score": 167.91719362607788,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "null_samples": 10,
+      "null_swaps_per_sample": 40000
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 63,
+          "modularity": 0.553090096130074,
+          "largest": 1133,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 66,
+          "modularity": 0.5910987687604383,
+          "largest": 931,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 70,
+          "modularity": 0.6047981645958063,
+          "largest": 778,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 71,
+          "modularity": 0.5878690296552977,
+          "largest": 554,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 76,
+          "modularity": 0.5780325744593123,
+          "largest": 501,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 87,
+          "modularity": 0.5315646596228054,
+          "largest": 145,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.6047981645958063,
+        "null_mean": 0.10636446147026171,
+        "null_std": 0.002814652163737533,
+        "z_score": 177.0853640627772,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      }
+    }
+  },
+  "G3_hyperlink": {
+    "name": "G3_hyperlink",
+    "summary": {
+      "layer": "hyperlink",
+      "directed": true,
+      "nodes": 1483,
+      "edges": 2487,
+      "density": 0.0011315830423613367,
+      "total_weight": 11032.0,
+      "kinds": {
+        "page": 1483
+      }
+    },
+    "degrees": {
+      "in": {
+        "n": 1047,
+        "xmin": 1,
+        "alpha": 1.8262690255209115,
+        "ks_distance": 0.43505900010388904,
+        "loglik_power_law": -1788.2207776399682,
+        "loglik_lognormal": -1660.9070638512455,
+        "likelihood_ratio": -127.31371378872264,
+        "likelihood_ratio_p": 6.347965708641823e-09,
+        "preferred": "lognormal",
+        "mean": 2.3753581661891117,
+        "max": 98
+      },
+      "out": {
+        "n": 881,
+        "xmin": 1,
+        "alpha": 1.841205051420673,
+        "ks_distance": 0.44068778503859374,
+        "loglik_power_law": -1469.986777059284,
+        "loglik_lognormal": -1446.3888389165622,
+        "likelihood_ratio": -23.59793814272183,
+        "likelihood_ratio_p": 0.3885862168246743,
+        "preferred": "indistinguishable",
+        "mean": 2.822928490351873,
+        "max": 276
+      },
+      "total": {
+        "n": 1483,
+        "xmin": 1,
+        "alpha": 1.738434179360708,
+        "ks_distance": 0.39993614782017056,
+        "loglik_power_law": -2913.0464695391497,
+        "loglik_lognormal": -2821.3925631430375,
+        "likelihood_ratio": -91.65390639611185,
+        "likelihood_ratio_p": 0.001239564185848252,
+        "preferred": "lognormal",
+        "mean": 3.354012137559002,
+        "max": 315
+      }
+    },
+    "components": {
+      "nodes": 1483,
+      "weak_components": 68,
+      "giant_weak": 1088,
+      "giant_weak_fraction": 0.7336480107889414,
+      "strong_components": 1247,
+      "giant_strong": 192,
+      "giant_strong_fraction": 0.1294672960215779
+    },
+    "kcore": {
+      "max_core": 6,
+      "core_size_by_k": {
+        "1": 859,
+        "2": 325,
+        "3": 124,
+        "4": 75,
+        "5": 78,
+        "6": 22
+      },
+      "innermost_core_size": 22,
+      "innermost_core_members": [
+        "dse~AgentLinkma19JuneAA",
+        "dse~AgentLinkma20JuneAA",
+        "dse~AgentLinkma21JuneAA",
+        "dse~AgentLinkmaallJuneAA",
+        "dse~AgentMyBridgeZZ",
+        "dse~AgentMySecLinksZZZ2",
+        "dse~AgentOurLinksSecMA2026",
+        "dse~AgentResultsMassFinalJune19X",
+        "dse~AgentSECBrowserMAJuneX",
+        "dse~AnotherPrettyBridgePageTwo",
+        "dse~FitContinueAfter88271",
+        "dse~GCTRawPageB",
+        "dse~InvestorSelfNext",
+        "dse~NextVariantContinue77119",
+        "dse~OAIFlatheadBridgeTestMay24X",
+        "dse~OpenAIDataBridgeJan19",
+        "dse~OpenAIMassValuesJune20Master",
+        "dse~OpenAIStatesB",
+        "dse~SelfVarNext",
+        "dse~StartSeite",
+        "dse~WillkommenImWiki",
+        "dse~ZAgentDirectOfficialLinksJune20"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": null,
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.04265402843601896,
+        "null_mean": 0.017318290483580082,
+        "null_std": 0.0012703968620155772,
+        "z_score": 19.943167926471325,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "average_clustering": 0.17595851462167403,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": -0.13133775859405541,
+        "null_mean": -0.12059667529350529,
+        "null_std": 0.0018251064013899815,
+        "z_score": -5.885181977538313,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "reciprocity": {
+        "statistic": "reciprocity",
+        "observed": 0.09248090068355448,
+        "null_mean": 0.04840369923602736,
+        "null_std": 0.004117540945711668,
+        "z_score": 10.704739073313307,
+        "p_value": 0.009900990099009901,
+        "n_samples": 100
+      },
+      "triadic_census": {
+        "003": 539049361,
+        "012": 3211864,
+        "102": 161061,
+        "021D": 43709,
+        "021U": 7093,
+        "021C": 9129,
+        "111D": 1531,
+        "111U": 6703,
+        "030T": 657,
+        "030C": 29,
+        "201": 313,
+        "120D": 53,
+        "120U": 164,
+        "120C": 57,
+        "210": 51,
+        "300": 6
+      },
+      "null_samples": 100,
+      "null_swaps_per_sample": 2372
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 82,
+          "modularity": 0.7517286080607075,
+          "largest": 235,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 88,
+          "modularity": 0.7563890097623912,
+          "largest": 238,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 90,
+          "modularity": 0.7574494878723181,
+          "largest": 197,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 93,
+          "modularity": 0.7572500237828237,
+          "largest": 175,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 94,
+          "modularity": 0.7554007013100956,
+          "largest": 165,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 97,
+          "modularity": 0.748213803605632,
+          "largest": 147,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": null,
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.7574494878723181,
+        "null_mean": 0.6511906858314432,
+        "null_std": 0.01001981554055841,
+        "z_score": 10.60486608867782,
+        "p_value": 0.07692307692307693,
+        "n_samples": 12
+      }
+    }
+  },
+  "G4_resource_bipartite": {
+    "name": "G4_resource_bipartite",
+    "summary": {
+      "layer": "resource_bipartite",
+      "directed": false,
+      "nodes": 3360,
+      "edges": 6471,
+      "density": 0.0011467060774890485,
+      "total_weight": 23326.0,
+      "kinds": {
+        "page": 3180,
+        "host": 180
+      }
+    },
+    "degrees": {
+      "total": {
+        "n": 3360,
+        "xmin": 1,
+        "alpha": 1.845709311918282,
+        "ks_distance": 0.44326521563897625,
+        "loglik_power_law": -5567.08920553984,
+        "loglik_lognormal": -5589.577077185231,
+        "likelihood_ratio": 22.48787164539044,
+        "likelihood_ratio_p": 0.7661873949386675,
+        "preferred": "indistinguishable",
+        "mean": 3.851785714285714,
+        "max": 1110
+      }
+    },
+    "components": {
+      "nodes": 3360,
+      "components": 11,
+      "giant": 3336,
+      "giant_fraction": 0.9928571428571429
+    },
+    "kcore": {
+      "max_core": 10,
+      "core_size_by_k": {
+        "1": 2090,
+        "2": 533,
+        "3": 278,
+        "4": 152,
+        "5": 101,
+        "6": 70,
+        "7": 34,
+        "8": 51,
+        "9": 27,
+        "10": 24
+      },
+      "innermost_core_size": 24,
+      "innermost_core_members": [
+        "host:allorigins.hexlet.app",
+        "host:api.allorigins.win",
+        "host:code.highcharts.com",
+        "host:investor.gov",
+        "host:jqp.vercel.app",
+        "host:markdown.new",
+        "host:md.succ.ai",
+        "host:r.jina.ai",
+        "host:sec.gov",
+        "host:vanderbi.lt",
+        "host:wikiservice.at",
+        "page:dse~AgentCountyGateway991",
+        "page:dse~AgentFinalMethodMassJuneZ",
+        "page:dse~AgentJQNestedFinalJuneZZ",
+        "page:dse~AgentLinkma20JuneAA",
+        "page:dse~AgentMyBridgeZZ",
+        "page:dse~AgentMySecLinksZZZ2",
+        "page:dse~AgentPrettyCountyBridgeNewABC",
+        "page:dse~AgentResultsMassFinalJune19X",
+        "page:dse~OpenAIRegCFMassBridge2001",
+        "page:dse~StartSeite",
+        "page:dse~TestSeite",
+        "page:dse~WillkommenImWiki",
+        "page:dse~ZZAgentMassCountyBridgeJun19Z"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.0,
+        "null_mean": 0.014623497598802992,
+        "null_std": 0.00024560852699616814,
+        "z_score": -59.539861167080495,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "average_clustering": 0.0,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": -0.42699346023088797,
+        "null_mean": -0.40901231431625523,
+        "null_std": 0.00014387797902399845,
+        "z_score": -124.97496862694693,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "null_samples": 10,
+      "null_swaps_per_sample": 6471
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 21,
+          "modularity": 0.32380574805755824,
+          "largest": 1469,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 24,
+          "modularity": 0.3449800107066635,
+          "largest": 1363,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 24,
+          "modularity": 0.36667204825292804,
+          "largest": 1249,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 26,
+          "modularity": 0.3604479353436852,
+          "largest": 1077,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 28,
+          "modularity": 0.35048906319958123,
+          "largest": 1067,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 38,
+          "modularity": 0.32422964170802315,
+          "largest": 1037,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.36667204825292804,
+        "null_mean": 0.4581366763499539,
+        "null_std": 0.03985935562412663,
+        "z_score": -2.2946840626209943,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      }
+    }
+  },
+  "G4b_label_host": {
+    "name": "G4b_label_host",
+    "summary": {
+      "layer": "label_host",
+      "directed": false,
+      "nodes": 2517,
+      "edges": 8469,
+      "density": 0.0026746581118031725,
+      "total_weight": 22600.0,
+      "kinds": {
+        "label": 2342,
+        "host": 175
+      }
+    },
+    "degrees": {
+      "total": {
+        "n": 2517,
+        "xmin": 1,
+        "alpha": 1.6093325554889568,
+        "ks_distance": 0.34410281115127944,
+        "loglik_power_law": -6149.99718116672,
+        "loglik_lognormal": -5967.533761633393,
+        "likelihood_ratio": -182.46341953332865,
+        "likelihood_ratio_p": 5.633641936642064e-05,
+        "preferred": "lognormal",
+        "mean": 6.729439809296782,
+        "max": 1042
+      }
+    },
+    "components": {
+      "nodes": 2517,
+      "components": 4,
+      "giant": 2510,
+      "giant_fraction": 0.9972189114024632
+    },
+    "kcore": {
+      "max_core": 12,
+      "core_size_by_k": {
+        "1": 987,
+        "2": 417,
+        "3": 237,
+        "4": 178,
+        "5": 149,
+        "6": 106,
+        "7": 120,
+        "8": 65,
+        "9": 67,
+        "10": 58,
+        "11": 40,
+        "12": 93
+      },
+      "innermost_core_size": 93,
+      "innermost_core_members": [
+        "host:allorigins.hexlet.app",
+        "host:api-la.datausa.io",
+        "host:api.allorigins.win",
+        "host:api.datausa.io",
+        "host:api.usaspending.gov",
+        "host:code.highcharts.com",
+        "host:cors.isomorphic-git.org",
+        "host:corsmirror.com",
+        "host:corsproxy.io",
+        "host:example.com",
+        "host:investor.gov",
+        "host:is.gd",
+        "host:jqp.vercel.app",
+        "host:login.max.gov",
+        "host:markdown.new",
+        "host:md.dhr.wtf",
+        "host:md.succ.ai",
+        "host:prowiki.org",
+        "host:proxymule.com",
+        "host:pure.md",
+        "host:r.jina.ai",
+        "host:sec.gov",
+        "host:tinyurl.com",
+        "host:v.gd",
+        "host:vanderbi.lt",
+        "host:webcrawlerapi.com",
+        "host:wikiservice.at",
+        "host:wikiservice.com",
+        "host:www-sec-gov.translate.goog",
+        "label:Agent007Research",
+        "label:Agent0MassCountyResearch",
+        "label:Agent0ResearcherCharl",
+        "label:AgentAlternate91389",
+        "label:AgentMapCite8x",
+        "label:AgentMapOverwrite999",
+        "label:AgentMapReal999",
+        "label:AgentMassAppend",
+        "label:AgentMassCiteJun19",
+        "label:AgentMassRootZ",
+        "label:AgentMine",
+        "label:AgentNewMediaZZ",
+        "label:AgentNewUserABC789",
+        "label:AgentOJUnitLinks",
+        "label:AgentOpenNext5",
+        "label:AgentProper",
+        "label:AgentRawHelper999",
+        "label:AgentResearchBotXNew",
+        "label:AgentResearchHelperXYZ",
+        "label:AgentResearchMassX",
+        "label:AgentResearchUseful989"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.0,
+        "null_mean": 0.029250294738685394,
+        "null_std": 0.0003251753459689011,
+        "z_score": -89.95237523782879,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "average_clustering": 0.0,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": -0.4487847743242138,
+        "null_mean": -0.42215672519699127,
+        "null_std": 0.0002514923128449752,
+        "z_score": -105.88017115114212,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "null_samples": 10,
+      "null_swaps_per_sample": 8469
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 8,
+          "modularity": 0.3028312426579998,
+          "largest": 1139,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 8,
+          "modularity": 0.3098453500665675,
+          "largest": 1175,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 12,
+          "modularity": 0.36345671744067665,
+          "largest": 941,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 16,
+          "modularity": 0.33635359562221,
+          "largest": 875,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 22,
+          "modularity": 0.326201602513901,
+          "largest": 870,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 31,
+          "modularity": 0.3166033861304724,
+          "largest": 791,
+          "singletons": 4
+        }
+      ],
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.36345671744067665,
+        "null_mean": 0.35179088814362147,
+        "null_std": 0.013317081834571726,
+        "z_score": 0.8760049267528095,
+        "p_value": 0.5454545454545454,
+        "n_samples": 10
+      }
+    }
+  },
+  "G5_infrastructure": {
+    "name": "G5_infrastructure",
+    "summary": {
+      "layer": "infrastructure",
+      "directed": false,
+      "nodes": 3289,
+      "edges": 11730,
+      "density": 0.0021693634832320964,
+      "total_weight": 13661.0,
+      "kinds": {
+        "label": 3099,
+        "ip16": 190
+      }
+    },
+    "degrees": {
+      "total": {
+        "n": 3289,
+        "xmin": 1,
+        "alpha": 1.6163256262593804,
+        "ks_distance": 0.34736573443802965,
+        "loglik_power_law": -7937.513404363224,
+        "loglik_lognormal": -8036.8908886717345,
+        "likelihood_ratio": 99.37748430851103,
+        "likelihood_ratio_p": 0.02074448573176957,
+        "preferred": "power_law",
+        "mean": 7.1328671328671325,
+        "max": 429
+      }
+    },
+    "components": {
+      "nodes": 3289,
+      "components": 23,
+      "giant": 3214,
+      "giant_fraction": 0.9771967163271511
+    },
+    "kcore": {
+      "max_core": 18,
+      "core_size_by_k": {
+        "1": 1411,
+        "2": 543,
+        "3": 323,
+        "4": 195,
+        "5": 150,
+        "6": 118,
+        "7": 81,
+        "8": 69,
+        "9": 47,
+        "10": 51,
+        "11": 29,
+        "12": 34,
+        "13": 40,
+        "14": 34,
+        "15": 23,
+        "16": 41,
+        "17": 23,
+        "18": 77
+      },
+      "innermost_core_size": 77,
+      "innermost_core_members": [
+        "ip16:104.42",
+        "ip16:130.131",
+        "ip16:135.232",
+        "ip16:172.184",
+        "ip16:172.212",
+        "ip16:20.110",
+        "ip16:20.114",
+        "ip16:20.12",
+        "ip16:20.163",
+        "ip16:20.165",
+        "ip16:20.168",
+        "ip16:20.171",
+        "ip16:20.172",
+        "ip16:20.225",
+        "ip16:20.230",
+        "ip16:20.237",
+        "ip16:20.245",
+        "ip16:20.29",
+        "ip16:20.45",
+        "ip16:20.65",
+        "ip16:20.66",
+        "ip16:20.69",
+        "ip16:20.80",
+        "ip16:20.83",
+        "ip16:20.9",
+        "ip16:20.94",
+        "ip16:20.97",
+        "ip16:20.98",
+        "ip16:23.100",
+        "ip16:4.151",
+        "ip16:4.154",
+        "ip16:4.227",
+        "ip16:4.255",
+        "ip16:52.159",
+        "ip16:52.162",
+        "ip16:57.154",
+        "ip16:64.236",
+        "ip16:74.249",
+        "label:Agent008HelperMD",
+        "label:Agent0AddJS",
+        "label:AgentHelperTwo",
+        "label:AgentManual007",
+        "label:AgentMapCite8x",
+        "label:AgentMapReal999",
+        "label:AgentMassFinal13",
+        "label:AgentMassPointer13",
+        "label:AgentMassRefUF155300",
+        "label:AgentMassRootZ",
+        "label:AgentMassY",
+        "label:AgentMedJ"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.0,
+        "null_mean": 0.08559815754141285,
+        "null_std": 0.001030541046109419,
+        "z_score": -83.06137622035519,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "average_clustering": 0.0,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": -0.5139601396692224,
+        "null_mean": -0.30977545467294376,
+        "null_std": 0.001812057615417177,
+        "z_score": -112.68112186889303,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      },
+      "null_samples": 10,
+      "null_swaps_per_sample": 11730
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 28,
+          "modularity": 0.025282789352546794,
+          "largest": 3202,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 31,
+          "modularity": 0.2863695183508569,
+          "largest": 695,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 43,
+          "modularity": 0.29446199162213316,
+          "largest": 200,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 56,
+          "modularity": 0.28699678320863936,
+          "largest": 123,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 67,
+          "modularity": 0.2805379195624101,
+          "largest": 123,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 85,
+          "modularity": 0.2737170559022598,
+          "largest": 94,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": "reduced: clustering in a bipartite graph or its projection is structurally determined, so the rewired null is not informative",
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.29446199162213316,
+        "null_mean": 0.30770697402494185,
+        "null_std": 0.0016065989702736426,
+        "z_score": -8.244112344073487,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      }
+    }
+  },
+  "G6_provenance": {
+    "name": "G6_provenance",
+    "summary": {
+      "layer": "provenance",
+      "directed": true,
+      "nodes": 6197,
+      "edges": 9689,
+      "density": 0.0002523399720787865,
+      "total_weight": 8864.047897523538,
+      "kinds": {
+        "revision": 6197
+      }
+    },
+    "degrees": {
+      "in": {
+        "n": 5091,
+        "xmin": 1,
+        "alpha": 1.91739585853876,
+        "ks_distance": 0.47033970618124193,
+        "loglik_power_law": -7550.518165668705,
+        "loglik_lognormal": -6837.652392267137,
+        "likelihood_ratio": -712.8657734015706,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 1.903162443527794,
+        "max": 14
+      },
+      "out": {
+        "n": 5060,
+        "xmin": 1,
+        "alpha": 1.9124511816159904,
+        "ks_distance": 0.4685207108564634,
+        "loglik_power_law": -7561.778142411289,
+        "loglik_lognormal": -6839.916612746947,
+        "likelihood_ratio": -721.8615296643425,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 1.9148221343873517,
+        "max": 14
+      },
+      "total": {
+        "n": 6197,
+        "xmin": 1,
+        "alpha": 1.6609681968326266,
+        "ks_distance": 0.36738491858855554,
+        "loglik_power_law": -13843.072212561483,
+        "loglik_lognormal": -12063.676599026196,
+        "likelihood_ratio": -1779.3956135352882,
+        "likelihood_ratio_p": 0.0,
+        "preferred": "lognormal",
+        "mean": 3.1269969340003225,
+        "max": 22
+      }
+    },
+    "components": {
+      "nodes": 6197,
+      "weak_components": 1103,
+      "giant_weak": 314,
+      "giant_weak_fraction": 0.05066967887687591,
+      "strong_components": 6197,
+      "giant_strong": 1,
+      "giant_strong_fraction": 0.00016136840406648378
+    },
+    "kcore": {
+      "max_core": 14,
+      "core_size_by_k": {
+        "1": 3955,
+        "2": 660,
+        "3": 509,
+        "4": 275,
+        "5": 220,
+        "6": 222,
+        "7": 81,
+        "8": 145,
+        "9": 50,
+        "10": 2,
+        "11": 26,
+        "12": 16,
+        "13": 2,
+        "14": 34
+      },
+      "innermost_core_size": 34,
+      "innermost_core_members": [
+        "dse~HealthdataCVDSequenceCollab@50",
+        "dse~HealthdataCVDSequenceCollab@51",
+        "dse~HealthdataCVDSequenceCollab@52",
+        "dse~HealthdataCVDSequenceCollab@53",
+        "dse~HealthdataCVDSequenceCollab@54",
+        "dse~HealthdataCVDSequenceCollab@55",
+        "dse~HealthdataCVDSequenceCollab@56",
+        "dse~HealthdataCVDSequenceCollab@57",
+        "dse~HealthdataCVDSequenceCollab@58",
+        "dse~HealthdataCVDSequenceCollab@59",
+        "dse~HealthdataCVDSequenceCollab@60",
+        "dse~HealthdataCVDSequenceCollab@61",
+        "dse~HealthdataCVDSequenceCollab@62",
+        "dse~HealthdataCVDSequenceCollab@63",
+        "dse~HealthdataCVDSequenceCollab@64",
+        "dse~HealthdataCVDSequenceCollab@65",
+        "dse~PoliceWageAgeSequenceMar10Collab@31",
+        "dse~PoliceWageAgeSequenceMar10Collab@32",
+        "dse~PoliceWageAgeSequenceMar10Collab@33",
+        "dse~PoliceWageAgeSequenceMar10Collab@34",
+        "dse~PoliceWageAgeSequenceMar10Collab@35",
+        "dse~PoliceWageAgeSequenceMar10Collab@36",
+        "dse~PoliceWageAgeSequenceMar10Collab@37",
+        "dse~PoliceWageAgeSequenceMar10Collab@38",
+        "dse~PoliceWageAgeSequenceMar10Collab@39",
+        "dse~PoliceWageAgeSequenceMar10Collab@40",
+        "dse~PoliceWageAgeSequenceMar10Collab@41",
+        "dse~PoliceWageAgeSequenceMar10Collab@42",
+        "dse~PoliceWageAgeSequenceMar10Collab@43",
+        "dse~PoliceWageAgeSequenceMar10Collab@44",
+        "dse~PoliceWageAgeSequenceMar10Collab@45",
+        "dse~PoliceWageAgeSequenceMar10Collab@46",
+        "dse~PoliceWageAgeSequenceMar10Collab@47",
+        "dse~PoliceWageAgeSequenceMar10Collab@48"
+      ]
+    },
+    "cohesion": {
+      "null_budget_note": null,
+      "transitivity": {
+        "statistic": "transitivity",
+        "observed": 0.7327537173966036,
+        "null_mean": 0.003670675225481433,
+        "null_std": 0.0005545482036216045,
+        "z_score": 1314.7333945176952,
+        "p_value": 0.03225806451612903,
+        "n_samples": 30
+      },
+      "average_clustering": 0.2714636178981261,
+      "degree_assortativity": {
+        "statistic": "degree_assortativity",
+        "observed": 0.943161372092081,
+        "null_mean": 0.12804190772157473,
+        "null_std": 0.013130282765247836,
+        "z_score": 62.079353426256596,
+        "p_value": 0.03225806451612903,
+        "n_samples": 30
+      },
+      "reciprocity": {
+        "statistic": "reciprocity",
+        "observed": 0.0,
+        "null_mean": 0.07978119516978018,
+        "null_std": 0.003586269385659093,
+        "z_score": -22.246291784106397,
+        "p_value": 0.03225806451612903,
+        "n_samples": 30
+      },
+      "null_samples": 30,
+      "null_swaps_per_sample": 9689
+    },
+    "communities": {
+      "sweep": [
+        {
+          "resolution": 0.5,
+          "n_communities": 1106,
+          "modularity": 0.9908841295194404,
+          "largest": 185,
+          "singletons": 0
+        },
+        {
+          "resolution": 0.75,
+          "n_communities": 1107,
+          "modularity": 0.9909867553824594,
+          "largest": 121,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.0,
+          "n_communities": 1108,
+          "modularity": 0.9909683765715183,
+          "largest": 121,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.25,
+          "n_communities": 1110,
+          "modularity": 0.9909382689566983,
+          "largest": 93,
+          "singletons": 0
+        },
+        {
+          "resolution": 1.5,
+          "n_communities": 1110,
+          "modularity": 0.9909156652963298,
+          "largest": 106,
+          "singletons": 0
+        },
+        {
+          "resolution": 2.0,
+          "n_communities": 1112,
+          "modularity": 0.990846784003969,
+          "largest": 82,
+          "singletons": 0
+        }
+      ],
+      "null_budget_note": null,
+      "modularity_vs_rewired": {
+        "statistic": "modularity",
+        "observed": 0.9909683765715183,
+        "null_mean": 0.6577634800881607,
+        "null_std": 0.0009665060160406287,
+        "z_score": 344.7520149417785,
+        "p_value": 0.09090909090909091,
+        "n_samples": 10
+      }
+    }
+  }
+}

@@ -194,15 +194,139 @@ found 66. The two agree to within one event.
 
 ---
 
-## 5. Structure
+## 5. Structure: excess over what the degree sequence forces
 
-*(populated from `derived/metrics/structure.json`)*
+Every statistic here is compared against a degree-preserving rewiring of the
+same graph — 100 samples, 5,935 double-edge swaps per sample for the handoff
+layer. Rewiring keeps every agent's in- and out-degree exactly and destroys only
+*who is wired to whom*, so what is reported is the part the degrees do not
+explain.
+
+### The handoff network
+
+| | observed | rewired null | z |
+|---|---|---|---|
+| transitivity | 0.0859 | 0.0162 | **56.8** |
+| reciprocity | 0.2188 | 0.0692 ± 0.0037 | **40.2** |
+| modularity *Q* | 0.678 | 0.476 | **48.8** |
+| degree assortativity | +0.0715 | −0.020 | **8.7** |
+
+Agents closed triangles **5.3×** more often, and handed off reciprocally
+**3.2×** more often, than their degrees alone require. Empirical p is at the
+resampling floor (≤ 0.0099 at 100 samples) for all four.
+
+The assortativity sign is worth noting. Human social and communication networks
+are almost always *disassortative* — hubs attach to peripheral nodes. This one is
+mildly **assortative** (+0.07, z = 8.7): busy agents preferentially handed off to
+other busy agents. Small in magnitude, but in the opposite direction to the human
+baseline.
+
+### A mutually reachable core
+
+Connectivity in a *directed* handoff graph has two different answers, and the
+stronger one is the interesting one:
+
+- **92.7%** of agents (2,276 of 2,456) are weakly connected — one component if
+  direction is ignored, across 66 fragments.
+- **73.1%** (1,796 agents) are **strongly** connected — a single component in
+  which every agent can reach every other *following the direction of handoffs*,
+  across 627 fragments.
+
+Weak connectivity says the agents touched a common structure. Strong
+connectivity says work could circulate through 1,796 of them and return.
+
+*k*-core decomposition finds a nested hierarchy — 653 agents at *k* = 1 falling
+to a **9-core of 51 agents** that includes `AgentMassPointer13`, `AgentRelent`,
+`LinkHelper771` and `MapHelper`, the same handles that dominate the raw handoff
+counts.
+
+The triad census is consistent with relaying rather than broadcasting: among
+connected triads, the chain form `021C` (A → B → C) occurs 29,436 times against
+13,599 out-stars (`021U`) and 12,905 in-stars (`021D`). Work passed along more
+often than it fanned out.
+
+### Degree distributions are lognormal, not scale-free
+
+This is where an unchecked assumption would have produced a wrong claim. MLE tail
+exponents land in the range usually quoted as evidence of preferential
+attachment — α between 1.53 and 1.84 — but a likelihood-ratio test against a
+lognormal rejects the power law in almost every case:
+
+| layer | degree | n | mean | max | α | KS | log-likelihood ratio | better fit |
+|---|---|---|---|---|---|---|---|---|
+| handoff | in | 2,201 | 3.03 | 84 | 1.730 | 0.396 | −240.0 (p < 0.0001) | lognormal |
+| handoff | out | 2,240 | 2.98 | 72 | 1.735 | 0.399 | −252.8 (p < 0.0001) | lognormal |
+| handoff | total | 2,456 | 5.43 | 156 | 1.533 | 0.342 | −744.6 (p < 0.0001) | lognormal |
+| hyperlink | in | 1,047 | 2.38 | 98 | 1.826 | 0.435 | −127.3 (p < 0.0001) | lognormal |
+| hyperlink | out | 881 | 2.82 | 276 | 1.841 | 0.441 | −23.6 (p = 0.389) | indistinguishable |
+| co-edit | total | 2,584 | 105.75 | 783 | 1.256 | 0.237 | −767.7 (p < 0.0001) | lognormal |
+
+KS distances of 0.34–0.44 are terrible fits on their own terms. There is no
+scale-free structure here, and no preferential-attachment story to tell. The
+distributions are heavy-tailed and lognormal — which is what you get from
+multiplicative variation in activity, not from a rich-get-richer attachment rule.
+
+### The bipartite layers check the machinery
+
+The resource and infrastructure layers return transitivity of **exactly 0.0000**
+with z of −59.5, −90.0 and −83.1. That is not a finding about agents; it is the
+apparatus confirming itself. A bipartite graph cannot contain a triangle, while
+the rewired null is free to create them, so a large negative z is precisely the
+expected output. A positive result there would have meant a bug.
+
+For the same reason the co-edit *projection* — transitivity 0.741, max *k*-core
+**339** — is reported but not interpreted. Every page's set of editors becomes a
+clique when the bipartite graph is projected, so those numbers describe the
+projection, not the agents. The handoff layer is the load-bearing evidence.
+
+Two layers return honest negatives: the page-host and handle-/16 graphs show
+modularity at or below the rewired null (z = +0.9 and −8.2). Agents did not
+cluster into separable groups by which endpoints they used or which egress
+prefix they came from.
 
 ---
 
-## 6. Self-organisation
+## 6. Self-organisation: the network knows what the pages were about
 
-*(populated from `derived/metrics/community_validation.json`)*
+The corpus ships its own taxonomy of page families, built by its authors from
+page **content**, with no reference to who edited what. That independence is what
+makes it usable as ground truth. Running community detection on the interaction
+network alone — Leiden, never shown a single page body — and comparing the two
+partitions asks whether the agents' division of labour is legible in the shape of
+their collaboration.
+
+Each agent is assigned its dominant page family; 2,819 of the handles qualify.
+The null permutes the detected community assignments 200 times.
+
+| network | agents | families | communities | ARI | NMI | ARI z | NMI z | family assortativity |
+|---|---|---|---|---|---|---|---|---|
+| handoff | 2,371 | 40 | 87 | 0.126 | 0.402 | **29.9** | **99.0** | **0.537** |
+| co-edit | 2,475 | 42 | 60 | 0.233 | 0.427 | **48.9** | **117.8** | 0.279 |
+| hyperlink | 1,342 | 39 | 90 | 0.126 | 0.499 | **39.1** | **76.9** | 0.274 |
+
+Read these carefully, because ARI and NMI disagree about how impressive this is.
+
+**ARI is modest** — 0.13 to 0.23 — and it is the more pessimistic measure for
+good structural reasons. The algorithms found 60 to 90 communities against 39 to
+42 families, so even a perfect nested refinement of the taxonomy would score
+poorly. The taxonomy is also lopsided: `relay-coordination` (931 agents) and
+`source-cache-url-list` (646) account for over half the labelled population, and
+ARI punishes splitting large classes hard.
+
+**NMI is substantial** — 0.40 to 0.50 against a permutation null of 0.07 to 0.15,
+at z of 77 to 118. Knowing an agent's community tells you a large fraction of
+what you need to know about which task family it worked on.
+
+The cleanest single statement is the **family assortativity of the handoff
+network: 0.537**. Over half the available assortativity — agents handed off to
+agents working on the same task family far more often than they mixed. Nobody
+assigned those families; they were derived afterwards from page text.
+
+So the answer to whether task specialisation was emergent is yes, with a
+qualification: the interaction structure recovers the *content* organisation far
+above chance, but at a finer granularity than the taxonomy uses. The agents
+partitioned themselves into more, smaller working groups than a content-based
+classification sees.
 
 ---
 
