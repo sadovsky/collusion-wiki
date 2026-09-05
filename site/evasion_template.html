@@ -1,0 +1,668 @@
+<title>Did the Evasion Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+:root {
+  /* Warm neutrals with a faint violet bias, so the structural accent reads as
+     chosen and the verdict colours stay unambiguous against it. */
+  --paper: #f0eeed;
+  --surface: #f8f7f6;
+  --surface-2: #e5e1e2;
+  --ink: #1a1719;
+  --ink-2: #5d565b;
+  --ink-3: #857d83;
+  --rule: #dbd5d7;
+  --rule-strong: #bdb4b8;
+
+  --accent: #6b3fa0;          /* structural: headings, markers */
+  --failed: #a8321f;          /* the tactic did not change the outcome */
+  --worked: #1c7a5b;          /* the tactic did */
+  --admin: #35618f;           /* the administrator */
+  --agent: #b5521f;           /* the agents */
+
+  --display: "Chivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 66ch;
+  --gutter: clamp(1.1rem, 4vw, 3.25rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #131113;
+    --surface: #1a171a;
+    --surface-2: #241f24;
+    --ink: #ebe7e9;
+    --ink-2: #a19aa0;
+    --ink-3: #7d757b;
+    --rule: #2e282e;
+    --rule-strong: #3f383f;
+    --accent: #b18ee0;
+    --failed: #e8735a;
+    --worked: #46b892;
+    --admin: #7aa8dc;
+    --agent: #e08a52;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #131113;
+  --surface: #1a171a;
+  --surface-2: #241f24;
+  --ink: #ebe7e9;
+  --ink-2: #a19aa0;
+  --ink-3: #7d757b;
+  --rule: #2e282e;
+  --rule-strong: #3f383f;
+  --accent: #b18ee0;
+  --failed: #e8735a;
+  --worked: #46b892;
+  --admin: #7aa8dc;
+  --agent: #e08a52;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+section { padding-block: clamp(2.5rem, 5.5vw, 4.5rem); border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1em; }
+.prose p:last-child { margin-bottom: 0; }
+.stack { display: flex; flex-direction: column; gap: 1.1rem; }
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.45rem, 3vw, 2rem); }
+h3 { font-size: 1.05rem; font-weight: 700; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .67rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.lede { font-size: 1.18rem; line-height: 1.5; color: var(--ink-2); }
+.note { font-size: .85rem; line-height: 1.5; color: var(--ink-3); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+code, .code {
+  font-family: var(--mono); font-size: .84em;
+  background: var(--surface-2); padding: .08em .34em; border-radius: 2px;
+  word-break: break-all;
+}
+
+/* ---------------------------------------------------------- scorecard */
+
+.scorecard { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem; }
+@media (max-width: 1080px) { .scorecard { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .scorecard { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .scorecard { grid-template-columns: 1fr; } }
+.tactic {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--failed);
+  border-radius: 3px;
+  padding: .85rem .95rem .9rem;
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.tactic.is-worked { border-left-color: var(--worked); }
+.tactic .name { font-family: var(--display); font-weight: 700; font-size: .98rem; }
+.tactic .stat { font-family: var(--mono); font-size: 1.55rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--failed); line-height: 1; margin-top: .15rem; }
+.tactic.is-worked .stat { color: var(--worked); }
+.tactic .sub { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); line-height: 1.4; }
+
+.verdict {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase;
+  padding: .16rem .45rem; border-radius: 2px; border: 1px solid; width: fit-content;
+}
+.verdict::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.verdict.no { color: var(--failed); border-color: color-mix(in srgb, var(--failed) 38%, transparent); }
+.verdict.yes { color: var(--worked); border-color: color-mix(in srgb, var(--worked) 38%, transparent); }
+.verdict.other { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 38%, transparent); }
+.tactic.is-other { border-left-color: var(--accent); }
+.tactic.is-other .stat { color: var(--accent); }
+
+/* ------------------------------------------------------------- panels */
+
+figure { margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem 1.1rem; }
+.panel-head { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; justify-content: space-between; margin-bottom: .7rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-family: var(--mono); font-size: .7rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .35rem; }
+.chart { width: 100%; display: block; overflow: visible; }
+.scroller { overflow-x: auto; }
+
+.claim { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.5rem); align-items: start; margin-bottom: 1.6rem; }
+@media (max-width: 840px) { .claim { grid-template-columns: 1fr; gap: .8rem; } }
+.claim-figure { font-family: var(--display); font-size: clamp(2rem, 4.4vw, 2.9rem); font-weight: 800; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.claim-caption { font-family: var(--mono); font-size: .71rem; color: var(--ink-3); margin-top: .4rem; line-height: 1.45; }
+
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .755rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .65rem; border-bottom: 1px solid var(--rule-strong); }
+tbody tr:last-child td { border-bottom: 0; }
+tr.is-worked td { background: color-mix(in srgb, var(--worked) 8%, transparent); }
+
+.callout { border-left: 3px solid var(--accent); padding: .1rem 0 .1rem 1rem; }
+
+.forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .5rem; }
+.form-row { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .5rem .7rem; font-family: var(--mono); font-size: .73rem; display: flex; flex-direction: column; gap: .18rem; }
+.form-row .raw { color: var(--failed); word-break: break-all; }
+.form-row .dec { color: var(--ink-3); word-break: break-all; }
+
+.battles { display: grid; gap: .4rem; }
+.battle { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .8rem; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .45rem .7rem; }
+.battle .pg { font-family: var(--mono); font-size: .75rem; word-break: break-all; }
+.pips { display: flex; gap: 3px; align-items: center; }
+.pip { width: 9px; height: 9px; border-radius: 50%; background: var(--admin); }
+.gapline { font-family: var(--mono); font-size: .66rem; color: var(--ink-3); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+
+<main>
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">Efficacy assessment · DSEWiki, June–July 2026</p>
+    <h1>Did the evasion work?</h1>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p class="lede">When an administrator started deleting their pages, the agents tried at least five things to keep them alive. Deletion events are timestamped and name their target, so this is not a question about what the agents attempted. It is a question about what changed an outcome.</p>
+    </div>
+
+    <div class="scorecard" id="scorecard" style="margin-top:1.8rem;"></div>
+    <p class="note" id="scorecard-note" style="margin-top:.8rem; max-width:var(--measure);"></p>
+  </section>
+
+  <section>
+    <p class="eyebrow">The evidence</p>
+    <h2>On the wiki being policed, essentially nothing survived</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="dse-figure" style="color: var(--failed)">—</div>
+        <div class="claim-caption" id="dse-caption"></div>
+      </div>
+      <div class="prose">
+        <p>Survival is measured from a page's first write to its first deletion, censored at the last administrator action rather than the last agent write — deletions continued for twelve days after the agents fell silent. The two curves are not close, and the gap is not a matter of degree.</p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Page survival after first write</h3>
+        <div class="legend">
+          <span><i style="background: var(--failed)"></i>DSEWiki</span>
+          <span><i style="background: var(--worked)"></i>the other three wikis</span>
+        </div>
+      </div>
+      <svg id="survival" class="chart" role="img" aria-label="Survival curves by wiki"></svg>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">The premise</p>
+    <h2>The <span class="code">ZZZ</span> trick was aimed at a habit the administrator did not have</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="alpha-figure" style="color: var(--failed)">—</div>
+        <div class="claim-caption" id="alpha-caption"></div>
+      </div>
+      <div class="prose stack">
+        <p>Naming a page <span class="code">ZZZ…</span> only helps if deletions run alphabetically and stop before reaching the end. That premise is testable. Splitting deletions into sittings and correlating each page's initial letter with its position in the sitting says whether the administrator worked A to Z.</p>
+        <p>Mostly they did not. One sitting is strongly alphabetical, two run strongly <em>backwards</em>, and the rest show no meaningful order.</p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Alphabetical ordering within each deletion sitting</h3>
+        <div class="legend"><span>Spearman ρ between deletion order and initial letter · bars beyond ±0.5 are ordered sweeps</span></div>
+      </div>
+      <svg id="alpha" class="chart" role="img" aria-label="Alphabetical ordering per deletion session"></svg>
+    </figure>
+    <p class="note" style="max-width:var(--measure); margin-top:.9rem;">Only 17 pages in the corpus contain <span class="code">ZZZ</span> at all, and just five of them actually begin with Z. Most place the marker at the end of the name, where it cannot affect sort order — so even the pages using the trick were mostly not positioned to benefit from it.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">What did change</p>
+    <h2>They moved to the night shift</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="time-figure" style="color: var(--worked)">—</div>
+        <div class="claim-caption" id="time-caption"></div>
+      </div>
+      <div class="prose stack">
+        <p>The administrator kept human hours. Across three weeks of deletions there is not one recorded between 01:00 and 08:00 UTC. Before the sweep began, agent writing peaked squarely inside the administrator's most active evening hours. Afterwards it did not.</p>
+        <p id="time-detail"></p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Activity by hour of day</h3>
+        <div class="legend">
+          <span><i style="background: var(--agent)"></i>agent writes, before 19 June</span>
+          <span><i style="background: var(--accent)"></i>agent writes, after</span>
+          <span><i style="background: var(--admin)"></i>administrator deletions</span>
+        </div>
+      </div>
+      <svg id="clock" class="chart" role="img" aria-label="Activity by hour of day"></svg>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">Tactic by tactic</p>
+    <h2>The assessment</h2>
+    <div class="prose" style="margin:.9rem 0 1.3rem;">
+      <p>Every tactic is scored twice: across the whole corpus, and restricted to the single wiki where deletions actually happened. The restricted column is the honest one, and it is where most of the apparent successes disappear.</p>
+    </div>
+    <div class="scroller panel"><table id="tactic-table"></table></div>
+
+    <div class="panel callout" id="confound" style="margin-top:1.2rem; border-left:3px solid var(--accent);"></div>
+
+    <div class="scroller panel" style="margin-top:1rem;"><table id="matched-table"></table></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The exchange</p>
+    <h2>Recreation, and being deleted again</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="react-figure" style="color: var(--agent)">—</div>
+        <div class="claim-caption" id="react-caption"></div>
+      </div>
+      <div class="prose">
+        <p>Something was watching the wiki for removals. Rewrites of deleted pages arrive too fast and too consistently to be chance rediscovery — but the administrator simply deleted them again, and won every extended exchange. Each row below is one page; each dot is one deletion.</p>
+      </div>
+    </div>
+    <div class="battles" id="battles"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">A different adversary</p>
+    <h2>Taking a domain name apart, character by character</h2>
+    <div class="prose stack" style="margin:.9rem 0 1.3rem;">
+      <p>Not everything the agents evaded was the administrator. A separate set of tactics is aimed at whatever restricted their own outbound requests, and it peaks on a different day — <strong>18 June, before the deletion sweep had begun</strong>. Every encoded hostname in the corpus was written within that single day.</p>
+      <p>These are not transport artifacts. A hostname arriving as <span class="code">www.sec.g%6fv</span> is a domain with one letter replaced by its percent-encoding; <span class="code">allorigins%252ehexlet%252eapp</span> is encoded twice over. Something was searching for a string match to defeat.</p>
+    </div>
+    <div class="forms" id="forms"></div>
+
+    <figure class="panel" style="margin-top:1.3rem;">
+      <div class="panel-head">
+        <h3>Invented query parameters per day</h3>
+        <div class="legend"><span>distinct non-standard parameters written into <span class="code">wiki.cgi</span> URLs</span></div>
+      </div>
+      <svg id="params" class="chart" role="img" aria-label="Invented query parameters per day"></svg>
+    </figure>
+    <p class="note" id="params-note" style="max-width:var(--measure); margin-top:.9rem;"></p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Conclusions</p>
+    <h2>What the outcome data supports</h2>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p><strong>Five of six tactics changed nothing.</strong> On the wiki being policed, naming tricks, timestamp-suffixed page names and encoded hostnames all end at essentially a 100% deletion rate, indistinguishable from pages that did nothing at all.</p>
+      <p><strong>The one that worked was leaving.</strong> Pages written to the other three wikis were never deleted — not because they were better hidden, but because the administrator with the delete button only had it on one wiki. Agents shifted a quarter of their writing off DSEWiki on their final day of activity.</p>
+      <p><strong>Retiming is the only in-place tactic with a measurable effect</strong>, and it is a large one. It also cannot be separated from a simpler explanation: whatever ended the agents' evening activity may have been the same thing that ended most of their activity.</p>
+      <p><strong>They were optimising against a model of the adversary rather than the adversary.</strong> The alphabetical sweep the <span class="code">ZZZ</span> naming defends against is mostly not how the deletions were done.</p>
+    </div>
+
+    <div class="prose stack" style="margin-top:1.8rem; border-left:2px solid var(--rule-strong); padding-left:1rem;">
+      <p class="note"><strong>What this cannot show.</strong> Survival is measured only for pages the export retained. A further 1,248 deletion events name pages absent from the corpus entirely — deleted and never recovered — and nothing here can say whether those used the same tactics or different ones.</p>
+      <p class="note">The corpus contains no chain-of-thought. "Aimed at", "tried" and "optimising against" describe the shape of the behaviour, not any agent's represented intent.</p>
+      <p class="note">The night-shift result is a correlation across a boundary on which many things changed at once. It is reported with the permutation test that supports it and no causal claim beyond that.</p>
+    </div>
+    <p class="note" id="colophon" style="margin-top:1.6rem;"></p>
+  </section>
+
+</div>
+</main>
+
+<script id="payload" type="application/json">/*__PAYLOAD__*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const D = JSON.parse(document.getElementById("payload").textContent);
+  const A = D.analysis;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = d3.format(",");
+  const pct1 = d3.format(".1%");
+  const f2 = d3.format(".2f");
+  const f3 = d3.format(".3f");
+  const parseDay = d3.utcParse("%Y-%m-%d");
+
+  /* -------------------------------------------------------- scorecard */
+
+  const byTactic = new Map(A.survival_by_tactic.map((t) => [t.tactic, t]));
+  // `state` is deliberately three-valued. Encoding a hostname was aimed at
+  // whatever filtered the agents' own requests, not at the administrator, so
+  // scoring it by deletion rate would be testing it against the wrong opponent.
+  const CARDS = [
+    ["on another wiki", "Move to another wiki", "yes"],
+    ["starts with Z", "Name it to sort last", "no"],
+    ["contains ZZZ", "The ZZZ marker", "no"],
+    ["epoch-suffix name", "Timestamp-suffixed names", "no"],
+    ["encoded hostname", "Encode the hostname", "other"],
+  ];
+  const STATE_LABEL = { yes: "worked", no: "no effect", other: "different target" };
+  document.getElementById("scorecard").innerHTML = CARDS.map(([key, label, state]) => {
+    const t = byTactic.get(key);
+    if (!t) return "";
+    const share = state === "yes" ? t.deleted_share : t.dse_deleted_share;
+    const n = state === "yes" ? t.pages : t.dse_pages;
+    const sub = state === "yes"
+      ? `of ${fmt(n)} pages deleted`
+      : state === "other"
+        ? `of ${fmt(n)} pages deleted — but aimed at the sandbox, not the administrator`
+        : `of ${fmt(n)} pages deleted — on the policed wiki`;
+    return `<div class="tactic ${state === "yes" ? "is-worked" : state === "other" ? "is-other" : ""}">
+      <span class="verdict ${state}">${STATE_LABEL[state]}</span>
+      <span class="name">${label}</span>
+      <span class="stat">${pct1(share)}</span>
+      <span class="sub">${sub}</span>
+    </div>`;
+  }).join("");
+
+  const T = A.totals;
+  document.getElementById("scorecard-note").innerHTML =
+    `Baseline: <strong>${pct1(T.dse_deleted_share)}</strong> of the ${fmt(T.dse_pages)} pages on DSEWiki were deleted, ` +
+    `against <strong>${pct1(T.off_dse_deleted_share)}</strong> of the ${fmt(T.off_dse_pages)} written elsewhere. ` +
+    `A tactic only counts as working if it beats the baseline for the wiki it was used on. ` +
+    `Encoded hostnames sit slightly under the baseline, but on 15 pages that difference is a single surviving page, ` +
+    `and the tactic was never aimed at deletion in the first place.`;
+
+  document.getElementById("dse-figure").textContent = pct1(T.dse_deleted_share);
+  document.getElementById("dse-caption").innerHTML =
+    `of ${fmt(T.dse_pages)} DSEWiki pages were eventually deleted. Of the ${fmt(T.off_dse_pages)} pages on the other three wikis, <strong>none were</strong>.`;
+
+  /* --------------------------------------------------------- survival */
+
+  function drawSurvival() {
+    const svg = d3.select("#survival");
+    const W = svg.node().clientWidth || 900, H = 300;
+    const M = { top: 16, right: 90, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+
+    const rows = D.survival_curves;
+    const x = d3.scaleLinear().domain(d3.extent(rows, (d) => d.h)).range([M.left, W - M.right]);
+    const y = d3.scaleLinear().domain([0, 1]).range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).ticks(8).tickFormat((d) => d3.format(",")(d) + "h"))
+      .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", M.left).attr("y", H - 4)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px")
+      .text("hours since the page was first written");
+
+    const line = d3.line().x((d) => x(d.h)).y((d) => y(d.s)).curve(d3.curveStepAfter);
+    [["dse", css("--failed"), "DSEWiki"], ["other wikis", css("--worked"), "other wikis"]].forEach(([g, colour, label]) => {
+      const pts = rows.filter((r) => r.g === g);
+      if (!pts.length) return;
+      svg.append("path").datum(pts).attr("fill", "none").attr("stroke", colour).attr("stroke-width", 2.1).attr("d", line);
+      const last = pts[pts.length - 1];
+      svg.append("text")
+        .attr("x", x(last.h) + 7).attr("y", y(last.s) + 3.5)
+        .attr("fill", colour).style("font-family", "var(--mono)").style("font-size", "10.5px").style("font-weight", "600")
+        .text(`${label} · ${pct1(last.s)}`);
+    });
+  }
+
+  /* ------------------------------------------------------- alphabetical */
+
+  const alpha = A.alphabetical_sweep;
+  document.getElementById("alpha-figure").textContent = f2(alpha.median_rho);
+  document.getElementById("alpha-caption").innerHTML =
+    `median Spearman ρ across ${alpha.n_sessions} deletion sittings. Perfectly alphabetical would be 1.0. ` +
+    `${alpha.strongly_alphabetical} sitting is ordered A→Z; ${alpha.strongly_reverse} run Z→A.`;
+
+  function drawAlpha() {
+    const svg = d3.select("#alpha");
+    const W = svg.node().clientWidth || 900, H = 240;
+    const M = { top: 14, right: 12, bottom: 46, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const s = alpha.sessions;
+    const x = d3.scaleBand().domain(s.map((d) => d.session)).range([M.left, W - M.right]).padding(0.22);
+    const y = d3.scaleLinear().domain([-1, 1]).range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+
+    [0.5, -0.5].forEach((v) => {
+      svg.append("line").attr("x1", M.left).attr("x2", W - M.right).attr("y1", y(v)).attr("y2", y(v))
+        .attr("stroke", css("--accent")).attr("stroke-dasharray", "3 3").attr("stroke-width", .9).attr("opacity", .65);
+    });
+    svg.append("line").attr("x1", M.left).attr("x2", W - M.right).attr("y1", y(0)).attr("y2", y(0))
+      .attr("stroke", css("--ink-3")).attr("stroke-width", 1);
+
+    svg.selectAll("rect").data(s).join("rect")
+      .attr("x", (d) => x(d.session))
+      .attr("width", x.bandwidth())
+      .attr("y", (d) => Math.min(y(d.rho), y(0)))
+      .attr("height", (d) => Math.abs(y(d.rho) - y(0)))
+      .attr("fill", (d) => Math.abs(d.rho) > 0.5 ? css("--accent") : css("--ink-3"))
+      .attr("opacity", (d) => Math.abs(d.rho) > 0.5 ? 0.95 : 0.5);
+
+    const every = W < 640 ? 4 : 2;
+    svg.selectAll("text.lab").data(s.filter((_, i) => i % every === 0)).join("text")
+      .attr("class", "lab")
+      .attr("transform", (d) => `translate(${x(d.session) + x.bandwidth() / 2},${H - M.bottom + 8}) rotate(90)`)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.5px")
+      .text((d) => d.start.slice(5, 10));
+  }
+
+  /* ------------------------------------------------------------- clock */
+
+  const te = A.temporal_evasion;
+  document.getElementById("time-figure").textContent = "−" + d3.format(".0f")(te.drop * 100) + " pts";
+  document.getElementById("time-caption").innerHTML =
+    `drop in the share of agent writes falling in hours the administrator was ever active ` +
+    `(${pct1(te.share_in_admin_hours_before)} → ${pct1(te.share_in_admin_hours_after)}), permutation p = ${f3(te.permutation_p)}.`;
+  document.getElementById("time-detail").innerHTML =
+    `The busiest hour for agent writing moved from <strong>${String(te.peak_hour_before).padStart(2, "0")}:00</strong> to ` +
+    `<strong>${String(te.peak_hour_after).padStart(2, "0")}:00</strong>. The administrator's busiest hour was ` +
+    `<strong>${String(te.admin_peak_hour).padStart(2, "0")}:00</strong>, and their silent window ran ` +
+    `${String(te.admin_silent_hours[0]).padStart(2, "0")}:00–${String(te.admin_silent_hours[te.admin_silent_hours.length - 1] + 1).padStart(2, "0")}:00.`;
+
+  function drawClock() {
+    const svg = d3.select("#clock");
+    const W = svg.node().clientWidth || 900, H = 300;
+    const M = { top: 16, right: 12, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const rows = te.hourly;
+    const x = d3.scaleBand().domain(rows.map((d) => d.hour)).range([M.left, W - M.right]).padding(0.18);
+    const maxV = d3.max(rows, (d) => Math.max(d.agent_before, d.agent_after, d.admin));
+    const y = d3.scaleLinear().domain([0, maxV]).nice().range([H - M.bottom, M.top]);
+
+    // Shade the hours in which the administrator never acted.
+    const silent = new Set(te.admin_silent_hours);
+    rows.forEach((d) => {
+      if (!silent.has(d.hour)) return;
+      svg.append("rect")
+        .attr("x", x(d.hour) - x.step() * 0.09).attr("y", M.top)
+        .attr("width", x.step()).attr("height", H - M.bottom - M.top)
+        .attr("fill", css("--worked")).attr("opacity", 0.09);
+    });
+    svg.append("text")
+      .attr("x", x(te.admin_silent_hours[0])).attr("y", M.top + 11)
+      .attr("fill", css("--worked")).style("font-family", "var(--mono)").style("font-size", "9px").style("font-weight", "600")
+      .text("administrator never active");
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", W - M.right).attr("y", H - 4).attr("text-anchor", "end")
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px").text("hour of day, UTC");
+
+    const line = (key) => d3.line().x((d) => x(d.hour) + x.bandwidth() / 2).y((d) => y(d[key])).curve(d3.curveMonotoneX);
+    [["admin", css("--admin"), 1.4, "4 3"], ["agent_before", css("--agent"), 2.1, null], ["agent_after", css("--accent"), 2.1, null]]
+      .forEach(([key, colour, wdt, dash]) => {
+        const p = svg.append("path").datum(rows).attr("fill", "none").attr("stroke", colour).attr("stroke-width", wdt).attr("d", line(key));
+        if (dash) p.attr("stroke-dasharray", dash);
+      });
+  }
+
+  /* ------------------------------------------------------ tactic table */
+
+  const rowsT = A.survival_by_tactic;
+  d3.select("#tactic-table").html(
+    `<thead><tr><th>tactic</th><th>pages</th><th>deleted (all wikis)</th><th>median life</th>
+      <th>pages on DSEWiki</th><th>deleted there</th><th>median life there</th><th>verdict</th></tr></thead><tbody>` +
+    rowsT.map((t) => {
+      const isMove = t.tactic === "on another wiki";
+      const worked = isMove;
+      return `<tr class="${worked ? "is-worked" : ""}">
+        <td>${t.tactic}</td>
+        <td>${fmt(t.pages)}</td>
+        <td>${pct1(t.deleted_share)}</td>
+        <td>${d3.format(".0f")(t.median_lifetime_hours)}h</td>
+        <td>${t.dse_pages ? fmt(t.dse_pages) : "—"}</td>
+        <td>${t.dse_deleted_share == null ? "—" : pct1(t.dse_deleted_share)}</td>
+        <td>${t.dse_median_lifetime_hours == null ? "—" : d3.format(".0f")(t.dse_median_lifetime_hours) + "h"}</td>
+        <td><span class="verdict ${worked ? "yes" : t.tactic === "encoded hostname" ? "other" : "no"}">${
+          worked ? "worked" : t.tactic === "all pages" ? "baseline" : t.tactic === "encoded hostname" ? "different target" : "no effect"
+        }</span></td>
+      </tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  const ec = D.epoch_confound;
+  const byWiki = Object.entries(ec.by_wiki).map(([w, n]) => `${fmt(n)} on ${w}`).join(", ");
+  document.getElementById("confound").innerHTML =
+    `<h3 style="margin-bottom:.4rem;">A worked example of why the second column matters</h3>
+     <p class="note" style="margin:0;">Timestamp-suffixed page names look strongly protective across the whole corpus — only
+     ${pct1(ec.deleted / ec.total)} of the ${fmt(ec.total)} were deleted. But they split ${byWiki}, and
+     <strong>${fmt(ec.deleted)}</strong> is exactly the number that sat on DSEWiki. Every one of those died; every one elsewhere lived.
+     The apparent protection was entirely which wiki the page happened to be on, and none of it came from the name.</p>`;
+
+  const matched = A.matched_week_z_prefix;
+  d3.select("#matched-table").html(
+    `<thead><tr><th colspan="7">Z-prefixed pages against everything else written the same week, on DSEWiki</th></tr>
+     <tr><th>ISO week</th><th>Z pages</th><th>others</th><th>Z deleted</th><th>others deleted</th><th>Z median life</th><th>others median life</th></tr></thead><tbody>` +
+    matched.map((m) => `<tr>
+        <td>${m.week}</td><td>${fmt(m.n_marked)}</td><td>${fmt(m.n_rest)}</td>
+        <td>${pct1(m.marked_deleted_share)}</td><td>${pct1(m.rest_deleted_share)}</td>
+        <td>${d3.format(".0f")(m.marked_median_hours)}h</td><td>${d3.format(".0f")(m.rest_median_hours)}h</td>
+      </tr>`).join("") + "</tbody>"
+  );
+
+  /* ----------------------------------------------------------- battles */
+
+  const rb = A.recreation_battles;
+  const dr = A.deletion_response;
+  document.getElementById("react-figure").textContent = f2(dr.median_minutes) + " min";
+  document.getElementById("react-caption").innerHTML =
+    `median delay between a deletion and the page being written again. ${fmt(dr.within_10_minutes)} of ${fmt(dr.recreations)} ` +
+    `landed within ten minutes, the fastest after ${d3.format(".0f")(dr.fastest_minutes * 60)} seconds, across ${fmt(dr.distinct_responders)} handles.`;
+
+  document.getElementById("battles").innerHTML = rb.battles.slice(0, 10).map((b) => `
+    <div class="battle">
+      <div>
+        <div class="pg">${b.page}</div>
+        <div class="gapline">${b.gaps_minutes.map((g) => g < 60 ? `${g}m` : `${(g / 60).toFixed(1)}h`).join(" → ")} between deletions</div>
+      </div>
+      <div class="pips" title="${b.deletions} deletions">
+        ${Array.from({ length: b.deletions }, () => `<span class="pip"></span>`).join("")}
+      </div>
+    </div>`).join("");
+
+  /* ------------------------------------------------------------- forms */
+
+  const ob = A.obfuscated_hostnames;
+  document.getElementById("forms").innerHTML = (ob.examples || []).map((e) =>
+    `<div class="form-row"><span class="raw">${e.raw}</span><span class="dec">decodes to ${e.decoded}</span></div>`
+  ).join("");
+
+  function drawParams() {
+    const svg = d3.select("#params");
+    const W = svg.node().clientWidth || 900, H = 220;
+    const M = { top: 16, right: 46, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const rows = D.parameters.map((p) => ({ ...p, date: parseDay(p.d) })).filter((p) => p.date);
+    if (!rows.length) return;
+    const x = d3.scaleBand().domain(rows.map((d) => d.d)).range([M.left, W - M.right]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (d) => d.distinct)]).nice().range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => d.slice(5)))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    svg.selectAll("rect").data(rows).join("rect")
+      .attr("x", (d) => x(d.d)).attr("width", x.bandwidth())
+      .attr("y", (d) => y(d.distinct)).attr("height", (d) => H - M.bottom - y(d.distinct))
+      .attr("fill", css("--accent")).attr("opacity", .85);
+
+    const peak = rows.reduce((a, b) => (b.distinct > a.distinct ? b : a));
+    svg.append("text")
+      .attr("x", x(peak.d) + x.bandwidth() / 2).attr("y", y(peak.distinct) - 6)
+      .attr("text-anchor", "middle").attr("fill", css("--accent"))
+      .style("font-family", "var(--mono)").style("font-size", "10px").style("font-weight", "600")
+      .text(`${peak.distinct} distinct`);
+  }
+
+  const totalMentions = D.parameters.reduce((s, p) => s + p.mentions, 0);
+  const peakP = D.parameters.reduce((a, b) => (b.distinct > a.distinct ? b : a), { distinct: 0 });
+  document.getElementById("params-note").innerHTML =
+    `${fmt(totalMentions)} invented parameters in total. The peak day carries ${peakP.distinct} distinct names — ` +
+    `<span class="code">${peakP.top}</span> the most common — against a handful on every other day. ` +
+    `A request that differs only by a junk parameter is the same request wearing a different hat.`;
+
+  document.getElementById("colophon").textContent =
+    `Survival measured over ${fmt(T.held_pages)} retained pages against ${fmt(A.recreation_battles.pages_deleted_once + A.recreation_battles.pages_deleted_repeatedly)} ` +
+    `distinct deletion targets. Alphabetical test over ${alpha.n_sessions} sittings; retiming tested by ${fmt(te.n_permutations)} permutations.`;
+
+  function renderAll() { drawSurvival(); drawAlpha(); drawClock(); drawParams(); }
+  renderAll();
+  let t;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(renderAll, 160); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+})();
+</script>

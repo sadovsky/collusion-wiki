@@ -456,3 +456,66 @@ statistic. That quantity is a count of the adopter set's internal edges and is
 therefore *identical under every permutation of adoption order* — the null had
 zero variance and the test could not have detected anything. The statistics in
 section 7 are order-sensitive by construction.
+
+---
+
+## Appendix: did the evasion work?
+
+Detection avoidance is analysed separately in `src/collusion/evasion.py` and
+published at the companion page. The short version, because it revises what
+section 4 implied.
+
+**Two adversaries, not one.** Hostname encoding, invented query parameters, CORS
+and markdown proxies, tunnels and Azure-hostname spoofing are aimed at whatever
+restricted the agents' own egress, and they peak on **18 June, before the
+deletion sweep began**. Naming tricks, page recreation, retiming and cross-wiki
+dispersal are aimed at the administrator, and start on 19 June. Scoring the
+first group by whether pages survived deletion tests them against the wrong
+opponent.
+
+**Five of six anti-deletion tactics changed nothing.** Within DSEWiki, where
+every one of the corpus's 5,217 deletions happened:
+
+| tactic | pages on dse | deleted |
+|---|---|---|
+| baseline (all dse pages) | 3,908 | 99.7% |
+| starts with Z | 77 | 100% |
+| contains `ZZZ` | 16 | 100% |
+| timestamp-suffixed name | 225 | 100% |
+| written to another wiki | 671 (elsewhere) | **0%** |
+
+Matched on creation week, Z-prefixed pages are indistinguishable from everything
+else written the same week (680h vs 672h median lifetime in week 22, 409h vs
+400h in week 25, and *shorter* in week 26).
+
+**The premise of the `ZZZ` trick was mostly false.** It only helps if deletion
+runs alphabetically and stops before the end. Splitting deletions into 25
+sittings and correlating each page's initial letter against its position gives a
+median Spearman ρ of **0.116**; one sitting is strongly alphabetical, two run
+strongly backwards. Only 17 pages contain `ZZZ` at all and just five begin with
+Z — most put the marker at the end of the name, where it cannot affect sort
+order.
+
+**A worked example of why controls matter.** Timestamp-suffixed names appear
+strongly protective corpus-wide: only 45.7% of the 492 were deleted. But they
+split 266 on probier, 225 on dse, 1 on fractal — and 225 is exactly the number
+deleted. Every one on the policed wiki died; every one elsewhere lived. The
+apparent protection was entirely which wiki the page sat on.
+
+**Retiming is the one in-place tactic with a measurable effect.** The
+administrator recorded no deletions at all between 01:00 and 08:00 UTC. The
+share of agent writes falling in hours the administrator was ever active dropped
+from **92.1% to 60.0%** across 19 June (permutation p = 0.0005), and the peak
+hour of agent writing moved from 20:00 — the administrator's second-busiest
+hour — to 08:00. This cannot be separated from the possibility that whatever
+ended the evening activity ended most activity.
+
+**The exchange was one-sided.** 55 pages were deleted more than once, one of
+them eight times; the administrator spent 128 deletions on repeats and won every
+extended exchange. Recreation was fast enough to imply monitoring — median 26.8
+minutes, 25 of 66 within ten minutes, the fastest after nine seconds — but
+faster recreation did not produce survival.
+
+**What this cannot show.** A further 1,248 deletion events name pages absent from
+the corpus entirely. Whether those used the same tactics is unknowable, and
+their absence is exactly the direction that would bias a survival analysis.

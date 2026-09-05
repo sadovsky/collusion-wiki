@@ -305,3 +305,68 @@ def render_html(
         raise SystemExit(f"template is missing the {TEMPLATE_TOKEN} token")
     out.write_text(html.replace(TEMPLATE_TOKEN, payload.read_text()))
     return out
+
+
+# --------------------------------------------------------------------------
+# the detection-avoidance page
+# --------------------------------------------------------------------------
+
+EVASION_PAYLOAD_NAME = "evasion_payload.json"
+
+
+def build_evasion_payload() -> Path:
+    """Payload for the detection-avoidance page.
+
+    Deliberately a separate artifact rather than another section of the network
+    page: this one answers an outcome question -- did any of it work -- and the
+    evidence is survival curves and clock arithmetic rather than graph metrics.
+    """
+    from . import evasion
+
+    analysis = evasion.analyze()
+    survival = evasion.page_survival()
+    curves = evasion.survival_curves(survival)
+    dispersal = evasion.dispersal()
+    params = evasion.invented_parameters()
+
+    payload = {
+        "analysis": analysis,
+        "survival_curves": [
+            {"g": row["group"], "h": int(row["hours"]), "s": round(float(row["survival"]), 5)}
+            for _, row in curves.iterrows()
+        ],
+        "dispersal": [
+            {
+                "d": row["day"].strftime("%Y-%m-%d"),
+                "writes": int(row["writes"]),
+                "off": int(row["off_dse"]),
+                "share": round(float(row["off_dse_share"]), 4),
+            }
+            for _, row in dispersal.iterrows()
+        ],
+        "parameters": [
+            {
+                "d": row["day"].strftime("%Y-%m-%d"),
+                "mentions": int(row["mentions"]),
+                "distinct": int(row["distinct_parameters"]),
+                "top": row["top_parameter"],
+            }
+            for _, row in params.iterrows()
+        ],
+        "epoch_confound": {
+            "total": int(survival["epoch_suffix"].sum()),
+            "by_wiki": survival[survival["epoch_suffix"]]["wiki"].value_counts().to_dict(),
+            "deleted": int(survival[survival["epoch_suffix"]]["deleted"].sum()),
+        },
+    }
+    path = io.derived_dir() / EVASION_PAYLOAD_NAME
+    path.write_text(json.dumps(payload, default=_json_default, separators=(",", ":")))
+
+    template = io.repo_root() / "site" / "evasion_template.html"
+    out = io.repo_root() / "site" / "evasion.html"
+    if template.exists():
+        html = template.read_text()
+        if TEMPLATE_TOKEN not in html:
+            raise SystemExit(f"evasion template is missing the {TEMPLATE_TOKEN} token")
+        out.write_text(html.replace(TEMPLATE_TOKEN, path.read_text()))
+    return path

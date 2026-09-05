@@ -10,7 +10,10 @@ from typing import Callable
 
 from . import features, graphs, io, pipeline
 
-STAGES = ("verify", "extract", "graphs", "metrics", "temporal", "diffusion", "figures", "site", "all")
+STAGES = (
+    "verify", "extract", "graphs", "metrics", "temporal", "diffusion",
+    "evasion", "figures", "site", "all",
+)
 
 
 def _run(name: str, fn: Callable[[], object]) -> object:
@@ -67,6 +70,23 @@ def main(argv: list[str] | None = None) -> int:
         _run("temporal", lambda: pipeline.stage_temporal(feat))
     elif args.stage == "diffusion":
         _run("diffusion", lambda: pipeline.stage_diffusion(feat, built))
+    elif args.stage == "evasion":
+        from . import evasion
+
+        def _evasion():
+            from . import site
+
+            pipeline.write_json(evasion.analyze(), "evasion.json")
+            evasion.survival_curves(evasion.page_survival()).to_csv(
+                io.derived_dir() / "metrics" / "survival_curves.csv", index=False
+            )
+            evasion.invented_parameters().to_csv(
+                io.derived_dir() / "metrics" / "invented_parameters.csv", index=False
+            )
+            evasion.dispersal().to_csv(io.derived_dir() / "metrics" / "dispersal.csv", index=False)
+            return site.build_evasion_payload()
+
+        _run("evasion", _evasion)
     elif args.stage == "figures":
         from . import viz
 

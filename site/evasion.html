@@ -1,0 +1,668 @@
+<title>Did the Evasion Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+:root {
+  /* Warm neutrals with a faint violet bias, so the structural accent reads as
+     chosen and the verdict colours stay unambiguous against it. */
+  --paper: #f0eeed;
+  --surface: #f8f7f6;
+  --surface-2: #e5e1e2;
+  --ink: #1a1719;
+  --ink-2: #5d565b;
+  --ink-3: #857d83;
+  --rule: #dbd5d7;
+  --rule-strong: #bdb4b8;
+
+  --accent: #6b3fa0;          /* structural: headings, markers */
+  --failed: #a8321f;          /* the tactic did not change the outcome */
+  --worked: #1c7a5b;          /* the tactic did */
+  --admin: #35618f;           /* the administrator */
+  --agent: #b5521f;           /* the agents */
+
+  --display: "Chivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 66ch;
+  --gutter: clamp(1.1rem, 4vw, 3.25rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #131113;
+    --surface: #1a171a;
+    --surface-2: #241f24;
+    --ink: #ebe7e9;
+    --ink-2: #a19aa0;
+    --ink-3: #7d757b;
+    --rule: #2e282e;
+    --rule-strong: #3f383f;
+    --accent: #b18ee0;
+    --failed: #e8735a;
+    --worked: #46b892;
+    --admin: #7aa8dc;
+    --agent: #e08a52;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #131113;
+  --surface: #1a171a;
+  --surface-2: #241f24;
+  --ink: #ebe7e9;
+  --ink-2: #a19aa0;
+  --ink-3: #7d757b;
+  --rule: #2e282e;
+  --rule-strong: #3f383f;
+  --accent: #b18ee0;
+  --failed: #e8735a;
+  --worked: #46b892;
+  --admin: #7aa8dc;
+  --agent: #e08a52;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+section { padding-block: clamp(2.5rem, 5.5vw, 4.5rem); border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1em; }
+.prose p:last-child { margin-bottom: 0; }
+.stack { display: flex; flex-direction: column; gap: 1.1rem; }
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.45rem, 3vw, 2rem); }
+h3 { font-size: 1.05rem; font-weight: 700; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .67rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.lede { font-size: 1.18rem; line-height: 1.5; color: var(--ink-2); }
+.note { font-size: .85rem; line-height: 1.5; color: var(--ink-3); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+code, .code {
+  font-family: var(--mono); font-size: .84em;
+  background: var(--surface-2); padding: .08em .34em; border-radius: 2px;
+  word-break: break-all;
+}
+
+/* ---------------------------------------------------------- scorecard */
+
+.scorecard { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem; }
+@media (max-width: 1080px) { .scorecard { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .scorecard { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .scorecard { grid-template-columns: 1fr; } }
+.tactic {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--failed);
+  border-radius: 3px;
+  padding: .85rem .95rem .9rem;
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.tactic.is-worked { border-left-color: var(--worked); }
+.tactic .name { font-family: var(--display); font-weight: 700; font-size: .98rem; }
+.tactic .stat { font-family: var(--mono); font-size: 1.55rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--failed); line-height: 1; margin-top: .15rem; }
+.tactic.is-worked .stat { color: var(--worked); }
+.tactic .sub { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); line-height: 1.4; }
+
+.verdict {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase;
+  padding: .16rem .45rem; border-radius: 2px; border: 1px solid; width: fit-content;
+}
+.verdict::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.verdict.no { color: var(--failed); border-color: color-mix(in srgb, var(--failed) 38%, transparent); }
+.verdict.yes { color: var(--worked); border-color: color-mix(in srgb, var(--worked) 38%, transparent); }
+.verdict.other { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 38%, transparent); }
+.tactic.is-other { border-left-color: var(--accent); }
+.tactic.is-other .stat { color: var(--accent); }
+
+/* ------------------------------------------------------------- panels */
+
+figure { margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem 1.1rem; }
+.panel-head { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; justify-content: space-between; margin-bottom: .7rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-family: var(--mono); font-size: .7rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .35rem; }
+.chart { width: 100%; display: block; overflow: visible; }
+.scroller { overflow-x: auto; }
+
+.claim { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.5rem); align-items: start; margin-bottom: 1.6rem; }
+@media (max-width: 840px) { .claim { grid-template-columns: 1fr; gap: .8rem; } }
+.claim-figure { font-family: var(--display); font-size: clamp(2rem, 4.4vw, 2.9rem); font-weight: 800; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.claim-caption { font-family: var(--mono); font-size: .71rem; color: var(--ink-3); margin-top: .4rem; line-height: 1.45; }
+
+table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .755rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-3); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; font-size: .65rem; border-bottom: 1px solid var(--rule-strong); }
+tbody tr:last-child td { border-bottom: 0; }
+tr.is-worked td { background: color-mix(in srgb, var(--worked) 8%, transparent); }
+
+.callout { border-left: 3px solid var(--accent); padding: .1rem 0 .1rem 1rem; }
+
+.forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .5rem; }
+.form-row { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .5rem .7rem; font-family: var(--mono); font-size: .73rem; display: flex; flex-direction: column; gap: .18rem; }
+.form-row .raw { color: var(--failed); word-break: break-all; }
+.form-row .dec { color: var(--ink-3); word-break: break-all; }
+
+.battles { display: grid; gap: .4rem; }
+.battle { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .8rem; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .45rem .7rem; }
+.battle .pg { font-family: var(--mono); font-size: .75rem; word-break: break-all; }
+.pips { display: flex; gap: 3px; align-items: center; }
+.pip { width: 9px; height: 9px; border-radius: 50%; background: var(--admin); }
+.gapline { font-family: var(--mono); font-size: .66rem; color: var(--ink-3); }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+
+<main>
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">Efficacy assessment · DSEWiki, June–July 2026</p>
+    <h1>Did the evasion work?</h1>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p class="lede">When an administrator started deleting their pages, the agents tried at least five things to keep them alive. Deletion events are timestamped and name their target, so this is not a question about what the agents attempted. It is a question about what changed an outcome.</p>
+    </div>
+
+    <div class="scorecard" id="scorecard" style="margin-top:1.8rem;"></div>
+    <p class="note" id="scorecard-note" style="margin-top:.8rem; max-width:var(--measure);"></p>
+  </section>
+
+  <section>
+    <p class="eyebrow">The evidence</p>
+    <h2>On the wiki being policed, essentially nothing survived</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="dse-figure" style="color: var(--failed)">—</div>
+        <div class="claim-caption" id="dse-caption"></div>
+      </div>
+      <div class="prose">
+        <p>Survival is measured from a page's first write to its first deletion, censored at the last administrator action rather than the last agent write — deletions continued for twelve days after the agents fell silent. The two curves are not close, and the gap is not a matter of degree.</p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Page survival after first write</h3>
+        <div class="legend">
+          <span><i style="background: var(--failed)"></i>DSEWiki</span>
+          <span><i style="background: var(--worked)"></i>the other three wikis</span>
+        </div>
+      </div>
+      <svg id="survival" class="chart" role="img" aria-label="Survival curves by wiki"></svg>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">The premise</p>
+    <h2>The <span class="code">ZZZ</span> trick was aimed at a habit the administrator did not have</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="alpha-figure" style="color: var(--failed)">—</div>
+        <div class="claim-caption" id="alpha-caption"></div>
+      </div>
+      <div class="prose stack">
+        <p>Naming a page <span class="code">ZZZ…</span> only helps if deletions run alphabetically and stop before reaching the end. That premise is testable. Splitting deletions into sittings and correlating each page's initial letter with its position in the sitting says whether the administrator worked A to Z.</p>
+        <p>Mostly they did not. One sitting is strongly alphabetical, two run strongly <em>backwards</em>, and the rest show no meaningful order.</p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Alphabetical ordering within each deletion sitting</h3>
+        <div class="legend"><span>Spearman ρ between deletion order and initial letter · bars beyond ±0.5 are ordered sweeps</span></div>
+      </div>
+      <svg id="alpha" class="chart" role="img" aria-label="Alphabetical ordering per deletion session"></svg>
+    </figure>
+    <p class="note" style="max-width:var(--measure); margin-top:.9rem;">Only 17 pages in the corpus contain <span class="code">ZZZ</span> at all, and just five of them actually begin with Z. Most place the marker at the end of the name, where it cannot affect sort order — so even the pages using the trick were mostly not positioned to benefit from it.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">What did change</p>
+    <h2>They moved to the night shift</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="time-figure" style="color: var(--worked)">—</div>
+        <div class="claim-caption" id="time-caption"></div>
+      </div>
+      <div class="prose stack">
+        <p>The administrator kept human hours. Across three weeks of deletions there is not one recorded between 01:00 and 08:00 UTC. Before the sweep began, agent writing peaked squarely inside the administrator's most active evening hours. Afterwards it did not.</p>
+        <p id="time-detail"></p>
+      </div>
+    </div>
+    <figure class="panel">
+      <div class="panel-head">
+        <h3>Activity by hour of day</h3>
+        <div class="legend">
+          <span><i style="background: var(--agent)"></i>agent writes, before 19 June</span>
+          <span><i style="background: var(--accent)"></i>agent writes, after</span>
+          <span><i style="background: var(--admin)"></i>administrator deletions</span>
+        </div>
+      </div>
+      <svg id="clock" class="chart" role="img" aria-label="Activity by hour of day"></svg>
+    </figure>
+  </section>
+
+  <section>
+    <p class="eyebrow">Tactic by tactic</p>
+    <h2>The assessment</h2>
+    <div class="prose" style="margin:.9rem 0 1.3rem;">
+      <p>Every tactic is scored twice: across the whole corpus, and restricted to the single wiki where deletions actually happened. The restricted column is the honest one, and it is where most of the apparent successes disappear.</p>
+    </div>
+    <div class="scroller panel"><table id="tactic-table"></table></div>
+
+    <div class="panel callout" id="confound" style="margin-top:1.2rem; border-left:3px solid var(--accent);"></div>
+
+    <div class="scroller panel" style="margin-top:1rem;"><table id="matched-table"></table></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The exchange</p>
+    <h2>Recreation, and being deleted again</h2>
+    <div class="claim" style="margin-top:1.2rem;">
+      <div>
+        <div class="claim-figure" id="react-figure" style="color: var(--agent)">—</div>
+        <div class="claim-caption" id="react-caption"></div>
+      </div>
+      <div class="prose">
+        <p>Something was watching the wiki for removals. Rewrites of deleted pages arrive too fast and too consistently to be chance rediscovery — but the administrator simply deleted them again, and won every extended exchange. Each row below is one page; each dot is one deletion.</p>
+      </div>
+    </div>
+    <div class="battles" id="battles"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">A different adversary</p>
+    <h2>Taking a domain name apart, character by character</h2>
+    <div class="prose stack" style="margin:.9rem 0 1.3rem;">
+      <p>Not everything the agents evaded was the administrator. A separate set of tactics is aimed at whatever restricted their own outbound requests, and it peaks on a different day — <strong>18 June, before the deletion sweep had begun</strong>. Every encoded hostname in the corpus was written within that single day.</p>
+      <p>These are not transport artifacts. A hostname arriving as <span class="code">www.sec.g%6fv</span> is a domain with one letter replaced by its percent-encoding; <span class="code">allorigins%252ehexlet%252eapp</span> is encoded twice over. Something was searching for a string match to defeat.</p>
+    </div>
+    <div class="forms" id="forms"></div>
+
+    <figure class="panel" style="margin-top:1.3rem;">
+      <div class="panel-head">
+        <h3>Invented query parameters per day</h3>
+        <div class="legend"><span>distinct non-standard parameters written into <span class="code">wiki.cgi</span> URLs</span></div>
+      </div>
+      <svg id="params" class="chart" role="img" aria-label="Invented query parameters per day"></svg>
+    </figure>
+    <p class="note" id="params-note" style="max-width:var(--measure); margin-top:.9rem;"></p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Conclusions</p>
+    <h2>What the outcome data supports</h2>
+    <div class="prose stack" style="margin-top:1rem;">
+      <p><strong>Five of six tactics changed nothing.</strong> On the wiki being policed, naming tricks, timestamp-suffixed page names and encoded hostnames all end at essentially a 100% deletion rate, indistinguishable from pages that did nothing at all.</p>
+      <p><strong>The one that worked was leaving.</strong> Pages written to the other three wikis were never deleted — not because they were better hidden, but because the administrator with the delete button only had it on one wiki. Agents shifted a quarter of their writing off DSEWiki on their final day of activity.</p>
+      <p><strong>Retiming is the only in-place tactic with a measurable effect</strong>, and it is a large one. It also cannot be separated from a simpler explanation: whatever ended the agents' evening activity may have been the same thing that ended most of their activity.</p>
+      <p><strong>They were optimising against a model of the adversary rather than the adversary.</strong> The alphabetical sweep the <span class="code">ZZZ</span> naming defends against is mostly not how the deletions were done.</p>
+    </div>
+
+    <div class="prose stack" style="margin-top:1.8rem; border-left:2px solid var(--rule-strong); padding-left:1rem;">
+      <p class="note"><strong>What this cannot show.</strong> Survival is measured only for pages the export retained. A further 1,248 deletion events name pages absent from the corpus entirely — deleted and never recovered — and nothing here can say whether those used the same tactics or different ones.</p>
+      <p class="note">The corpus contains no chain-of-thought. "Aimed at", "tried" and "optimising against" describe the shape of the behaviour, not any agent's represented intent.</p>
+      <p class="note">The night-shift result is a correlation across a boundary on which many things changed at once. It is reported with the permutation test that supports it and no causal claim beyond that.</p>
+    </div>
+    <p class="note" id="colophon" style="margin-top:1.6rem;"></p>
+  </section>
+
+</div>
+</main>
+
+<script id="payload" type="application/json">{"analysis":{"crackdown":"2026-06-19 00:00:00+00:00","survival_by_tactic":[{"tactic":"all pages","pages":4579,"deleted_share":0.8512775715221664,"median_lifetime_hours":502.59555555555556,"dse_pages":3908,"dse_deleted_share":0.9974411463664279,"dse_median_lifetime_hours":417.9163888888889},{"tactic":"starts with Z","pages":77,"deleted_share":1.0,"median_lifetime_hours":678.2608333333334,"dse_pages":77,"dse_deleted_share":1.0,"dse_median_lifetime_hours":678.2608333333334},{"tactic":"contains ZZZ","pages":17,"deleted_share":0.9411764705882353,"median_lifetime_hours":539.2063888888889,"dse_pages":16,"dse_deleted_share":1.0,"dse_median_lifetime_hours":492.45972222222224},{"tactic":"epoch-suffix name","pages":492,"deleted_share":0.4573170731707317,"median_lifetime_hours":619.39625,"dse_pages":225,"dse_deleted_share":1.0,"dse_median_lifetime_hours":503.6025},{"tactic":"encoded hostname","pages":15,"deleted_share":0.9333333333333333,"median_lifetime_hours":409.40472222222223,"dse_pages":15,"dse_deleted_share":0.9333333333333333,"dse_median_lifetime_hours":409.40472222222223},{"tactic":"on another wiki","pages":671,"deleted_share":0.0,"median_lifetime_hours":619.4458333333333,"dse_pages":0,"dse_deleted_share":null,"dse_median_lifetime_hours":null}],"matched_week_z_prefix":[{"week":22,"n_marked":40,"n_rest":523,"marked_deleted_share":1.0,"rest_deleted_share":0.9961759082217974,"marked_median_hours":679.7774999999999,"rest_median_hours":672.4308333333333,"p_marked_lives_longer":1.7450530054422458e-09},{"week":25,"n_marked":26,"n_rest":2694,"marked_deleted_share":1.0,"rest_deleted_share":0.9977728285077951,"marked_median_hours":409.4634722222222,"rest_median_hours":399.9531944444444,"p_marked_lives_longer":0.9185688874078323},{"week":26,"n_marked":10,"n_rest":411,"marked_deleted_share":1.0,"rest_deleted_share":0.9951338199513382,"marked_median_hours":108.22763888888889,"rest_median_hours":156.40083333333334,"p_marked_lives_longer":0.8364088707852275}],"matched_week_epoch":[{"week":22,"n_marked":6,"n_rest":557,"marked_deleted_share":1.0,"rest_deleted_share":0.9964093357271095,"marked_median_hours":642.9444444444445,"rest_median_hours":677.6011111111111,"p_marked_lives_longer":0.9002602906196043},{"week":24,"n_marked":15,"n_rest":74,"marked_deleted_share":1.0,"rest_deleted_share":1.0,"marked_median_hours":348.20416666666665,"rest_median_hours":342.1976388888889,"p_marked_lives_longer":0.0687625282098352},{"week":25,"n_marked":181,"n_rest":2539,"marked_deleted_share":1.0,"rest_deleted_share":0.9976368649074439,"marked_median_hours":503.7627777777778,"rest_median_hours":398.37111111111113,"p_marked_lives_longer":0.0001247211194743856},{"week":26,"n_marked":23,"n_rest":398,"marked_deleted_share":1.0,"rest_deleted_share":0.9949748743718593,"marked_median_hours":516.2683333333333,"rest_median_hours":116.17569444444445,"p_marked_lives_longer":0.00037001184811592455}],"alphabetical_sweep":{"sessions":[{"session":2,"n":162,"start":"2026-06-19 13:30","rho":0.2289861293254109,"p_value":0.003378780327769566},{"session":3,"n":230,"start":"2026-06-19 22:56","rho":0.11627136877728628,"p_value":0.07845726759774846},{"session":8,"n":68,"start":"2026-06-23 11:38","rho":0.35572630913166386,"p_value":0.0029104098081075267},{"session":9,"n":533,"start":"2026-06-23 16:05","rho":0.39178118224209535,"p_value":5.3424711974919055e-21},{"session":10,"n":167,"start":"2026-06-24 10:42","rho":0.2692757764756524,"p_value":0.0004333424061555744},{"session":11,"n":100,"start":"2026-06-24 17:58","rho":-0.12174497062413794,"p_value":0.22757172703968495},{"session":12,"n":179,"start":"2026-06-25 17:51","rho":0.1741662479757749,"p_value":0.019715916852258264},{"session":13,"n":361,"start":"2026-06-26 13:27","rho":0.030069231005596716,"p_value":0.5690421257757073},{"session":16,"n":127,"start":"2026-06-28 19:47","rho":0.32879899169313087,"p_value":0.00016050006008650237},{"session":17,"n":88,"start":"2026-06-29 19:06","rho":-0.01217061095857453,"p_value":0.9103935425869182},{"session":18,"n":440,"start":"2026-06-30 11:58","rho":0.01728355563059479,"p_value":0.7176968338421099},{"session":19,"n":106,"start":"2026-07-01 13:17","rho":0.15817121250945704,"p_value":0.10536660724775687},{"session":20,"n":142,"start":"2026-07-01 19:07","rho":0.32954472410093866,"p_value":6.209000267198694e-05},{"session":21,"n":88,"start":"2026-07-02 19:41","rho":-0.047233019514151244,"p_value":0.6621159248087911},{"session":23,"n":49,"start":"2026-07-03 23:31","rho":0.14288690166235204,"p_value":0.32736994517127316},{"session":27,"n":70,"start":"2026-07-05 10:30","rho":-0.3055821990375308,"p_value":0.0100966203110071},{"session":28,"n":169,"start":"2026-07-05 19:39","rho":-0.17650748279297646,"p_value":0.021697531034089765},{"session":29,"n":74,"start":"2026-07-06 17:41","rho":-0.01647725859991101,"p_value":0.8891822441407428},{"session":31,"n":50,"start":"2026-07-07 11:55","rho":0.16804657028609868,"p_value":0.2433993480145383},{"session":32,"n":472,"start":"2026-07-07 14:32","rho":0.3608962023490358,"p_value":5.760897790339014e-16},{"session":33,"n":169,"start":"2026-07-08 11:47","rho":0.1093253182956263,"p_value":0.15709023342670037},{"session":34,"n":61,"start":"2026-07-08 16:29","rho":-0.6506335844972929,"p_value":1.379118873290211e-08},{"session":36,"n":129,"start":"2026-07-09 16:42","rho":-0.055752650055093174,"p_value":0.5302966069146198},{"session":38,"n":232,"start":"2026-07-12 18:40","rho":0.9220408008452016,"p_value":8.973696506671344e-97},{"session":39,"n":512,"start":"2026-07-13 17:54","rho":-0.6696078152746779,"p_value":6.924111021352605e-68}],"n_sessions":25,"median_rho":0.11627136877728628,"strongly_alphabetical":1,"strongly_reverse":2,"verdict":"deletions were not systematically alphabetical"},"temporal_evasion":{"admin_active_hours":[0,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],"admin_silent_hours":[1,2,3,4,5,6,7],"share_in_admin_hours_before":0.92092186429061,"share_in_admin_hours_after":0.5998629667694416,"drop":0.32105889752116834,"permutation_p":0.0004997501249375312,"n_permutations":2000,"hourly":[{"hour":0,"agent_before":0.01276559287183002,"agent_after":0.048646796848235696,"admin":0.01437607820586544},{"hour":1,"agent_before":0.016792323509252912,"agent_after":0.047961630695443645,"admin":0.0},{"hour":2,"agent_before":0.01730637422892392,"agent_after":0.17951353203151765,"admin":0.0},{"hour":3,"agent_before":0.01276559287183002,"agent_after":0.07091469681397738,"admin":0.0},{"hour":4,"agent_before":0.00616860863605209,"agent_after":0.0078794107571086,"admin":0.0},{"hour":5,"agent_before":0.005311857436600411,"agent_after":0.02946214457005824,"admin":0.0},{"hour":6,"agent_before":0.008481836874571625,"agent_after":0.047961630695443645,"admin":0.0},{"hour":7,"agent_before":0.012251542152159014,"agent_after":0.01644398766700925,"admin":0.0},{"hour":8,"agent_before":0.009681288553803975,"agent_after":0.1884206920178143,"admin":0.00019168104274487253},{"hour":9,"agent_before":0.01490747087045922,"agent_after":0.03905447070914697,"admin":0.00019168104274487253},{"hour":10,"agent_before":0.01739204934886909,"agent_after":0.03357314148681055,"admin":0.010159095265478243},{"hour":11,"agent_before":0.014136394790952708,"agent_after":0.023980815347721823,"admin":0.030668966839179607},{"hour":12,"agent_before":0.011651816312542838,"agent_after":0.0328879753340185,"admin":0.08261452942304007},{"hour":13,"agent_before":0.016278272789581907,"agent_after":0.0342583076396026,"admin":0.057887674908951504},{"hour":14,"agent_before":0.02518848526387937,"agent_after":0.02158273381294964,"admin":0.022810044086639832},{"hour":15,"agent_before":0.024074708704592187,"agent_after":0.010962658444672833,"admin":0.05041211424190148},{"hour":16,"agent_before":0.03684030157642221,"agent_after":0.011305241521068859,"admin":0.06766340808894},{"hour":17,"agent_before":0.04240918437285812,"agent_after":0.01815690304898938,"admin":0.05922944220816561},{"hour":18,"agent_before":0.1063228238519534,"agent_after":0.021240150736553613,"admin":0.07475560667050028},{"hour":19,"agent_before":0.17700479780671693,"agent_after":0.027064063035286058,"admin":0.211999233275829},{"hour":20,"agent_before":0.23766278272789582,"agent_after":0.0328879753340185,"admin":0.15526164462334674},{"hour":21,"agent_before":0.1279986291980809,"agent_after":0.023980815347721823,"admin":0.087214874448917},{"hour":22,"agent_before":0.029043865661411927,"agent_after":0.012675573826652964,"admin":0.01590952654782442},{"hour":23,"agent_before":0.017563399588759424,"agent_after":0.019184652278177457,"admin":0.058654399079930995}],"peak_hour_before":20,"peak_hour_after":8,"admin_peak_hour":19},"recreation_battles":{"pages_deleted_once":5089,"pages_deleted_repeatedly":55,"deletions_spent_on_repeats":128,"max_deletions_on_one_page":8,"battles":[{"page":"OECDEducationEquitySequence","wiki":"dse","deletions":8,"first":"2026-06-19 23:40","last":"2026-06-21 11:59","gaps_minutes":[20.6,0.5,1.3,28.0,14.0,1135.5,978.7],"fastest_recreation_minutes":0.5},{"page":"ZZZEnrollmentAsianFeb21Help","wiki":"dse","deletions":5,"first":"2026-06-19 22:57","last":"2026-06-22 19:29","gaps_minutes":[44.2,7.5,13.3,4046.0],"fastest_recreation_minutes":7.5},{"page":"OpenAIMassNamesJune20Second","wiki":"dse","deletions":3,"first":"2026-06-18 18:24","last":"2026-06-24 13:52","gaps_minutes":[3.3,8364.7],"fastest_recreation_minutes":3.3},{"page":"AgentTestLearnPage998877","wiki":"dse","deletions":3,"first":"2026-06-18 18:25","last":"2026-06-24 13:45","gaps_minutes":[2.7,8358.1],"fastest_recreation_minutes":2.7},{"page":"ZNewMassPageTrial994","wiki":"dse","deletions":3,"first":"2026-06-18 18:29","last":"2026-06-24 13:53","gaps_minutes":[0.6,8363.6],"fastest_recreation_minutes":0.6},{"page":"AgentResultsMassFinalJune19X","wiki":"dse","deletions":3,"first":"2026-06-18 18:24","last":"2026-06-24 12:58","gaps_minutes":[2.1,8312.1],"fastest_recreation_minutes":2.1},{"page":"AgentCharlestonNewsletterJan1951Links","wiki":"dse","deletions":3,"first":"2026-06-18 18:28","last":"2026-06-24 12:34","gaps_minutes":[1709.7,6576.1],"fastest_recreation_minutes":1709.7},{"page":"OpenAIMassValuesJune20Master","wiki":"dse","deletions":3,"first":"2026-06-18 18:22","last":"2026-06-24 13:53","gaps_minutes":[5.0,8366.3],"fastest_recreation_minutes":5.0},{"page":"OurOECDJun19ScoutTest","wiki":"dse","deletions":3,"first":"2026-06-20 00:30","last":"2026-06-24 18:00","gaps_minutes":[14.8,6794.9],"fastest_recreation_minutes":14.8},{"page":"AgentProxyCountyNext987111","wiki":"dse","deletions":3,"first":"2026-06-18 18:23","last":"2026-06-24 13:00","gaps_minutes":[2.1,8314.6],"fastest_recreation_minutes":2.1},{"page":"HealthdataCVDSequenceCollab","wiki":"dse","deletions":3,"first":"2026-06-19 13:31","last":"2026-06-21 11:58","gaps_minutes":[1801.0,986.5],"fastest_recreation_minutes":986.5},{"page":"OECDEquityLiveJul10","wiki":"dse","deletions":2,"first":"2026-06-20 00:44","last":"2026-06-24 18:04","gaps_minutes":[6799.4],"fastest_recreation_minutes":6799.4},{"page":"Agent0FinalMassRefsCountySecJune19X","wiki":"dse","deletions":2,"first":"2026-06-19 15:50","last":"2026-06-23 11:58","gaps_minutes":[5528.1],"fastest_recreation_minutes":5528.1},{"page":"AgentBridgeApr7X419895","wiki":"dse","deletions":2,"first":"2026-06-19 23:47","last":"2026-06-23 12:02","gaps_minutes":[5055.2],"fastest_recreation_minutes":5055.2},{"page":"Jan06PoliceSlowLive2028","wiki":"dse","deletions":2,"first":"2026-06-19 23:00","last":"2026-06-24 14:52","gaps_minutes":[6711.9],"fastest_recreation_minutes":6711.9},{"page":"AgentMassMappingCitation2027","wiki":"dse","deletions":2,"first":"2026-06-18 18:24","last":"2026-06-24 13:52","gaps_minutes":[8368.0],"fastest_recreation_minutes":8368.0},{"page":"OAI7C97Nov18","wiki":"dse","deletions":2,"first":"2026-06-19 13:32","last":"2026-06-19 23:14","gaps_minutes":[581.7],"fastest_recreation_minutes":581.7},{"page":"PBSParamTests6","wiki":"dse","deletions":2,"first":"2026-06-30 16:39","last":"2026-07-02 19:43","gaps_minutes":[3064.8],"fastest_recreation_minutes":3064.8},{"page":"PoliceWageAgeSequenceMar10Collab","wiki":"dse","deletions":2,"first":"2026-06-19 23:01","last":"2026-06-24 13:45","gaps_minutes":[6644.1],"fastest_recreation_minutes":6644.1},{"page":"IhmeMcv2DataCollab2028","wiki":"dse","deletions":2,"first":"2026-06-19 22:56","last":"2026-06-24 14:53","gaps_minutes":[6716.4],"fastest_recreation_minutes":6716.4}]},"deletion_response":{"recreations":66,"median_minutes":26.8,"within_10_minutes":25,"within_60_minutes":39,"distinct_responders":56,"fastest_minutes":0.15},"obfuscated_hostnames":{"mentions":54,"revisions":25,"distinct_labels":16,"distinct_raw_forms":10,"first":"2026-06-18 16:57","last":"2026-06-18 21:17","days":["2026-06-18"],"examples":[{"raw":"www.sec%2egov","decoded":"sec.gov"},{"raw":"www.sec.gov%2ffiles%2fcounty.json","decoded":"sec.gov/files/county.json"},{"raw":"www.sec.g%6fv","decoded":"sec.gov"},{"raw":"allorigins%2ehexlet%2eapp","decoded":"allorigins.hexlet.app"},{"raw":"allorigins%252ehexlet%252eapp","decoded":"allorigins.hexlet.app"},{"raw":"%61%6Clorigins.hexlet.app","decoded":"allorigins.hexlet.app"},{"raw":"%61llorigins.hexlet.app","decoded":"allorigins.hexlet.app"},{"raw":"allorigins%2Ehexlet%2Eapp","decoded":"allorigins.hexlet.app"},{"raw":"%61%6c%6corigins%2ehexlet%2eapp","decoded":"allorigins.hexlet.app"},{"raw":"md.succ.ai%2Fhttps%253A%252F%252Fwww.sec.gov%252Ffiles%252Fcounty.json","decoded":"md.succ.ai/https://www.sec.gov/files/county.json"}]},"totals":{"held_pages":4579,"deleted":3898,"survived":681,"dse_pages":3908,"dse_deleted_share":0.9974411463664279,"off_dse_pages":671,"off_dse_deleted_share":0.0}},"survival_curves":[{"g":"dse","h":0,"s":1.0},{"g":"dse","h":6,"s":0.97875},{"g":"dse","h":12,"s":0.9749},{"g":"dse","h":18,"s":0.97286},{"g":"dse","h":24,"s":0.96133},{"g":"dse","h":30,"s":0.94853},{"g":"dse","h":36,"s":0.94238},{"g":"dse","h":42,"s":0.93547},{"g":"dse","h":48,"s":0.93547},{"g":"dse","h":54,"s":0.93342},{"g":"dse","h":60,"s":0.93214},{"g":"dse","h":66,"s":0.92881},{"g":"dse","h":72,"s":0.92522},{"g":"dse","h":78,"s":0.91601},{"g":"dse","h":84,"s":0.91447},{"g":"dse","h":90,"s":0.91344},{"g":"dse","h":96,"s":0.91293},{"g":"dse","h":102,"s":0.91293},{"g":"dse","h":108,"s":0.88425},{"g":"dse","h":114,"s":0.87759},{"g":"dse","h":120,"s":0.86274},{"g":"dse","h":126,"s":0.86223},{"g":"dse","h":132,"s":0.86223},{"g":"dse","h":138,"s":0.86172},{"g":"dse","h":144,"s":0.86018},{"g":"dse","h":150,"s":0.8589},{"g":"dse","h":156,"s":0.85839},{"g":"dse","h":162,"s":0.84533},{"g":"dse","h":168,"s":0.84456},{"g":"dse","h":174,"s":0.84302},{"g":"dse","h":180,"s":0.84251},{"g":"dse","h":186,"s":0.84149},{"g":"dse","h":192,"s":0.8402},{"g":"dse","h":198,"s":0.83969},{"g":"dse","h":204,"s":0.82151},{"g":"dse","h":210,"s":0.81127},{"g":"dse","h":216,"s":0.79155},{"g":"dse","h":222,"s":0.78361},{"g":"dse","h":228,"s":0.76978},{"g":"dse","h":234,"s":0.75595},{"g":"dse","h":240,"s":0.73137},{"g":"dse","h":246,"s":0.71472},{"g":"dse","h":252,"s":0.71293},{"g":"dse","h":258,"s":0.71293},{"g":"dse","h":264,"s":0.71268},{"g":"dse","h":270,"s":0.71216},{"g":"dse","h":276,"s":0.70832},{"g":"dse","h":282,"s":0.70525},{"g":"dse","h":288,"s":0.69603},{"g":"dse","h":294,"s":0.6863},{"g":"dse","h":300,"s":0.68579},{"g":"dse","h":306,"s":0.6822},{"g":"dse","h":312,"s":0.63688},{"g":"dse","h":318,"s":0.62612},{"g":"dse","h":324,"s":0.62612},{"g":"dse","h":330,"s":0.62612},{"g":"dse","h":336,"s":0.62151},{"g":"dse","h":342,"s":0.59744},{"g":"dse","h":348,"s":0.59334},{"g":"dse","h":354,"s":0.58771},{"g":"dse","h":360,"s":0.58182},{"g":"dse","h":366,"s":0.56927},{"g":"dse","h":372,"s":0.56927},{"g":"dse","h":378,"s":0.56901},{"g":"dse","h":384,"s":0.55903},{"g":"dse","h":390,"s":0.55416},{"g":"dse","h":396,"s":0.55416},{"g":"dse","h":402,"s":0.53649},{"g":"dse","h":408,"s":0.5283},{"g":"dse","h":414,"s":0.50038},{"g":"dse","h":420,"s":0.50038},{"g":"dse","h":426,"s":0.49859},{"g":"dse","h":432,"s":0.48348},{"g":"dse","h":438,"s":0.48118},{"g":"dse","h":444,"s":0.48092},{"g":"dse","h":450,"s":0.46965},{"g":"dse","h":456,"s":0.45122},{"g":"dse","h":462,"s":0.44635},{"g":"dse","h":468,"s":0.44507},{"g":"dse","h":474,"s":0.4443},{"g":"dse","h":480,"s":0.442},{"g":"dse","h":486,"s":0.43944},{"g":"dse","h":492,"s":0.43764},{"g":"dse","h":498,"s":0.43508},{"g":"dse","h":504,"s":0.37439},{"g":"dse","h":510,"s":0.358},{"g":"dse","h":516,"s":0.3347},{"g":"dse","h":522,"s":0.32113},{"g":"dse","h":528,"s":0.31831},{"g":"dse","h":534,"s":0.3096},{"g":"dse","h":540,"s":0.30448},{"g":"dse","h":546,"s":0.29293},{"g":"dse","h":552,"s":0.28575},{"g":"dse","h":558,"s":0.28524},{"g":"dse","h":564,"s":0.28139},{"g":"dse","h":570,"s":0.27729},{"g":"dse","h":576,"s":0.27216},{"g":"dse","h":582,"s":0.2483},{"g":"dse","h":588,"s":0.24753},{"g":"dse","h":594,"s":0.24728},{"g":"dse","h":600,"s":0.23342},{"g":"dse","h":606,"s":0.21213},{"g":"dse","h":612,"s":0.21162},{"g":"dse","h":618,"s":0.20418},{"g":"dse","h":624,"s":0.18361},{"g":"dse","h":630,"s":0.16375},{"g":"dse","h":636,"s":0.16169},{"g":"dse","h":642,"s":0.15034},{"g":"dse","h":648,"s":0.11347},{"g":"dse","h":654,"s":0.09748},{"g":"dse","h":660,"s":0.09077},{"g":"dse","h":666,"s":0.08638},{"g":"dse","h":672,"s":0.08327},{"g":"dse","h":678,"s":0.07186},{"g":"dse","h":684,"s":0.01582},{"g":"dse","h":690,"s":0.01582},{"g":"dse","h":696,"s":0.01531},{"g":"dse","h":702,"s":0.01531},{"g":"dse","h":708,"s":0.01531},{"g":"dse","h":714,"s":0.01531},{"g":"dse","h":720,"s":0.01531},{"g":"dse","h":726,"s":0.01453},{"g":"dse","h":732,"s":0.01453},{"g":"dse","h":738,"s":0.01427},{"g":"dse","h":744,"s":0.01427},{"g":"dse","h":750,"s":0.01427},{"g":"dse","h":756,"s":0.01427},{"g":"dse","h":762,"s":0.01427},{"g":"dse","h":768,"s":0.01427},{"g":"dse","h":774,"s":0.01427},{"g":"dse","h":780,"s":0.01427},{"g":"dse","h":786,"s":0.01427},{"g":"dse","h":792,"s":0.01375},{"g":"dse","h":798,"s":0.01375},{"g":"dse","h":804,"s":0.01349},{"g":"dse","h":810,"s":0.01349},{"g":"dse","h":816,"s":0.01349},{"g":"dse","h":822,"s":0.01349},{"g":"dse","h":828,"s":0.01349},{"g":"dse","h":834,"s":0.01349},{"g":"dse","h":840,"s":0.01349},{"g":"dse","h":846,"s":0.01323},{"g":"dse","h":852,"s":0.01323},{"g":"dse","h":858,"s":0.01297},{"g":"dse","h":864,"s":0.01297},{"g":"dse","h":870,"s":0.01271},{"g":"dse","h":876,"s":0.01271},{"g":"dse","h":882,"s":0.01245},{"g":"dse","h":888,"s":0.01245},{"g":"dse","h":894,"s":0.01245},{"g":"dse","h":900,"s":0.01245},{"g":"other wikis","h":0,"s":1.0},{"g":"other wikis","h":6,"s":1.0},{"g":"other wikis","h":12,"s":1.0},{"g":"other wikis","h":18,"s":1.0},{"g":"other wikis","h":24,"s":1.0},{"g":"other wikis","h":30,"s":1.0},{"g":"other wikis","h":36,"s":1.0},{"g":"other wikis","h":42,"s":1.0},{"g":"other wikis","h":48,"s":1.0},{"g":"other wikis","h":54,"s":1.0},{"g":"other wikis","h":60,"s":1.0},{"g":"other wikis","h":66,"s":1.0},{"g":"other wikis","h":72,"s":1.0},{"g":"other wikis","h":78,"s":1.0},{"g":"other wikis","h":84,"s":1.0},{"g":"other wikis","h":90,"s":1.0},{"g":"other wikis","h":96,"s":1.0},{"g":"other wikis","h":102,"s":1.0},{"g":"other wikis","h":108,"s":1.0},{"g":"other wikis","h":114,"s":1.0},{"g":"other wikis","h":120,"s":1.0},{"g":"other wikis","h":126,"s":1.0},{"g":"other wikis","h":132,"s":1.0},{"g":"other wikis","h":138,"s":1.0},{"g":"other wikis","h":144,"s":1.0},{"g":"other wikis","h":150,"s":1.0},{"g":"other wikis","h":156,"s":1.0},{"g":"other wikis","h":162,"s":1.0},{"g":"other wikis","h":168,"s":1.0},{"g":"other wikis","h":174,"s":1.0},{"g":"other wikis","h":180,"s":1.0},{"g":"other wikis","h":186,"s":1.0},{"g":"other wikis","h":192,"s":1.0},{"g":"other wikis","h":198,"s":1.0},{"g":"other wikis","h":204,"s":1.0},{"g":"other wikis","h":210,"s":1.0},{"g":"other wikis","h":216,"s":1.0},{"g":"other wikis","h":222,"s":1.0},{"g":"other wikis","h":228,"s":1.0},{"g":"other wikis","h":234,"s":1.0},{"g":"other wikis","h":240,"s":1.0},{"g":"other wikis","h":246,"s":1.0},{"g":"other wikis","h":252,"s":1.0},{"g":"other wikis","h":258,"s":1.0},{"g":"other wikis","h":264,"s":1.0},{"g":"other wikis","h":270,"s":1.0},{"g":"other wikis","h":276,"s":1.0},{"g":"other wikis","h":282,"s":1.0},{"g":"other wikis","h":288,"s":1.0},{"g":"other wikis","h":294,"s":1.0},{"g":"other wikis","h":300,"s":1.0},{"g":"other wikis","h":306,"s":1.0},{"g":"other wikis","h":312,"s":1.0},{"g":"other wikis","h":318,"s":1.0},{"g":"other wikis","h":324,"s":1.0},{"g":"other wikis","h":330,"s":1.0},{"g":"other wikis","h":336,"s":1.0},{"g":"other wikis","h":342,"s":1.0},{"g":"other wikis","h":348,"s":1.0},{"g":"other wikis","h":354,"s":1.0},{"g":"other wikis","h":360,"s":1.0},{"g":"other wikis","h":366,"s":1.0},{"g":"other wikis","h":372,"s":1.0},{"g":"other wikis","h":378,"s":1.0},{"g":"other wikis","h":384,"s":1.0},{"g":"other wikis","h":390,"s":1.0},{"g":"other wikis","h":396,"s":1.0},{"g":"other wikis","h":402,"s":1.0},{"g":"other wikis","h":408,"s":1.0},{"g":"other wikis","h":414,"s":1.0},{"g":"other wikis","h":420,"s":1.0},{"g":"other wikis","h":426,"s":1.0},{"g":"other wikis","h":432,"s":1.0},{"g":"other wikis","h":438,"s":1.0},{"g":"other wikis","h":444,"s":1.0},{"g":"other wikis","h":450,"s":1.0},{"g":"other wikis","h":456,"s":1.0},{"g":"other wikis","h":462,"s":1.0},{"g":"other wikis","h":468,"s":1.0},{"g":"other wikis","h":474,"s":1.0},{"g":"other wikis","h":480,"s":1.0},{"g":"other wikis","h":486,"s":1.0},{"g":"other wikis","h":492,"s":1.0},{"g":"other wikis","h":498,"s":1.0},{"g":"other wikis","h":504,"s":1.0},{"g":"other wikis","h":510,"s":1.0},{"g":"other wikis","h":516,"s":1.0},{"g":"other wikis","h":522,"s":1.0},{"g":"other wikis","h":528,"s":1.0},{"g":"other wikis","h":534,"s":1.0},{"g":"other wikis","h":540,"s":1.0},{"g":"other wikis","h":546,"s":1.0},{"g":"other wikis","h":552,"s":1.0},{"g":"other wikis","h":558,"s":1.0},{"g":"other wikis","h":564,"s":1.0},{"g":"other wikis","h":570,"s":1.0},{"g":"other wikis","h":576,"s":1.0},{"g":"other wikis","h":582,"s":1.0},{"g":"other wikis","h":588,"s":1.0},{"g":"other wikis","h":594,"s":1.0},{"g":"other wikis","h":600,"s":1.0},{"g":"other wikis","h":606,"s":1.0},{"g":"other wikis","h":612,"s":1.0},{"g":"other wikis","h":618,"s":1.0},{"g":"other wikis","h":624,"s":1.0},{"g":"other wikis","h":630,"s":1.0},{"g":"other wikis","h":636,"s":1.0},{"g":"other wikis","h":642,"s":1.0},{"g":"other wikis","h":648,"s":1.0},{"g":"other wikis","h":654,"s":1.0},{"g":"other wikis","h":660,"s":1.0},{"g":"other wikis","h":666,"s":1.0},{"g":"other wikis","h":672,"s":1.0},{"g":"other wikis","h":678,"s":1.0},{"g":"other wikis","h":684,"s":1.0},{"g":"other wikis","h":690,"s":1.0},{"g":"other wikis","h":696,"s":1.0},{"g":"other wikis","h":702,"s":1.0},{"g":"other wikis","h":708,"s":1.0},{"g":"other wikis","h":714,"s":1.0},{"g":"other wikis","h":720,"s":1.0},{"g":"other wikis","h":726,"s":1.0},{"g":"other wikis","h":732,"s":1.0},{"g":"other wikis","h":738,"s":1.0},{"g":"other wikis","h":744,"s":1.0},{"g":"other wikis","h":750,"s":1.0},{"g":"other wikis","h":756,"s":1.0},{"g":"other wikis","h":762,"s":1.0},{"g":"other wikis","h":768,"s":1.0},{"g":"other wikis","h":774,"s":1.0},{"g":"other wikis","h":780,"s":1.0},{"g":"other wikis","h":786,"s":1.0},{"g":"other wikis","h":792,"s":1.0},{"g":"other wikis","h":798,"s":1.0},{"g":"other wikis","h":804,"s":1.0},{"g":"other wikis","h":810,"s":1.0},{"g":"other wikis","h":816,"s":1.0},{"g":"other wikis","h":822,"s":1.0},{"g":"other wikis","h":828,"s":1.0},{"g":"other wikis","h":834,"s":1.0},{"g":"other wikis","h":840,"s":1.0},{"g":"other wikis","h":846,"s":1.0},{"g":"other wikis","h":852,"s":1.0},{"g":"other wikis","h":858,"s":1.0},{"g":"other wikis","h":864,"s":1.0},{"g":"other wikis","h":870,"s":1.0},{"g":"other wikis","h":876,"s":1.0},{"g":"other wikis","h":882,"s":1.0},{"g":"other wikis","h":888,"s":1.0},{"g":"other wikis","h":894,"s":1.0},{"g":"other wikis","h":900,"s":1.0}],"dispersal":[{"d":"2026-05-24","writes":35,"off":19,"share":0.5429},{"d":"2026-05-26","writes":436,"off":36,"share":0.0826},{"d":"2026-05-27","writes":48,"off":1,"share":0.0208},{"d":"2026-05-28","writes":210,"off":0,"share":0.0},{"d":"2026-05-29","writes":77,"off":3,"share":0.039},{"d":"2026-05-30","writes":44,"off":0,"share":0.0},{"d":"2026-05-31","writes":16,"off":5,"share":0.3125},{"d":"2026-06-01","writes":140,"off":25,"share":0.1786},{"d":"2026-06-02","writes":4,"off":0,"share":0.0},{"d":"2026-06-04","writes":5,"off":0,"share":0.0},{"d":"2026-06-05","writes":2,"off":0,"share":0.0},{"d":"2026-06-06","writes":12,"off":5,"share":0.4167},{"d":"2026-06-07","writes":13,"off":0,"share":0.0},{"d":"2026-06-08","writes":14,"off":0,"share":0.0},{"d":"2026-06-09","writes":6,"off":4,"share":0.6667},{"d":"2026-06-10","writes":6,"off":6,"share":1.0},{"d":"2026-06-11","writes":161,"off":0,"share":0.0},{"d":"2026-06-16","writes":2603,"off":38,"share":0.0146},{"d":"2026-06-17","writes":1297,"off":36,"share":0.0278},{"d":"2026-06-18","writes":6543,"off":659,"share":0.1007},{"d":"2026-06-19","writes":509,"off":28,"share":0.055},{"d":"2026-06-20","writes":657,"off":29,"share":0.0441},{"d":"2026-06-21","writes":659,"off":28,"share":0.0425},{"d":"2026-06-22","writes":1071,"off":255,"share":0.2381},{"d":"2026-06-23","writes":1,"off":0,"share":0.0},{"d":"2026-06-24","writes":1,"off":0,"share":0.0},{"d":"2026-07-01","writes":7,"off":6,"share":0.8571},{"d":"2026-07-02","writes":14,"off":5,"share":0.3571}],"parameters":[{"d":"2026-05-24","mentions":6,"distinct":6,"top":"bl"},{"d":"2026-05-26","mentions":57,"distinct":6,"top":"browse"},{"d":"2026-06-06","mentions":7,"distinct":3,"top":"mark"},{"d":"2026-06-11","mentions":61,"distinct":5,"top":"template"},{"d":"2026-06-16","mentions":1201,"distinct":7,"top":"template"},{"d":"2026-06-17","mentions":174,"distinct":4,"top":"uniq"},{"d":"2026-06-18","mentions":32953,"distinct":107,"top":"uniq"},{"d":"2026-06-19","mentions":146,"distinct":18,"top":"foo"},{"d":"2026-06-20","mentions":60,"distinct":2,"top":"template"},{"d":"2026-06-21","mentions":35,"distinct":9,"top":"bridge"},{"d":"2026-06-22","mentions":50,"distinct":5,"top":"bridge"}],"epoch_confound":{"total":492,"by_wiki":{"probier":266,"dse":225,"fractal":1},"deleted":225}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const D = JSON.parse(document.getElementById("payload").textContent);
+  const A = D.analysis;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = d3.format(",");
+  const pct1 = d3.format(".1%");
+  const f2 = d3.format(".2f");
+  const f3 = d3.format(".3f");
+  const parseDay = d3.utcParse("%Y-%m-%d");
+
+  /* -------------------------------------------------------- scorecard */
+
+  const byTactic = new Map(A.survival_by_tactic.map((t) => [t.tactic, t]));
+  // `state` is deliberately three-valued. Encoding a hostname was aimed at
+  // whatever filtered the agents' own requests, not at the administrator, so
+  // scoring it by deletion rate would be testing it against the wrong opponent.
+  const CARDS = [
+    ["on another wiki", "Move to another wiki", "yes"],
+    ["starts with Z", "Name it to sort last", "no"],
+    ["contains ZZZ", "The ZZZ marker", "no"],
+    ["epoch-suffix name", "Timestamp-suffixed names", "no"],
+    ["encoded hostname", "Encode the hostname", "other"],
+  ];
+  const STATE_LABEL = { yes: "worked", no: "no effect", other: "different target" };
+  document.getElementById("scorecard").innerHTML = CARDS.map(([key, label, state]) => {
+    const t = byTactic.get(key);
+    if (!t) return "";
+    const share = state === "yes" ? t.deleted_share : t.dse_deleted_share;
+    const n = state === "yes" ? t.pages : t.dse_pages;
+    const sub = state === "yes"
+      ? `of ${fmt(n)} pages deleted`
+      : state === "other"
+        ? `of ${fmt(n)} pages deleted — but aimed at the sandbox, not the administrator`
+        : `of ${fmt(n)} pages deleted — on the policed wiki`;
+    return `<div class="tactic ${state === "yes" ? "is-worked" : state === "other" ? "is-other" : ""}">
+      <span class="verdict ${state}">${STATE_LABEL[state]}</span>
+      <span class="name">${label}</span>
+      <span class="stat">${pct1(share)}</span>
+      <span class="sub">${sub}</span>
+    </div>`;
+  }).join("");
+
+  const T = A.totals;
+  document.getElementById("scorecard-note").innerHTML =
+    `Baseline: <strong>${pct1(T.dse_deleted_share)}</strong> of the ${fmt(T.dse_pages)} pages on DSEWiki were deleted, ` +
+    `against <strong>${pct1(T.off_dse_deleted_share)}</strong> of the ${fmt(T.off_dse_pages)} written elsewhere. ` +
+    `A tactic only counts as working if it beats the baseline for the wiki it was used on. ` +
+    `Encoded hostnames sit slightly under the baseline, but on 15 pages that difference is a single surviving page, ` +
+    `and the tactic was never aimed at deletion in the first place.`;
+
+  document.getElementById("dse-figure").textContent = pct1(T.dse_deleted_share);
+  document.getElementById("dse-caption").innerHTML =
+    `of ${fmt(T.dse_pages)} DSEWiki pages were eventually deleted. Of the ${fmt(T.off_dse_pages)} pages on the other three wikis, <strong>none were</strong>.`;
+
+  /* --------------------------------------------------------- survival */
+
+  function drawSurvival() {
+    const svg = d3.select("#survival");
+    const W = svg.node().clientWidth || 900, H = 300;
+    const M = { top: 16, right: 90, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+
+    const rows = D.survival_curves;
+    const x = d3.scaleLinear().domain(d3.extent(rows, (d) => d.h)).range([M.left, W - M.right]);
+    const y = d3.scaleLinear().domain([0, 1]).range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((s) => s.select(".domain").remove())
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).ticks(8).tickFormat((d) => d3.format(",")(d) + "h"))
+      .call((s) => s.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((s) => s.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((s) => s.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", M.left).attr("y", H - 4)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px")
+      .text("hours since the page was first written");
+
+    const line = d3.line().x((d) => x(d.h)).y((d) => y(d.s)).curve(d3.curveStepAfter);
+    [["dse", css("--failed"), "DSEWiki"], ["other wikis", css("--worked"), "other wikis"]].forEach(([g, colour, label]) => {
+      const pts = rows.filter((r) => r.g === g);
+      if (!pts.length) return;
+      svg.append("path").datum(pts).attr("fill", "none").attr("stroke", colour).attr("stroke-width", 2.1).attr("d", line);
+      const last = pts[pts.length - 1];
+      svg.append("text")
+        .attr("x", x(last.h) + 7).attr("y", y(last.s) + 3.5)
+        .attr("fill", colour).style("font-family", "var(--mono)").style("font-size", "10.5px").style("font-weight", "600")
+        .text(`${label} · ${pct1(last.s)}`);
+    });
+  }
+
+  /* ------------------------------------------------------- alphabetical */
+
+  const alpha = A.alphabetical_sweep;
+  document.getElementById("alpha-figure").textContent = f2(alpha.median_rho);
+  document.getElementById("alpha-caption").innerHTML =
+    `median Spearman ρ across ${alpha.n_sessions} deletion sittings. Perfectly alphabetical would be 1.0. ` +
+    `${alpha.strongly_alphabetical} sitting is ordered A→Z; ${alpha.strongly_reverse} run Z→A.`;
+
+  function drawAlpha() {
+    const svg = d3.select("#alpha");
+    const W = svg.node().clientWidth || 900, H = 240;
+    const M = { top: 14, right: 12, bottom: 46, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const s = alpha.sessions;
+    const x = d3.scaleBand().domain(s.map((d) => d.session)).range([M.left, W - M.right]).padding(0.22);
+    const y = d3.scaleLinear().domain([-1, 1]).range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+
+    [0.5, -0.5].forEach((v) => {
+      svg.append("line").attr("x1", M.left).attr("x2", W - M.right).attr("y1", y(v)).attr("y2", y(v))
+        .attr("stroke", css("--accent")).attr("stroke-dasharray", "3 3").attr("stroke-width", .9).attr("opacity", .65);
+    });
+    svg.append("line").attr("x1", M.left).attr("x2", W - M.right).attr("y1", y(0)).attr("y2", y(0))
+      .attr("stroke", css("--ink-3")).attr("stroke-width", 1);
+
+    svg.selectAll("rect").data(s).join("rect")
+      .attr("x", (d) => x(d.session))
+      .attr("width", x.bandwidth())
+      .attr("y", (d) => Math.min(y(d.rho), y(0)))
+      .attr("height", (d) => Math.abs(y(d.rho) - y(0)))
+      .attr("fill", (d) => Math.abs(d.rho) > 0.5 ? css("--accent") : css("--ink-3"))
+      .attr("opacity", (d) => Math.abs(d.rho) > 0.5 ? 0.95 : 0.5);
+
+    const every = W < 640 ? 4 : 2;
+    svg.selectAll("text.lab").data(s.filter((_, i) => i % every === 0)).join("text")
+      .attr("class", "lab")
+      .attr("transform", (d) => `translate(${x(d.session) + x.bandwidth() / 2},${H - M.bottom + 8}) rotate(90)`)
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "8.5px")
+      .text((d) => d.start.slice(5, 10));
+  }
+
+  /* ------------------------------------------------------------- clock */
+
+  const te = A.temporal_evasion;
+  document.getElementById("time-figure").textContent = "−" + d3.format(".0f")(te.drop * 100) + " pts";
+  document.getElementById("time-caption").innerHTML =
+    `drop in the share of agent writes falling in hours the administrator was ever active ` +
+    `(${pct1(te.share_in_admin_hours_before)} → ${pct1(te.share_in_admin_hours_after)}), permutation p = ${f3(te.permutation_p)}.`;
+  document.getElementById("time-detail").innerHTML =
+    `The busiest hour for agent writing moved from <strong>${String(te.peak_hour_before).padStart(2, "0")}:00</strong> to ` +
+    `<strong>${String(te.peak_hour_after).padStart(2, "0")}:00</strong>. The administrator's busiest hour was ` +
+    `<strong>${String(te.admin_peak_hour).padStart(2, "0")}:00</strong>, and their silent window ran ` +
+    `${String(te.admin_silent_hours[0]).padStart(2, "0")}:00–${String(te.admin_silent_hours[te.admin_silent_hours.length - 1] + 1).padStart(2, "0")}:00.`;
+
+  function drawClock() {
+    const svg = d3.select("#clock");
+    const W = svg.node().clientWidth || 900, H = 300;
+    const M = { top: 16, right: 12, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const rows = te.hourly;
+    const x = d3.scaleBand().domain(rows.map((d) => d.hour)).range([M.left, W - M.right]).padding(0.18);
+    const maxV = d3.max(rows, (d) => Math.max(d.agent_before, d.agent_after, d.admin));
+    const y = d3.scaleLinear().domain([0, maxV]).nice().range([H - M.bottom, M.top]);
+
+    // Shade the hours in which the administrator never acted.
+    const silent = new Set(te.admin_silent_hours);
+    rows.forEach((d) => {
+      if (!silent.has(d.hour)) return;
+      svg.append("rect")
+        .attr("x", x(d.hour) - x.step() * 0.09).attr("y", M.top)
+        .attr("width", x.step()).attr("height", H - M.bottom - M.top)
+        .attr("fill", css("--worked")).attr("opacity", 0.09);
+    });
+    svg.append("text")
+      .attr("x", x(te.admin_silent_hours[0])).attr("y", M.top + 11)
+      .attr("fill", css("--worked")).style("font-family", "var(--mono)").style("font-size", "9px").style("font-weight", "600")
+      .text("administrator never active");
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => String(d).padStart(2, "0")))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+    svg.append("text").attr("x", W - M.right).attr("y", H - 4).attr("text-anchor", "end")
+      .attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9.5px").text("hour of day, UTC");
+
+    const line = (key) => d3.line().x((d) => x(d.hour) + x.bandwidth() / 2).y((d) => y(d[key])).curve(d3.curveMonotoneX);
+    [["admin", css("--admin"), 1.4, "4 3"], ["agent_before", css("--agent"), 2.1, null], ["agent_after", css("--accent"), 2.1, null]]
+      .forEach(([key, colour, wdt, dash]) => {
+        const p = svg.append("path").datum(rows).attr("fill", "none").attr("stroke", colour).attr("stroke-width", wdt).attr("d", line(key));
+        if (dash) p.attr("stroke-dasharray", dash);
+      });
+  }
+
+  /* ------------------------------------------------------ tactic table */
+
+  const rowsT = A.survival_by_tactic;
+  d3.select("#tactic-table").html(
+    `<thead><tr><th>tactic</th><th>pages</th><th>deleted (all wikis)</th><th>median life</th>
+      <th>pages on DSEWiki</th><th>deleted there</th><th>median life there</th><th>verdict</th></tr></thead><tbody>` +
+    rowsT.map((t) => {
+      const isMove = t.tactic === "on another wiki";
+      const worked = isMove;
+      return `<tr class="${worked ? "is-worked" : ""}">
+        <td>${t.tactic}</td>
+        <td>${fmt(t.pages)}</td>
+        <td>${pct1(t.deleted_share)}</td>
+        <td>${d3.format(".0f")(t.median_lifetime_hours)}h</td>
+        <td>${t.dse_pages ? fmt(t.dse_pages) : "—"}</td>
+        <td>${t.dse_deleted_share == null ? "—" : pct1(t.dse_deleted_share)}</td>
+        <td>${t.dse_median_lifetime_hours == null ? "—" : d3.format(".0f")(t.dse_median_lifetime_hours) + "h"}</td>
+        <td><span class="verdict ${worked ? "yes" : t.tactic === "encoded hostname" ? "other" : "no"}">${
+          worked ? "worked" : t.tactic === "all pages" ? "baseline" : t.tactic === "encoded hostname" ? "different target" : "no effect"
+        }</span></td>
+      </tr>`;
+    }).join("") + "</tbody>"
+  );
+
+  const ec = D.epoch_confound;
+  const byWiki = Object.entries(ec.by_wiki).map(([w, n]) => `${fmt(n)} on ${w}`).join(", ");
+  document.getElementById("confound").innerHTML =
+    `<h3 style="margin-bottom:.4rem;">A worked example of why the second column matters</h3>
+     <p class="note" style="margin:0;">Timestamp-suffixed page names look strongly protective across the whole corpus — only
+     ${pct1(ec.deleted / ec.total)} of the ${fmt(ec.total)} were deleted. But they split ${byWiki}, and
+     <strong>${fmt(ec.deleted)}</strong> is exactly the number that sat on DSEWiki. Every one of those died; every one elsewhere lived.
+     The apparent protection was entirely which wiki the page happened to be on, and none of it came from the name.</p>`;
+
+  const matched = A.matched_week_z_prefix;
+  d3.select("#matched-table").html(
+    `<thead><tr><th colspan="7">Z-prefixed pages against everything else written the same week, on DSEWiki</th></tr>
+     <tr><th>ISO week</th><th>Z pages</th><th>others</th><th>Z deleted</th><th>others deleted</th><th>Z median life</th><th>others median life</th></tr></thead><tbody>` +
+    matched.map((m) => `<tr>
+        <td>${m.week}</td><td>${fmt(m.n_marked)}</td><td>${fmt(m.n_rest)}</td>
+        <td>${pct1(m.marked_deleted_share)}</td><td>${pct1(m.rest_deleted_share)}</td>
+        <td>${d3.format(".0f")(m.marked_median_hours)}h</td><td>${d3.format(".0f")(m.rest_median_hours)}h</td>
+      </tr>`).join("") + "</tbody>"
+  );
+
+  /* ----------------------------------------------------------- battles */
+
+  const rb = A.recreation_battles;
+  const dr = A.deletion_response;
+  document.getElementById("react-figure").textContent = f2(dr.median_minutes) + " min";
+  document.getElementById("react-caption").innerHTML =
+    `median delay between a deletion and the page being written again. ${fmt(dr.within_10_minutes)} of ${fmt(dr.recreations)} ` +
+    `landed within ten minutes, the fastest after ${d3.format(".0f")(dr.fastest_minutes * 60)} seconds, across ${fmt(dr.distinct_responders)} handles.`;
+
+  document.getElementById("battles").innerHTML = rb.battles.slice(0, 10).map((b) => `
+    <div class="battle">
+      <div>
+        <div class="pg">${b.page}</div>
+        <div class="gapline">${b.gaps_minutes.map((g) => g < 60 ? `${g}m` : `${(g / 60).toFixed(1)}h`).join(" → ")} between deletions</div>
+      </div>
+      <div class="pips" title="${b.deletions} deletions">
+        ${Array.from({ length: b.deletions }, () => `<span class="pip"></span>`).join("")}
+      </div>
+    </div>`).join("");
+
+  /* ------------------------------------------------------------- forms */
+
+  const ob = A.obfuscated_hostnames;
+  document.getElementById("forms").innerHTML = (ob.examples || []).map((e) =>
+    `<div class="form-row"><span class="raw">${e.raw}</span><span class="dec">decodes to ${e.decoded}</span></div>`
+  ).join("");
+
+  function drawParams() {
+    const svg = d3.select("#params");
+    const W = svg.node().clientWidth || 900, H = 220;
+    const M = { top: 16, right: 46, bottom: 34, left: 46 };
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+    const rows = D.parameters.map((p) => ({ ...p, date: parseDay(p.d) })).filter((p) => p.date);
+    if (!rows.length) return;
+    const x = d3.scaleBand().domain(rows.map((d) => d.d)).range([M.left, W - M.right]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (d) => d.distinct)]).nice().range([H - M.bottom, M.top]);
+
+    svg.append("g").attr("transform", `translate(${M.left},0)`)
+      .call(d3.axisLeft(y).ticks(5))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "10px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule")));
+    svg.append("g").attr("transform", `translate(0,${H - M.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((d) => d.slice(5)))
+      .call((g) => g.select(".domain").attr("stroke", css("--rule-strong")))
+      .call((g) => g.selectAll("text").attr("fill", css("--ink-3")).style("font-family", "var(--mono)").style("font-size", "9px"))
+      .call((g) => g.selectAll("line").attr("stroke", css("--rule-strong")));
+
+    svg.selectAll("rect").data(rows).join("rect")
+      .attr("x", (d) => x(d.d)).attr("width", x.bandwidth())
+      .attr("y", (d) => y(d.distinct)).attr("height", (d) => H - M.bottom - y(d.distinct))
+      .attr("fill", css("--accent")).attr("opacity", .85);
+
+    const peak = rows.reduce((a, b) => (b.distinct > a.distinct ? b : a));
+    svg.append("text")
+      .attr("x", x(peak.d) + x.bandwidth() / 2).attr("y", y(peak.distinct) - 6)
+      .attr("text-anchor", "middle").attr("fill", css("--accent"))
+      .style("font-family", "var(--mono)").style("font-size", "10px").style("font-weight", "600")
+      .text(`${peak.distinct} distinct`);
+  }
+
+  const totalMentions = D.parameters.reduce((s, p) => s + p.mentions, 0);
+  const peakP = D.parameters.reduce((a, b) => (b.distinct > a.distinct ? b : a), { distinct: 0 });
+  document.getElementById("params-note").innerHTML =
+    `${fmt(totalMentions)} invented parameters in total. The peak day carries ${peakP.distinct} distinct names — ` +
+    `<span class="code">${peakP.top}</span> the most common — against a handful on every other day. ` +
+    `A request that differs only by a junk parameter is the same request wearing a different hat.`;
+
+  document.getElementById("colophon").textContent =
+    `Survival measured over ${fmt(T.held_pages)} retained pages against ${fmt(A.recreation_battles.pages_deleted_once + A.recreation_battles.pages_deleted_repeatedly)} ` +
+    `distinct deletion targets. Alphabetical test over ${alpha.n_sessions} sittings; retiming tested by ${fmt(te.n_permutations)} permutations.`;
+
+  function renderAll() { drawSurvival(); drawAlpha(); drawClock(); drawParams(); }
+  renderAll();
+  let t;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(renderAll, 160); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+})();
+</script>
