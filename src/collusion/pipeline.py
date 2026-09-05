@@ -8,6 +8,8 @@ identical JSON.
 from __future__ import annotations
 
 import json
+import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -163,12 +165,15 @@ def stage_metrics(feat: pd.DataFrame, built: dict[str, nx.Graph], n_null: int = 
         if g.number_of_edges() == 0:
             results[name] = {"name": name, "summary": graphs.describe(g)}
             continue
+        started = time.time()
+        print(f"  [{name}] {g.number_of_nodes()} nodes, {g.number_of_edges()} edges", file=sys.stderr, flush=True)
         results[name] = metrics.analyze(
             g,
             name,
             n_null=(30 if name in heavy else n_null),
             betweenness_k=300 if name in heavy else 500,
         )
+        print(f"  [{name}] done in {time.time() - started:.0f}s", file=sys.stderr, flush=True)
     write_json(results, "structure.json")
 
     # Centrality tables for the layers a reader will actually interrogate.

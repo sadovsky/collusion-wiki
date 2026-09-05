@@ -13,7 +13,7 @@ import math
 import random
 from collections import Counter
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Iterator, Sequence
 
 import networkx as nx
 import numpy as np
@@ -59,20 +59,26 @@ def compare_to_null(
 MAX_SWAPS = 40_000
 
 
-def rewired_ensemble(graph: nx.Graph, n_samples: int, seed: int = SEED) -> list[nx.Graph]:
+def rewired_ensemble(graph: nx.Graph, n_samples: int, seed: int = SEED) -> Iterator[nx.Graph]:
     """Degree-preserving double-edge swaps: the right null for degree-driven effects.
 
-    Generated once and shared across every statistic that needs it. Rewiring
-    separately per statistic would be three times the cost for a *worse* null,
-    since each statistic would then be compared against a different ensemble.
+    A generator, deliberately. Materialising 200 copies of a 12,000-edge graph
+    at once is gigabytes, and every consumer here only needs one at a time; an
+    earlier list-returning version put this stage into the OOM killer.
+
+    Consumers that need several statistics from the same null must compute them
+    inside one pass, which is also the correct thing to do: comparing each
+    statistic against a *different* ensemble would be a worse null, not just a
+    slower one.
     """
     rng = random.Random(seed)
     m = graph.number_of_edges()
     if m < 2:
-        return [graph.copy() for _ in range(n_samples)]
+        for _ in range(n_samples):
+            yield graph.copy()
+        return
 
     nswap = min(m, MAX_SWAPS)
-    out = []
     for _ in range(n_samples):
         h = graph.copy()
         try:
@@ -82,8 +88,7 @@ def rewired_ensemble(graph: nx.Graph, n_samples: int, seed: int = SEED) -> list[
                 nx.double_edge_swap(h, nswap=nswap, max_tries=nswap * 20, seed=rng.randrange(1 << 30))
         except (nx.NetworkXError, nx.NetworkXAlgorithmError):
             pass  # not every degree sequence can be fully rewired; a partial swap is still a null
-        out.append(h)
-    return out
+        yield h
 
 
 def _rewire_null(
@@ -229,7 +234,10 @@ def null_budget(graph: nx.Graph, requested: int) -> tuple[int, str | None]:
     bar on an artifact is the wrong trade.
     """
     layer = str(graph.graph.get("layer", ""))
-    if "projection" in layer or "bipartite" in layer:
+    # Detected structurally, not by layer name: `label_host` and
+    # `infrastructure` are bipartite without saying so in their names.
+    is_bipartite = any("bipartite" in d for _, d in graph.nodes(data=True))
+    if is_bipartite or "projection" in layer or "bipartite" in layer:
         return min(requested, 10), (
             "reduced: clustering in a bipartite graph or its projection is "
             "structurally determined, so the rewired null is not informative"
@@ -246,9 +254,14 @@ def cohesion_metrics(graph: nx.Graph, n_null: int = 200) -> dict[str, Any]:
 
     n_null, budget_note = null_budget(simple, n_null)
     out["null_budget_note"] = budget_note
-    undirected_null = rewired_ensemble(simple, n_null)
-    trans_null = [_safe(nx.transitivity, h) for h in undirected_null]
-    assort_null = [_safe(nx.degree_assortativity_coefficient, h) for h in undirected_null]
+
+    # One pass over the ensemble, both statistics per sample: the generator
+    # yields each rewired graph once and it is discarded before the next.
+    trans_null: list[float] = []
+    assort_null: list[float] = []
+    for h in rewired_ensemble(simple, n_null):
+        trans_null.append(_safe(nx.transitivity, h))
+        assort_null.append(_safe(nx.degree_assortativity_coefficient, h))
 
     out["transitivity"] = compare_to_null(
         "transitivity", nx.transitivity(simple), [v for v in trans_null if np.isfinite(v)]
@@ -265,11 +278,10 @@ def cohesion_metrics(graph: nx.Graph, n_null: int = 200) -> dict[str, Any]:
 
     if graph.is_directed():
         # Reciprocity needs a directed null, so it gets its own ensemble.
-        directed_null = rewired_ensemble(graph, n_null, seed=SEED + 1)
         out["reciprocity"] = compare_to_null(
             "reciprocity",
             nx.reciprocity(graph),
-            [_safe(nx.reciprocity, h) for h in directed_null],
+            [_safe(nx.reciprocity, h) for h in rewired_ensemble(graph, n_null, seed=SEED + 1)],
         ).as_dict()
         # The full census is O(n^3) in the worst case; only worth it when small.
         if graph.number_of_nodes() <= 4000:
@@ -324,7 +336,11 @@ def centrality_table(graph: nx.Graph, betweenness_k: int | None = 500) -> pd.Dat
         giant = simple.subgraph(max(nx.connected_components(simple), key=len))
         try:
             ev.update(nx.eigenvector_centrality_numpy(giant, weight="weight"))
-        except (nx.NetworkXException, ValueError):
+        except Exception:
+            # ARPACK raises its own non-convergence type from outside the
+            # networkx and ValueError hierarchies. Eigenvector centrality is the
+            # least load-bearing column here; losing it must not take the table
+            # down, so this catch is deliberately broad.
             pass
 
     simple_for_core = nx.Graph(graph)
